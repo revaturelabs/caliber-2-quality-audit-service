@@ -32,15 +32,14 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  */
 @Entity
 @Table(name = "CALIBER_NOTE")
-@Cacheable
 public class Note implements Serializable{
 
 	private static final long serialVersionUID = -4960654794116385953L;
 
 	@Id
 	@Column(name = "NOTE_ID")
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "NOTE_ID_SEQUENCE")
-	@SequenceGenerator(name = "NOTE_ID_SEQUENCE", sequenceName = "NOTE_ID_SEQUENCE")
+	@SequenceGenerator(name = "NOTE_SEQ_GEN", sequenceName = "NOTE_SEQUENCE")
+	@GeneratedValue(generator = "NOTE_SEQ_GEN", strategy=GenerationType.SEQUENCE)
 	private int noteId;
 
 	@Length(min=0, max=4000)

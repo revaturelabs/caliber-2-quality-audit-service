@@ -40,6 +40,10 @@ public class NoteService {
 		return noteRepo.save(n);
 	}
 	
+	/**
+	 * Delete a note
+	 * @param id
+	 */
 	public void deleteNote(Integer id) {
 		noteRepo.delete(id);
 	}
@@ -48,6 +52,11 @@ public class NoteService {
 		return noteRepo.findOne(id);
 	}
 	
+	/**
+	 * Update a note
+	 * @param n
+	 * @return
+	 */
 	public Note updateNote(Note n) {
 		return noteRepo.save(n);
 	}
