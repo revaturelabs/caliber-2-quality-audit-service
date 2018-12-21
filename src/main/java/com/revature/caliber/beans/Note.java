@@ -56,7 +56,6 @@ public class Note implements Serializable{
 	@ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
 	@JoinColumn(name = "BATCH_ID", nullable = true)
 	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-	@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 	private Batch batch;
 
 	/**
@@ -87,8 +86,5 @@ public class Note implements Serializable{
 		super();
 		this.maxVisibility = TrainerRole.ROLE_TRAINER;
 	}
-	
-	
-	
-
 }
+
