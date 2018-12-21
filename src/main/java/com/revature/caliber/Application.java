@@ -24,8 +24,8 @@ public class Application implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		
-		repo.save(new Note(1, "Good job"));
-		repo.save(new Note(2, "Yellow"));
+//		repo.save(new Note(1, "Good job"));
+//		repo.save(new Note(2, "Yellow"));
 		
 	}
 
