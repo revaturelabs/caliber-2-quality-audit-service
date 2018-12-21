@@ -9,8 +9,10 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import com.revature.caliber.beans.Note;
 import com.revature.caliber.dao.NoteRepository;
 
+import com.revature.caliber.beans.Note;
+import com.revature.caliber.dao.NoteRepository;
+
 @SpringBootApplication
-@EnableEurekaClient
 public class Application implements CommandLineRunner {
 	
 	@Autowired
@@ -26,8 +28,8 @@ public class Application implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		
-		repo.save(new Note(1, "Good job"));
-		repo.save(new Note(2, "Yellow"));
+//		repo.save(new Note(1, "Good job"));
+//		repo.save(new Note(2, "Yellow"));
 		
 	}
 
