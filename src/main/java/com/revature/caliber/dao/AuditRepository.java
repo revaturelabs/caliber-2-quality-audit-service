@@ -10,6 +10,6 @@ import com.revature.caliber.beans.Note;
  *
  */
 @Repository
-public interface NoteRepository extends JpaRepository <Note, Integer> {
+public interface AuditRepository extends JpaRepository <Note, Integer> {
 
 }

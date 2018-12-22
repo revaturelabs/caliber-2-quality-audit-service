@@ -6,11 +6,12 @@ import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.revature.caliber.beans.Book;
+import com.revature.caliber.beans.Trainee;
 
 
-@FeignClient("book-service")
-public interface BookClient {
+@FeignClient("user_service")
+public interface TraineeClient {
 
-	@GetMapping("/books")
-	public List<Book> getAllBooks();
+	@GetMapping("/all/trainee")
+	public List<Trainee> getAllTrainees();
 }

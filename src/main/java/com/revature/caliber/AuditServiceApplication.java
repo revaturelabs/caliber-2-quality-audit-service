@@ -8,21 +8,21 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.netflix.feign.EnableFeignClients;
 
 import com.revature.caliber.beans.Note;
-import com.revature.caliber.dao.NoteRepository;
+import com.revature.caliber.dao.AuditRepository;
+
 
 import com.revature.caliber.beans.Note;
-import com.revature.caliber.dao.NoteRepository;
 
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableFeignClients
-public class Application implements CommandLineRunner {
+public class AuditServiceApplication implements CommandLineRunner {
 	
 	@Autowired
-	private NoteRepository repo;
+	private AuditRepository repo;
 	
 	public static void main(String[] args) throws Exception {
-		SpringApplication.run(Application.class, args);
+		SpringApplication.run(AuditServiceApplication.class, args);
 	}
 
 	/**

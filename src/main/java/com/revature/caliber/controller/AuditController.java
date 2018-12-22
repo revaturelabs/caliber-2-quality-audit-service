@@ -17,10 +17,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.revature.caliber.service.NoteService;
-import com.revature.intercomm.BookClient;
+import com.revature.intercomm.TraineeClient;
 import com.revature.caliber.beans.Book;
 import com.revature.caliber.beans.Note;
+import com.revature.caliber.beans.Trainee;
+import com.revature.caliber.service.AuditService;
 
 /**
  * Controllers for handling all requests having to do with notes.
@@ -29,25 +30,29 @@ import com.revature.caliber.beans.Note;
  */
 @RestController
 @CrossOrigin(origins="*")
-@RequestMapping("/note")
-public class NoteController {
+public class AuditController {
 
-	private static final Logger log = Logger.getLogger(NoteController.class);
+	private static final Logger log = Logger.getLogger(AuditController.class);
 	
 	@Autowired
-	private NoteService service;
+	private AuditService service;
 	
+	// Retrieve trainee info from user-service
 	@Autowired
-	private BookClient client;
+	private TraineeClient client;
 	
-	@GetMapping("/home")
-	public String welcome() {
-		return "welcome home";
+	/**
+	 * Testing purpose
+	 * @return
+	 */
+	@GetMapping("/test")
+	public String test() {
+		return "welcome to quality audit service";
 	}
 	
-	@GetMapping("/audit-books")
-	public List<Book> getAllBooks() {
-		return client.getAllBooks();
+	@GetMapping("/trainees")
+	public List<Trainee> getAllTrainees() {
+		return client.getAllTrainees();
 	}
 	
 	/**
