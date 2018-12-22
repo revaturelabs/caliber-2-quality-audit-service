@@ -4,7 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.netflix.feign.EnableFeignClients;
 
 import com.revature.caliber.beans.Note;
 import com.revature.caliber.dao.NoteRepository;
@@ -13,6 +14,8 @@ import com.revature.caliber.beans.Note;
 import com.revature.caliber.dao.NoteRepository;
 
 @SpringBootApplication
+@EnableDiscoveryClient
+@EnableFeignClients
 public class Application implements CommandLineRunner {
 	
 	@Autowired

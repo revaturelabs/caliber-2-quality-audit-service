@@ -2,7 +2,6 @@ package com.revature.caliber.beans;
 
 import java.io.Serializable;
 
-import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -31,7 +30,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  */
 @Entity
 @Table(name = "CALIBER_NOTE")
-@Cacheable
+//@Cacheable
 public class Note implements Serializable{
 
 	private static final long serialVersionUID = 4960654794116385953L;
@@ -63,7 +62,7 @@ public class Note implements Serializable{
 	 */
 	@ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
 	@JoinColumn(name = "TRAINEE_ID", nullable = true)
-	@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
+	//@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 	private Trainee trainee;
 
 	@Enumerated(EnumType.ORDINAL)
@@ -86,5 +85,21 @@ public class Note implements Serializable{
 		super();
 		this.maxVisibility = TrainerRole.ROLE_TRAINER;
 	}
+
+	public Note(int noteId, String content, short week, Batch batch, Trainee trainee, TrainerRole maxVisibility,
+			NoteType type, boolean qcFeedback, QCStatus qcStatus) {
+		super();
+		this.noteId = noteId;
+		this.content = content;
+		this.week = week;
+		this.batch = batch;
+		this.trainee = trainee;
+		this.maxVisibility = maxVisibility;
+		this.type = type;
+		this.qcFeedback = qcFeedback;
+		this.qcStatus = qcStatus;
+	}
+	
+	
 }
 

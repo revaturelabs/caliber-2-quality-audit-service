@@ -29,8 +29,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Entity
 @Table(name = "CALIBER_TRAINER")
-@Cacheable
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+//@Cacheable
+//@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Trainer implements Serializable{
 
 	private static final long serialVersionUID = 2886418048122511755L;
@@ -54,7 +54,7 @@ public class Trainer implements Serializable{
 	
 	@OneToMany(mappedBy = "trainer", fetch = FetchType.LAZY)
 	@JsonIgnore
-	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+	//@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private Set<Batch> batches;
 	
 	

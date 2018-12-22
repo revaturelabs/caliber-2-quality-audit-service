@@ -14,9 +14,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.caliber.service.NoteService;
+import com.revature.intercomm.BookClient;
+import com.revature.caliber.beans.Book;
 import com.revature.caliber.beans.Note;
 
 /**
@@ -26,6 +29,7 @@ import com.revature.caliber.beans.Note;
  */
 @RestController
 @CrossOrigin(origins="*")
+@RequestMapping("/note")
 public class NoteController {
 
 	private static final Logger log = Logger.getLogger(NoteController.class);
@@ -33,10 +37,17 @@ public class NoteController {
 	@Autowired
 	private NoteService service;
 	
+	@Autowired
+	private BookClient client;
 	
 	@GetMapping("/home")
 	public String welcome() {
 		return "welcome home";
+	}
+	
+	@GetMapping("/audit-books")
+	public List<Book> getAllBooks() {
+		return client.getAllBooks();
 	}
 	
 	/**
