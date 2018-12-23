@@ -17,11 +17,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.revature.intercomm.TraineeClient;
-import com.revature.caliber.beans.Book;
 import com.revature.caliber.beans.Note;
 import com.revature.caliber.beans.Trainee;
 import com.revature.caliber.service.AuditService;
+import com.revature.caliber.intercomm.TraineeClient;
 
 /**
  * Controllers for handling all requests having to do with notes.
