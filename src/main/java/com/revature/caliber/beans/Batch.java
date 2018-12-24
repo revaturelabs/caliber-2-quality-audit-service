@@ -30,7 +30,7 @@ public class Batch implements Serializable {
 	
 	@Id
 	@Column(name="BATCH_ID")
-	//@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer batchId;
 	
 	@NotNull

@@ -1,12 +1,27 @@
 package com.revature.caliber.beans;
 
-public class Book {
+import java.io.Serializable;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="BOOK")
+public class Book implements Serializable {
 	
-private int id;
+	private static final long serialVersionUID = -9090223980655307018L;
 	
+	@Id
+	@Column
+	@GeneratedValue
+	private int id;
 	
+	@Column
 	private String title;
-	
+	@Column
 	private double price;
 	
 
