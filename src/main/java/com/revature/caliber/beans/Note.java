@@ -101,5 +101,101 @@ public class Note implements Serializable{
 	}
 	
 	
+
+	public Note(int noteId, String content, short week) {
+		super();
+		this.noteId = noteId;
+		this.content = content;
+		this.week = week;
+	}
+
+	public int getNoteId() {
+		return noteId;
+	}
+
+	public void setNoteId(int noteId) {
+		this.noteId = noteId;
+	}
+
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+
+	public short getWeek() {
+		return week;
+	}
+
+	public void setWeek(short week) {
+		this.week = week;
+	}
+
+	public Batch getBatch() {
+		return batch;
+	}
+
+	public void setBatch(Batch batch) {
+		this.batch = batch;
+	}
+
+	public Trainee getTrainee() {
+		return trainee;
+	}
+
+	public void setTrainee(Trainee trainee) {
+		this.trainee = trainee;
+	}
+
+	public TrainerRole getMaxVisibility() {
+		return maxVisibility;
+	}
+
+	public void setMaxVisibility(TrainerRole maxVisibility) {
+		this.maxVisibility = maxVisibility;
+	}
+
+	public NoteType getType() {
+		return type;
+	}
+
+	public void setType(NoteType type) {
+		this.type = type;
+	}
+
+	public boolean isQcFeedback() {
+		return qcFeedback;
+	}
+
+	public void setQcFeedback(boolean qcFeedback) {
+		this.qcFeedback = qcFeedback;
+	}
+
+	public QCStatus getQcStatus() {
+		return qcStatus;
+	}
+
+	public void setQcStatus(QCStatus qcStatus) {
+		this.qcStatus = qcStatus;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	@Override
+	public String toString() {
+		return "Note [noteId=" + noteId + ", content=" + content + ", week=" + week + ", batch=" + batch + ", trainee="
+				+ trainee + ", maxVisibility=" + maxVisibility + ", type=" + type + ", qcFeedback=" + qcFeedback
+				+ ", qcStatus=" + qcStatus + "]";
+	}
+
+	
+	
+	
+	
+	
 }
 

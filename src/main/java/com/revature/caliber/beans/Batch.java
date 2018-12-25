@@ -42,7 +42,4 @@ public class Batch implements Serializable {
 	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
 	private Date startDate;
 	
-	
-	
-
 }

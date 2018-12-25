@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.revature.caliber.beans.Note;
-import com.revature.caliber.dao.AuditRepository;
+import com.revature.caliber.dao.NoteRepository;
 
 
 /**
@@ -15,13 +15,13 @@ import com.revature.caliber.dao.AuditRepository;
  *
  */
 @Service
-public class AuditService {
+public class NoteService {
 	
 	/**
 	 * The repository is responsible for interacting with the note table
 	 */
 	@Autowired
-	AuditRepository repo;
+	NoteRepository repo;
 	
 	/**
 	 * 

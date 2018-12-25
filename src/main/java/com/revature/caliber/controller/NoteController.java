@@ -17,12 +17,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.revature.caliber.beans.Book;
 import com.revature.caliber.beans.Note;
 import com.revature.caliber.beans.Trainee;
-import com.revature.caliber.dao.BookRepository;
-import com.revature.caliber.service.AuditService;
-import com.revature.caliber.intercomm.BookClient;
+import com.revature.caliber.service.NoteService;
 import com.revature.caliber.intercomm.TraineeClient;
 
 /**
@@ -31,47 +28,19 @@ import com.revature.caliber.intercomm.TraineeClient;
  *
  */
 @RestController
+@RequestMapping("/note")
 @CrossOrigin(origins="*")
-public class AuditController {
+public class NoteController {
 
-	private static final Logger log = Logger.getLogger(AuditController.class);
+	private static final Logger log = Logger.getLogger(NoteController.class);
 	
 	@Autowired
-	private AuditService service;
+	private NoteService service;
 	
-	@Autowired
-	private BookRepository repo;
-	
-	// Retrieve trainee info from user-service
+	// Retrieve trainee data from user-service
 	@Autowired
 	private TraineeClient client;
 	
-	@Autowired
-	private BookClient book;
-	
-	@GetMapping("/books")
-	public List<Book> getAllBooks() {
-		return book.getAllBooks();
-	}
-	
-	/**
-	 * Testing purpose
-	 * @return
-	 */
-	@GetMapping("/test")
-	public String test() {
-		return "Welcome to quality audit service";
-	}
-	
-//	@GetMapping("/books")
-//	public List<Book> findAllBooks() {
-//		return repo.findAll();
-//	}
-	
-	@GetMapping("test-trainee")
-	public String testTrainee() {
-		return client.testing();
-	}
 	
 	@GetMapping("/trainees")
 	public List<Trainee> findAllTrainees() {
