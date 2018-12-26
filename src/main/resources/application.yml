@@ -1,17 +1,13 @@
 spring:
   application:
     name: location
-  datasource:
-    url: jdbc:h2:mem:testdb;Mode=PostgreSQL
-    platform: h2
-  jpa:
-    hibernate:
-      ddl-auto: create
+
 eureka:
   client:
 #     service-url:
 #       default-zone: ${EUREKA_HOME}
     fetch-registry: false
     register-with-eureka: false
+    
 server:
-  port: 8040
+  port: 8000
