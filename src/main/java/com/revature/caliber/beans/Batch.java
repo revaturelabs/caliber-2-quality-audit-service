@@ -21,9 +21,9 @@ import org.springframework.format.annotation.DateTimeFormat;
  */
 @Entity
 @Table(name = "CALIBER_BATCH")
-// @ValidBatch
-@Cacheable
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+//@ValidBatch
+//@Cacheable
+//@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Batch implements Serializable {
 
 	private static final long serialVersionUID = 2916173221333913998L;
@@ -42,7 +42,4 @@ public class Batch implements Serializable {
 	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
 	private Date startDate;
 	
-	
-	
-
 }

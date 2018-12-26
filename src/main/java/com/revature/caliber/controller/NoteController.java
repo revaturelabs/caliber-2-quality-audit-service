@@ -14,10 +14,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.revature.caliber.service.NoteService;
 import com.revature.caliber.beans.Note;
+import com.revature.caliber.beans.Trainee;
+import com.revature.caliber.service.NoteService;
+import com.revature.caliber.intercomm.TraineeClient;
 
 /**
  * Controllers for handling all requests having to do with notes.
@@ -25,6 +28,7 @@ import com.revature.caliber.beans.Note;
  *
  */
 @RestController
+@RequestMapping("/note")
 @CrossOrigin(origins="*")
 public class NoteController {
 
@@ -33,10 +37,27 @@ public class NoteController {
 	@Autowired
 	private NoteService service;
 	
+	// Retrieve trainee data from user-service
+	@Autowired
+	private TraineeClient client;
 	
-	@GetMapping("/home")
-	public String welcome() {
-		return "welcome home";
+	/**
+	 * retrieve all trainees from user-service
+	 * @return
+	 */
+	@GetMapping("/trainees")
+	public List<Trainee> findAllTrainees() {
+		return client.findAllTrainees();
+	}
+	
+	/**
+	 * retrieve one trainee from user-service
+	 * @param id
+	 * @return
+	 */
+	@GetMapping("/trainee/{id}")
+	public Trainee findTraineeById(@PathVariable int id) {
+		return client.findTraineeById(id);
 	}
 	
 	/**
@@ -67,12 +88,12 @@ public class NoteController {
 	 * @param note 
 	 * @return The created note as well as an OK status code
 	 */
-	@PostMapping(path="/note",
+	@PostMapping(path="/create",
 			     consumes = MediaType.APPLICATION_JSON_VALUE,
 			     produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Note> createNote(@RequestBody Note note) {
 		
-		log.debug("SAVING NOTE: " + note);
+		log.debug("CREATING NOTE: " + note);
 		note = service.createNote(note);
 		
 		if(note == null) {
@@ -85,11 +106,11 @@ public class NoteController {
 	
 	
 	/**
-	 * 
+	 * Updating note
 	 * @param note
 	 * @return
 	 */
-	@PutMapping(path="/note")
+	@PutMapping(path="/update")
 	public ResponseEntity<Note> updateNote(@RequestBody Note note) {
 		log.debug("Updating note: " + note);
 		note = service.updateNote(note);
@@ -103,11 +124,11 @@ public class NoteController {
 	}
 	
 	/**
-	 * 
+	 * Delete a note by id
 	 * @param id
 	 * @return
 	 */
-	@DeleteMapping(value="/note/{id}") 
+	@DeleteMapping(value="/delete/{id}") 
 	public boolean deleteNote(@PathVariable Integer id) {
 		service.deleteNote(id);
 		return true;

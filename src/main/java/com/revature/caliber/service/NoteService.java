@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.revature.caliber.beans.Note;
 import com.revature.caliber.dao.NoteRepository;
 
+
 /**
  * Implementing the business logic for handling Note objects
  * @author thienle
@@ -20,14 +21,14 @@ public class NoteService {
 	 * The repository is responsible for interacting with the note table
 	 */
 	@Autowired
-	NoteRepository noteRepo;
+	NoteRepository repo;
 	
 	/**
 	 * 
 	 * @return notes
 	 */
 	public List<Note> getAllNotes() {
-		return noteRepo.findAll();
+		return repo.findAll();
 	}
 	
 	/**
@@ -37,19 +38,28 @@ public class NoteService {
 	 */
 	public Note createNote(Note n) {
 		
-		return noteRepo.save(n);
+		return repo.save(n);
 	}
 	
+	/**
+	 * Delete a note
+	 * @param id
+	 */
 	public void deleteNote(Integer id) {
-		noteRepo.delete(id);
+		repo.delete(id);
 	}
 	
 	public Note findById(Integer id) {
-		return noteRepo.findOne(id);
+		return repo.findOne(id);
 	}
 	
+	/**
+	 * Update a note
+	 * @param n
+	 * @return
+	 */
 	public Note updateNote(Note n) {
-		return noteRepo.save(n);
+		return repo.save(n);
 	}
 
 
