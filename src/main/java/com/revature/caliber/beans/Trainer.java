@@ -54,8 +54,97 @@ public class Trainer implements Serializable{
 	
 	@OneToMany(mappedBy = "trainer", fetch = FetchType.LAZY)
 	@JsonIgnore
-	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+	//@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private Set<Batch> batches;
+	
+	
+	
+
+	public Trainer() {
+		super();
+	}
+
+
+
+
+	public Trainer(int trainerId, String name, TrainerRole tier, Set<Batch> batches) {
+		super();
+		this.trainerId = trainerId;
+		this.name = name;
+		this.tier = tier;
+		this.batches = batches;
+	}
+
+
+	
+
+	public int getTrainerId() {
+		return trainerId;
+	}
+
+
+
+
+	public void setTrainerId(int trainerId) {
+		this.trainerId = trainerId;
+	}
+
+
+
+
+	public String getName() {
+		return name;
+	}
+
+
+
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+
+
+
+	public TrainerRole getTier() {
+		return tier;
+	}
+
+
+
+
+	public void setTier(TrainerRole tier) {
+		this.tier = tier;
+	}
+
+
+
+
+	public Set<Batch> getBatches() {
+		return batches;
+	}
+
+
+
+
+	public void setBatches(Set<Batch> batches) {
+		this.batches = batches;
+	}
+
+
+
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+
+
+
+	@Override
+	public String toString() {
+		return "Trainer [trainerId=" + trainerId + ", name=" + name + ", tier=" + tier + ", batches=" + batches + "]";
+	}
 	
 	
 
