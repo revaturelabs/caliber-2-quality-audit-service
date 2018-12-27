@@ -19,7 +19,7 @@ public interface TraineeClient {
 	 * retrieve all trainees from user-service
 	 * @return
 	 */
-	@GetMapping("/trainees") 
+	@GetMapping("all/trainees") 
 	public List<Trainee> findAllTrainees();
 	
 	@GetMapping("/trainee/{id}")
