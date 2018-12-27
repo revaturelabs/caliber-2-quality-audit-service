@@ -57,14 +57,6 @@ public class Note implements Serializable{
 	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	private Batch batch;
 
-	/**
-	 * Will be null if the note is overall batch feedback
-	 */
-	@ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-	@JoinColumn(name = "TRAINEE_ID", nullable = true)
-	@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
-	private Trainee trainee;
-
 	@Enumerated(EnumType.ORDINAL)
 	@Column(name = "MAX_VISIBILITY")
 	private TrainerRole maxVisibility;
@@ -86,14 +78,13 @@ public class Note implements Serializable{
 		this.maxVisibility = TrainerRole.ROLE_TRAINER;
 	}
 
-	public Note(int noteId, String content, short week, Batch batch, Trainee trainee, TrainerRole maxVisibility,
+	public Note(int noteId, String content, short week, Batch batch, TrainerRole maxVisibility,
 			NoteType type, boolean qcFeedback, QCStatus qcStatus) {
 		super();
 		this.noteId = noteId;
 		this.content = content;
 		this.week = week;
 		this.batch = batch;
-		this.trainee = trainee;
 		this.maxVisibility = maxVisibility;
 		this.type = type;
 		this.qcFeedback = qcFeedback;
@@ -141,13 +132,6 @@ public class Note implements Serializable{
 		this.batch = batch;
 	}
 
-	public Trainee getTrainee() {
-		return trainee;
-	}
-
-	public void setTrainee(Trainee trainee) {
-		this.trainee = trainee;
-	}
 
 	public TrainerRole getMaxVisibility() {
 		return maxVisibility;
@@ -187,15 +171,8 @@ public class Note implements Serializable{
 
 	@Override
 	public String toString() {
-		return "Note [noteId=" + noteId + ", content=" + content + ", week=" + week + ", batch=" + batch + ", trainee="
-				+ trainee + ", maxVisibility=" + maxVisibility + ", type=" + type + ", qcFeedback=" + qcFeedback
+		return "Note [noteId=" + noteId + ", content=" + content + ", week=" + week + ", batch=" + batch + ", maxVisibility=" + maxVisibility + ", type=" + type + ", qcFeedback=" + qcFeedback
 				+ ", qcStatus=" + qcStatus + "]";
 	}
-
-	
-	
-	
-	
-	
 }
 

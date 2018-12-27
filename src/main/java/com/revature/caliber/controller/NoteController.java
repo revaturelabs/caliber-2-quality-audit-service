@@ -45,10 +45,10 @@ public class NoteController {
 	 * retrieve all trainees from user-service
 	 * @return
 	 */
-	@GetMapping("/trainees")
-	public List<Trainee> findAllTrainees() {
-		return client.findAllTrainees();
-	}
+//	@GetMapping("/trainees")
+//	public List<Trainee> findAllTrainees() {
+//		return client.findAllTrainees();
+//	}
 	
 	/**
 	 * retrieve one trainee from user-service
