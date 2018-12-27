@@ -29,19 +29,28 @@ public class TraineeController {
 	
 	/**
 	 * Retrieve all trainees from user-service
-	 * @return
+	 * @return The list of trainees
 	 */
 	@GetMapping("/trainees")
 	public List<Trainee> findAllTrainees() {
 		return client.findAllTrainees();
 	}
 	
-	
+	/**
+	 * Retrieve a trainee based on trainee id.
+	 * @param id
+	 * @return
+	 */
 	@GetMapping("/trainee/{id}")
 	public Trainee findTraineeById(@PathVariable int id) {
 		return client.findTraineeById(id);
 	}
 	
+	/**
+	 * Create a trainee
+	 * @param trainee
+	 * @return
+	 */
 	@PostMapping("/create")
 	public ResponseEntity<Trainee> createTrainee(@RequestBody Trainee trainee) {
 		return client.createTrainee(trainee);
