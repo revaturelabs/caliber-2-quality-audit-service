@@ -14,11 +14,11 @@ public interface BatchClient {
 	
 	@GetMapping("/qc/batch/all")
 	//@GetMapping({ "/qc/batch/all", "/vp/batch/all" })
-	public List<Batch> getAllBatches();
+	public List<BatchEntity> getAllBatches();
 
 	
 	@GetMapping("/all/batch/{id}")
-	public Batch getBatchById(@PathVariable("id") Integer id);
+	public BatchEntity getBatchById(@PathVariable("id") Integer id);
 	
 	
 	@GetMapping("/valid_year")

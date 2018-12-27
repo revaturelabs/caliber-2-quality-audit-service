@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.caliber.intercomm.BatchClient;
 import com.revature.caliber.beans.Batch;
+import com.revature.caliber.beans.BatchEntity;
 
 @RestController
 @CrossOrigin("*")
@@ -21,12 +22,12 @@ public class BatchController {
 	BatchClient client;
 	
 	@GetMapping("/batches")
-	public List<Batch> getAllBatches() {
+	public List<BatchEntity> getAllBatches() {
 		return client.getAllBatches();
 	}
 	
 	@GetMapping("/batch/{id}")
-	public Batch getBatchById(@PathVariable Integer id) {
+	public BatchEntity getBatchById(@PathVariable Integer id) {
 		return client.getBatchById(id);
 	}
 	

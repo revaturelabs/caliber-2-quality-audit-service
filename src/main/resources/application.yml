@@ -1,3 +1,26 @@
+#spring:
+#  application:
+#    name: audit-service
+#  # Currently uses an Oracle H2 test database automatically created by jpa and then
+#  # populated by the data-h2.sql file in the src/main/resources folder
+#  datasource:
+#    url: jdbc:h2:mem:caliber;Mode=Oracle
+#    platform: h2
+#  jpa:
+#    hibernate:
+#      ddl-auto: create
+## Set up Eureka home as an environment variable with the location of Eureka in order
+## to use the eureka discovery client with this service
+#eureka:
+#  client:
+#    service-url:
+#      default-zone: ${EUREKA_HOME}
+#     
+## Service runs on port 9075
+#server:
+#  port: 9075
+
+
 spring:
   application:
     name: audit-service   
@@ -6,14 +29,21 @@ spring:
     url: jdbc:h2:mem:caliber;Mode=Oracle
     platform: h2
 #    platform: oracle
-#    url: jdbc:oracle:thin:@http://caliber-qa-v2.cbxdukbqdvl0.eu-west-2.rds.amazonaws.com:1521/caliqav2 
+#    url: jdbc:oracle:thin:@http://caliber-qa-v2.cbxdukbqdvl0.eu-west-2.rds.amazonaws.com:1521/caliqav2
 #    username: caliberqav2
 #    password: caliberqav2
 #    driverClassName: oracle.jdbc.driver.OracleDriver
-  jpa:
-    show-sql: true
-    hibernate:
-      ddl-auto: create
+ jpa:
+   show-sql: true
+   hibernate:
+     ddl-auto: create
+
+logging:
+   pattern:
+     console: "%clr(%d{yyyy-MM-dd HH:mm:ss}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr([${springAppName:-},%X{X-B3-TraceId:-},%X{X-B3-SpanId:-},%X{X-Span-Export:-}]){yellow} %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}"
+   level:
+     org.springframework: WARN
+     org.hibernate: WARN
 
 logging:
   pattern:
@@ -33,4 +63,4 @@ eureka:
 # Service runs on port 7861
 
 server:
-  port: 9075
+ port: 9075
