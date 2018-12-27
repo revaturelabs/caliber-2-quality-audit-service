@@ -12,23 +12,27 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.revature.caliber.beans.Trainee;
 
-@FeignClient(name= "user-service", url = "localhost:9085/")
+@FeignClient(name = "user-service", url = "localhost:9085/")
 public interface TraineeClient {
-	
+
 	/**
 	 * retrieve all trainees from user-service
+	 * 
 	 * @return
 	 */
-	@GetMapping("/trainees") 
+	@GetMapping("all/trainees")
 	public List<Trainee> findAllTrainees();
-	
+
 	@GetMapping("/trainee/{id}")
 	public Trainee findTraineeById(@PathVariable("id") int id);
-	
+
 	@PostMapping("/all/trainee/create")
 	public ResponseEntity<Trainee> createTrainee(@RequestBody Trainee trainee);
-	
+
 	@GetMapping("/all/trainee")
 	public ResponseEntity<List<Trainee>> findAllByBatch(Integer batch);
-	
+
+	// @GetMapping("all/trainee")
+	// public ResponseEntity<List<Trainee>>
+	// findAllByBatch(@RequestParam(required=true) Integer Batch);
 }
