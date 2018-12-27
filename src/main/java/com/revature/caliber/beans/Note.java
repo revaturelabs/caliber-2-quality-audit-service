@@ -62,7 +62,7 @@ public class Note implements Serializable{
 	 */
 	@ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
 	@JoinColumn(name = "TRAINEE_ID", nullable = true)
-	@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
+	//@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 	private Trainee trainee;
 
 	@Enumerated(EnumType.ORDINAL)
@@ -74,8 +74,8 @@ public class Note implements Serializable{
 	@Column(name = "NOTE_TYPE")
 	private NoteType type;
 
-	@Column(name = "IS_QC_FEEDBACK", nullable = false)
-	private boolean qcFeedback;
+//	@Column(name = "IS_QC_FEEDBACK", nullable = false)
+//	private boolean qcFeedback;
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "QC_STATUS", nullable = true)
@@ -87,7 +87,7 @@ public class Note implements Serializable{
 	}
 
 	public Note(int noteId, String content, short week, Batch batch, Trainee trainee, TrainerRole maxVisibility,
-			NoteType type, boolean qcFeedback, QCStatus qcStatus) {
+			NoteType type, QCStatus qcStatus) {
 		super();
 		this.noteId = noteId;
 		this.content = content;
@@ -96,7 +96,6 @@ public class Note implements Serializable{
 		this.trainee = trainee;
 		this.maxVisibility = maxVisibility;
 		this.type = type;
-		this.qcFeedback = qcFeedback;
 		this.qcStatus = qcStatus;
 	}
 	
@@ -165,13 +164,6 @@ public class Note implements Serializable{
 		this.type = type;
 	}
 
-	public boolean isQcFeedback() {
-		return qcFeedback;
-	}
-
-	public void setQcFeedback(boolean qcFeedback) {
-		this.qcFeedback = qcFeedback;
-	}
 
 	public QCStatus getQcStatus() {
 		return qcStatus;
@@ -188,7 +180,7 @@ public class Note implements Serializable{
 	@Override
 	public String toString() {
 		return "Note [noteId=" + noteId + ", content=" + content + ", week=" + week + ", batch=" + batch + ", trainee="
-				+ trainee + ", maxVisibility=" + maxVisibility + ", type=" + type + ", qcFeedback=" + qcFeedback
+				+ trainee + ", maxVisibility=" + maxVisibility + ", type=" + type
 				+ ", qcStatus=" + qcStatus + "]";
 	}
 
