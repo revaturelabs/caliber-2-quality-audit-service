@@ -20,13 +20,13 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: create
-
+# to use the eureka discovery client with this service
 eureka:
   client:
-#     service-url:
-#       default-zone: ${EUREKA_HOME}
-    fetch-registry: false
-    register-with-eureka: false
-    
+    service-url:
+      #default-zone: ${EUREKA_HOME}
+      defaultZone: ${DISCOVERY_URL:http://localhost:8761}/eureka/
+     
+# Service runs on port 7861
 server:
-  port: 9075
+  port: 7861
