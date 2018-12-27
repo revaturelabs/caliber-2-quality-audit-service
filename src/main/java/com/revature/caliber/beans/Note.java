@@ -62,7 +62,7 @@ public class Note implements Serializable{
 	 */
 	@ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
 	@JoinColumn(name = "TRAINEE_ID", nullable = true)
-	//@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
+	@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 	private Trainee trainee;
 
 	@Enumerated(EnumType.ORDINAL)

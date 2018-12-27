@@ -30,8 +30,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "CALIBER_TRAINEE")
-//@Cacheable
-//@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Trainee implements Serializable{
 
 	private static final long serialVersionUID = 2324102408079648929L;
@@ -58,7 +58,7 @@ public class Trainee implements Serializable{
 	@ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
 	@JoinColumn(name = "BATCH_ID", nullable = false)
 	@JsonBackReference(value = "traineeAndBatch")
-	//@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private Batch batch;
 	
 	@Enumerated(EnumType.STRING)
@@ -71,7 +71,7 @@ public class Trainee implements Serializable{
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "trainee", cascade = CascadeType.ALL)
-	//@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private Set<Note> notes;
 	
 	public Trainee() {
