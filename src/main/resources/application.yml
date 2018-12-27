@@ -53,14 +53,11 @@ logging:
     org.hibernate: WARN
           
 # to use the eureka discovery client with this service
+
 eureka:
   client:
-#    service-url:
-#       default-zone: ${EUREKA_HOME}
-    fetch-registry: false
-#    register-with-eureka: true
-    register-with-eureka: false
-# Service runs on port 7861
+    service-url:
+      default-zone: ${EUREKA_HOME}
 
 server:
  port: 9075

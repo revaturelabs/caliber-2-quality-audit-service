@@ -20,30 +20,37 @@ import com.revature.caliber.intercomm.TraineeClient;
 
 @RestController
 @RequestMapping("/trainee")
-@CrossOrigin(origins="*")
+@CrossOrigin(origins = "*")
 public class TraineeController {
-	
+
 	@Autowired
 	private TraineeClient client;
-	
+
 	private static final Logger log = Logger.getLogger(TraineeController.class);
-	
+
 	/**
 	 * Retrieve all trainees from user-service
+	 * 
 	 * @return The list of trainees
 	 */
 	@GetMapping("/trainees")
 	public List<Trainee> findAllTrainees() {
 		return client.findAllTrainees();
 	}
-	
-//	@GetMapping("/trainees")
-//	public ResponseEntity<List<Trainee>> findAllByBatch(@RequestParam(required=true) Integer Batch) {
-//		return client.findAllByBatch(Batch);
-//	}
-	
+
+	// @GetMapping("/trainees")
+	// public ResponseEntity<List<Trainee>> findAllByBatch(Integer batch) {
+	// return client.findAllByBatch(batch);
+	// }
+
+	// public ResponseEntity<List<Trainee>>
+	// findAllByBatch(@RequestParam(required=true) Integer Batch) {
+	// return client.findAllByBatch(Batch);
+	// }
+
 	/**
 	 * Retrieve a trainee based on trainee id.
+	 * 
 	 * @param id
 	 * @return
 	 */
@@ -51,9 +58,10 @@ public class TraineeController {
 	public Trainee findTraineeById(@PathVariable int id) {
 		return client.findTraineeById(id);
 	}
-	
+
 	/**
 	 * Create a trainee
+	 * 
 	 * @param trainee
 	 * @return
 	 */
@@ -61,5 +69,5 @@ public class TraineeController {
 	public ResponseEntity<Trainee> createTrainee(@RequestBody Trainee trainee) {
 		return client.createTrainee(trainee);
 	}
-	
+
 }
