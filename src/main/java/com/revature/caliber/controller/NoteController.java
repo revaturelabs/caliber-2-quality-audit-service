@@ -41,24 +41,7 @@ public class NoteController {
 	@Autowired
 	private TraineeClient client;
 	
-	/**
-	 * retrieve all trainees from user-service
-	 * @return
-	 */
-//	@GetMapping("/trainees")
-//	public List<Trainee> findAllTrainees() {
-//		return client.findAllTrainees();
-//	}
 	
-	/**
-	 * retrieve one trainee from user-service
-	 * @param id
-	 * @return
-	 */
-	@GetMapping("/trainee/{id}")
-	public Trainee findTraineeById(@PathVariable int id) {
-		return client.findTraineeById(id);
-	}
 	
 	/**
 	 * Handles get request for returning all notes
