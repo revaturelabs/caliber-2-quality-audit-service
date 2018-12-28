@@ -3,19 +3,27 @@
  */
 package com.revature.caliber;
 
-import junit.framework.TestCase;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 /**
  * @author pgerringer
  *
  */
-public class AuditServiceDAOTest extends TestCase {
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = AuditServiceApplication.class)
+public class AuditServiceDAOTest {
 
-	/* (non-Javadoc)
-	 * @see junit.framework.TestCase#setUp()
-	 */
-	protected void setUp() throws Exception {
-		super.setUp();
+	@Before
+	public void setUp() throws Exception {
+		
 	}
 
+	@Test
+	public void test() {
+		
+	}
 }
