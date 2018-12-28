@@ -28,7 +28,7 @@ import com.revature.caliber.intercomm.TraineeClient;
  *
  */
 @RestController
-@RequestMapping("/note")
+@RequestMapping("/audit")
 @CrossOrigin(origins="*")
 public class NoteController {
 
