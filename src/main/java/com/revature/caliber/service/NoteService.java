@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import com.revature.caliber.beans.Note;
 import com.revature.caliber.dao.NoteRepository;
 
-
 /**
  * Implementing the business logic for handling Note objects
  * @author thienle
