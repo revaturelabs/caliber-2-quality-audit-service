@@ -21,24 +21,21 @@ import com.revature.caliber.intercomm.TraineeClient;
 
 @RestController
 @RequestMapping("/trainee")
-@CrossOrigin(origins="*")
+@CrossOrigin(origins = "*")
 public class TraineeController {
-	
+
 	@Autowired
 	private TraineeClient client;
-	
+
 	private static final Logger log = Logger.getLogger(TraineeController.class);
 	
 	
-	/**
-	 * 
-	 * @param batch
-	 * @return
-	 */
+	
 	@GetMapping("/trainees")
 	public ResponseEntity<List<Trainee>> findAllByBatch(@RequestParam(defaultValue="1") Integer batch) {
 		return client.findAllByBatch(batch);
 	}
+
 	
 	
 	
@@ -46,5 +43,19 @@ public class TraineeController {
 	public ResponseEntity<Trainee> updateTrainee(@RequestBody Trainee trainee) {
 		return client.updateTrainee(trainee);
 	}
+
 	
+
+	/**
+	 * Retrieve a trainee based on trainee id.
+	 * 
+	 * @param id
+	 * @return
+	 */
+	@GetMapping("/trainee/{id}")
+	public Trainee findTraineeById(@PathVariable int id) {
+		return client.findTraineeById(id);
+	}
+
+
 }
