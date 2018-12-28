@@ -13,7 +13,7 @@ import com.revature.caliber.beans.Trainer;
  * @author thienle
  *
  */
-@FeignClient("user-service")
+@FeignClient(name= "user-service", url = "localhost:9085/")
 public interface TrainerClient {
 
 	@GetMapping("/all/trainer/all")
