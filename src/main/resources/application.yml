@@ -15,19 +15,15 @@ spring:
     hibernate:
       ddl-auto: create
 
-logging:
-  pattern:
-    console: "%clr(%d{yyyy-MM-dd HH:mm:ss}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr([${springAppName:-},%X{X-B3-TraceId:-},%X{X-B3-SpanId:-},%X{X-Span-Export:-}]){yellow} %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}"
-  level:
-    org.springframework: WARN
-    org.hibernate: WARN
-          
 # to use the eureka discovery client with this service
 
 eureka:
   client:
-    service-url:
-      default-zone: ${EUREKA_HOME}
+#    service-url:
+#      default-zone: ${EUREKA_HOME}
+    fetch-registry: false
+    register-with-eureka: false
+#    register-with-eureka: true
 
 server:
   port: 9075
