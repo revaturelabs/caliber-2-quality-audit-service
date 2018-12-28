@@ -10,6 +10,7 @@ public class Trainee {
 	private int traineeId;
 	private String resourceId;
 	private String name;
+	private String email;
 	private TrainingStatus trainingStatus;
 	private Batch batch;
 	private TraineeFlag flagStatus;
@@ -98,7 +99,17 @@ public class Trainee {
 	public void setNotes(Set<Note> notes) {
 		this.notes = notes;
 	}
+	
+	
 
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
 	@Override
 	public String toString() {
