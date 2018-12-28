@@ -38,19 +38,21 @@ public class TraineeController {
 	
 	
 	/**
-	 * Handles get request for returning all trainees with the given batch id
-	 * as a request parameter
+	 * Handles get request for returning all trainees with the given batch id as a
+	 * request parameter
+	 * 
 	 * @param batch The batch id representing the batch to get all the trainees from
-	 * @return The list of trainees with the correct batch id as well as an ok http status code
+	 * @return The list of trainees with the correct batch id as well as an ok http
+	 *         status code
 	 */
 	@GetMapping("/trainees")
-	public ResponseEntity<List<Trainee>> findAllByBatch(@RequestParam(defaultValue="1") Integer batch) {
+	public ResponseEntity<List<Trainee>> findAllByBatch(@RequestParam(defaultValue = "1") Integer batch) {
 		return client.findAllByBatch(batch);
 	}
-	
 
 	/**
 	 * Handles put request for creating a trainee in a batch
+	 * 
 	 * @param trainee The trainee to be updated
 	 * @return The updated Trainee object and an accepted http-status code
 	 */
@@ -59,6 +61,5 @@ public class TraineeController {
 	public ResponseEntity<Trainee> updateTrainee(@Valid @RequestBody Trainee trainee) {
 		return client.updateTrainee(trainee);
 	}
-
 
 }
