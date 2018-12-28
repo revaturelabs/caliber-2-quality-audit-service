@@ -18,9 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.caliber.beans.Note;
-import com.revature.caliber.beans.Trainee;
 import com.revature.caliber.service.NoteService;
-import com.revature.caliber.intercomm.TraineeClient;
 
 /**
  * Controllers for handling all requests having to do with notes.
@@ -36,29 +34,6 @@ public class NoteController {
 	
 	@Autowired
 	private NoteService service;
-	
-	// Retrieve trainee data from user-service
-	@Autowired
-	private TraineeClient client;
-	
-	/**
-	 * retrieve all trainees from user-service
-	 * @return
-	 */
-//	@GetMapping("/trainees")
-//	public List<Trainee> findAllTrainees() {
-//		return client.findAllTrainees();
-//	}
-	
-	/**
-	 * retrieve one trainee from user-service
-	 * @param id
-	 * @return
-	 */
-	@GetMapping("/trainee/{id}")
-	public Trainee findTraineeById(@PathVariable int id) {
-		return client.findTraineeById(id);
-	}
 	
 	/**
 	 * Handles get request for returning all notes
