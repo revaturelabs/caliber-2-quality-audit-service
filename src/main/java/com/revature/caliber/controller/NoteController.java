@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.caliber.beans.Note;
+import com.revature.caliber.intercomm.TraineeClient;
 import com.revature.caliber.service.NoteService;
 
 /**
