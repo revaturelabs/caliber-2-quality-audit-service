@@ -6,21 +6,14 @@ spring:
     url: jdbc:h2:mem:caliber;Mode=Oracle
     platform: h2
 #    platform: oracle
-#    url: jdbc:oracle:thin:@http://caliber-qa-v2.cbxdukbqdvl0.eu-west-2.rds.amazonaws.com:1521/caliqav2
+#    url: jdbc:oracle:thin:@http://caliber-qa-v2.cbxdukbqdvl0.eu-west-2.rds.amazonaws.com:1521/caliqav2 
 #    username: caliberqav2
 #    password: caliberqav2
 #    driverClassName: oracle.jdbc.driver.OracleDriver
- jpa:
-   show-sql: true
-   hibernate:
-     ddl-auto: create
-
-logging:
-   pattern:
-     console: "%clr(%d{yyyy-MM-dd HH:mm:ss}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr([${springAppName:-},%X{X-B3-TraceId:-},%X{X-B3-SpanId:-},%X{X-Span-Export:-}]){yellow} %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}"
-   level:
-     org.springframework: WARN
-     org.hibernate: WARN
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create
 
 # to use the eureka discovery client with this service
 
@@ -33,4 +26,4 @@ eureka:
 #    register-with-eureka: true
 
 server:
- port: 9075
+  port: 9075

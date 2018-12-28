@@ -30,7 +30,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  */
 @Entity
 @Table(name = "CALIBER_NOTE")
-//@Cacheable
 public class Note implements Serializable{
 
 	private static final long serialVersionUID = 4960654794116385953L;
@@ -44,135 +43,176 @@ public class Note implements Serializable{
 	@Length(min=0, max=4000)
 	@Column(name = "NOTE_CONTENT")
 	private String content;
+	
+	@Column(name="MAX_VISIBILITY")
+	private int maxVisibility;
+	
+	@Column(name="IS_QC_FEEDBACK")
+	private int qcFeedback;
+	
+	@Column(name="QC_STATUS")
+	private String qcStatus;
+	
+	@Column(name="NOTE_TYPE")
+	private String noteType;
 
 	@Min(value=1)
 	@Column(name = "WEEK_NUMBER")
 	private short week;
+	
+	@Column(name="BATCH_ID")
+	private int batchId;
+	
+	@Column(name="TRAINEE_ID")
+	private int traineeId;
 
-	/**
-	 * Will be null if the note is individual trainee feedback
-	 */
-	@ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-	@JoinColumn(name = "BATCH_ID", nullable = true)
-	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-	private Batch batch;
-
-	@Enumerated(EnumType.ORDINAL)
-	@Column(name = "MAX_VISIBILITY")
-	private TrainerRole maxVisibility;
-
-	@NotNull
-	@Enumerated(EnumType.STRING)
-	@Column(name = "NOTE_TYPE")
-	private NoteType type;
-
-	@Column(name = "IS_QC_FEEDBACK", nullable = false)
-	private boolean qcFeedback;
-
-	@Enumerated(EnumType.STRING)
-	@Column(name = "QC_STATUS", nullable = true)
-	private QCStatus qcStatus;
+	
 
 	public Note() {
 		super();
-		this.maxVisibility = TrainerRole.ROLE_TRAINER;
+		
 	}
 
-	public Note(int noteId, String content, short week, Batch batch, TrainerRole maxVisibility,
-			NoteType type, boolean qcFeedback, QCStatus qcStatus) {
+
+
+	public Note(int noteId, String content, int maxVisibility, int qcFeedback, String qcStatus, String noteType,
+			short week, int batchId, int traineeId) {
 		super();
 		this.noteId = noteId;
 		this.content = content;
-		this.week = week;
-		this.batch = batch;
 		this.maxVisibility = maxVisibility;
-		this.type = type;
 		this.qcFeedback = qcFeedback;
 		this.qcStatus = qcStatus;
-	}
-	
-	
-
-	public Note(int noteId, String content, short week) {
-		super();
-		this.noteId = noteId;
-		this.content = content;
+		this.noteType = noteType;
 		this.week = week;
+		this.batchId = batchId;
+		this.traineeId = traineeId;
 	}
+
+
 
 	public int getNoteId() {
 		return noteId;
 	}
 
+
+
 	public void setNoteId(int noteId) {
 		this.noteId = noteId;
 	}
+
+
 
 	public String getContent() {
 		return content;
 	}
 
+
+
 	public void setContent(String content) {
 		this.content = content;
 	}
+
+
+
+	public int getMaxVisibility() {
+		return maxVisibility;
+	}
+
+
+
+	public void setMaxVisibility(int maxVisibility) {
+		this.maxVisibility = maxVisibility;
+	}
+
+
+
+	public int getQcFeedback() {
+		return qcFeedback;
+	}
+
+
+
+	public void setQcFeedback(int qcFeedback) {
+		this.qcFeedback = qcFeedback;
+	}
+
+
+
+	public String getQcStatus() {
+		return qcStatus;
+	}
+
+
+
+	public void setQcStatus(String qcStatus) {
+		this.qcStatus = qcStatus;
+	}
+
+
+
+	public String getNoteType() {
+		return noteType;
+	}
+
+
+
+	public void setNoteType(String noteType) {
+		this.noteType = noteType;
+	}
+
+
 
 	public short getWeek() {
 		return week;
 	}
 
+
+
 	public void setWeek(short week) {
 		this.week = week;
 	}
 
-	public Batch getBatch() {
-		return batch;
-	}
 
-	public void setBatch(Batch batch) {
-		this.batch = batch;
+
+	public int getBatchId() {
+		return batchId;
 	}
 
 
-	public TrainerRole getMaxVisibility() {
-		return maxVisibility;
+
+	public void setBatchId(int batchId) {
+		this.batchId = batchId;
 	}
 
-	public void setMaxVisibility(TrainerRole maxVisibility) {
-		this.maxVisibility = maxVisibility;
+
+
+	public int getTraineeId() {
+		return traineeId;
 	}
 
-	public NoteType getType() {
-		return type;
+
+
+	public void setTraineeId(int traineeId) {
+		this.traineeId = traineeId;
 	}
 
-	public void setType(NoteType type) {
-		this.type = type;
-	}
 
-	public boolean isQcFeedback() {
-		return qcFeedback;
-	}
-
-	public void setQcFeedback(boolean qcFeedback) {
-		this.qcFeedback = qcFeedback;
-	}
-
-	public QCStatus getQcStatus() {
-		return qcStatus;
-	}
-
-	public void setQcStatus(QCStatus qcStatus) {
-		this.qcStatus = qcStatus;
-	}
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
 
+
+
 	@Override
 	public String toString() {
-		return "Note [noteId=" + noteId + ", content=" + content + ", week=" + week + ", batch=" + batch + ", maxVisibility=" + maxVisibility + ", type=" + type + ", qcFeedback=" + qcFeedback
-				+ ", qcStatus=" + qcStatus + "]";
+		return "Note [noteId=" + noteId + ", content=" + content + ", maxVisibility=" + maxVisibility + ", qcFeedback="
+				+ qcFeedback + ", qcStatus=" + qcStatus + ", noteType=" + noteType + ", week=" + week + ", batchId="
+				+ batchId + ", traineeId=" + traineeId + "]";
 	}
+
+	
+	
 }
 
