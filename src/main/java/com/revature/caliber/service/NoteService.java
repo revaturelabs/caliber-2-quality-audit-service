@@ -60,16 +60,15 @@ public class NoteService {
 		return repo.save(n);
 	}
 	
-<<<<<<< HEAD
 	
-//	public int updateWeekForNote(Note n) {
-//		return repo.updateWeekForNote(n.getWeek(), n.getNoteId());
-//	}
-=======
+	public int updateWeekForNote(short week, int id) {
+		return repo.updateWeekForNote(week, id);
+	}
+	
+	
 	public List<Note> findByBatchAndWeek(Integer batchId, Short week) {
 		return repo.findByBatchAndWeek(batchId, week);
 	}
->>>>>>> feature-audit-table
 
 
 }

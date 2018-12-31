@@ -2,6 +2,8 @@ package com.revature.caliber.controller;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -106,13 +108,19 @@ public class NoteController {
 		}
 	}
 	
+	/**
+	 * Update partial columns of note table
+	 * @param note
+	 * @return
+	 */
+	@PutMapping(path = "/updateWeek")
+	@Transactional
+	public int updateWeekForNote(@RequestBody Note note) {
+		log.debug("Updating note: " + note);
 	
-//	@PutMapping(path = "/updateWeek")
-//	public int updateWeekForNote(@RequestBody Note note) {
-//		log.debug("Updating note: " + note);
-//		return service.updateWeekForNote(note);
-//
-//	}
+		return service.updateWeekForNote(note.getWeek(), note.getNoteId());
+
+	}
 
 	/**
 	 * Delete a note by id

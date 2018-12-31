@@ -154,7 +154,6 @@ public class Note implements Serializable{
 	}
 
 
-
 	public void setModifyDate(Timestamp modifyDate) {
 		this.modifyDate = modifyDate;
 	}
@@ -186,7 +185,7 @@ public class Note implements Serializable{
 		result = prime * result + week;
 		result = prime * result + batchId;
 		result = prime * result + traineeId;
-		result = prime * result + ((modifyDate == null) ? 0 : modifyDate.hashCode());
+		//result = prime * result + ((modifyDate == null) ? 0 : modifyDate.hashCode());
 		return super.hashCode();
 
 	}
@@ -196,7 +195,7 @@ public class Note implements Serializable{
 	public String toString() {
 
 		return "Note [noteId=" + noteId + ", content=" + content + ", qcStatus=" + qcStatus + ", noteType=" + type + ", week=" + week + ", batchId="
-				+ batchId + ", traineeId=" + traineeId + ", modifyDate=" + modifyDate.toString() + "]";
+				+ batchId + ", traineeId=" + traineeId + ", modifyDate=" + "modifyDate.toString()" + "]";
 
 	}
 	
