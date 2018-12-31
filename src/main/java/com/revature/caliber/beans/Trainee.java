@@ -12,28 +12,28 @@ public class Trainee {
 	private String name;
 	private String email;
 	private TrainingStatus trainingStatus;
+	private Integer batchId;
 	private Batch batch;
 	private TraineeFlag flagStatus;
 	private String flagNotes;
 	
-	private Set<Note> notes;
 	
 	public Trainee() {
 		super();
 		this.flagStatus = TraineeFlag.NONE;
 	}
 
-	public Trainee(int traineeId, String resourceId, String name, TrainingStatus trainingStatus, Batch batch,
-			TraineeFlag flagStatus, String flagNotes, Set<Note> notes) {
+	public Trainee(int traineeId, String resourceId, String name, TrainingStatus trainingStatus, Integer batchId,
+			TraineeFlag flagStatus, String flagNotes) {
 		super();
 		this.traineeId = traineeId;
 		this.resourceId = resourceId;
 		this.name = name;
 		this.trainingStatus = trainingStatus;
-		this.batch = batch;
+		this.batchId = batchId;
 		this.flagStatus = flagStatus;
 		this.flagNotes = flagNotes;
-		this.notes = notes;
+	
 	}
 
 	public int getTraineeId() {
@@ -68,13 +68,6 @@ public class Trainee {
 		this.trainingStatus = trainingStatus;
 	}
 
-	public Batch getBatch() {
-		return batch;
-	}
-
-	public void setBatch(Batch batch) {
-		this.batch = batch;
-	}
 
 	public TraineeFlag getFlagStatus() {
 		return flagStatus;
@@ -92,13 +85,7 @@ public class Trainee {
 		this.flagNotes = flagNotes;
 	}
 
-	public Set<Note> getNotes() {
-		return notes;
-	}
-
-	public void setNotes(Set<Note> notes) {
-		this.notes = notes;
-	}
+	
 	
 	
 
@@ -110,12 +97,22 @@ public class Trainee {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+	
+	
+
+	public Integer getBatchId() {
+		return batchId;
+	}
+
+	public void setBatchId(Integer batchId) {
+		this.batchId = batchId;
+	}
 
 	@Override
 	public String toString() {
 		return "Trainee [traineeId=" + traineeId + ", resourceId=" + resourceId + ", name=" + name + ", trainingStatus="
-				+ trainingStatus + ", batch=" + batch + ", flagStatus=" + flagStatus + ", flagNotes=" + flagNotes
-				+ ", notes=" + notes + "]";
+				+ trainingStatus + "batchId=" + batchId + ", batch=" + batch + ", flagStatus=" + flagStatus + ", flagNotes=" + flagNotes
+				+  "]";
 	}
 	
 

@@ -100,6 +100,14 @@ public class NoteController {
 			return new ResponseEntity<>(note, HttpStatus.CREATED);
 		}
 	}
+	
+	
+//	@PutMapping(path = "/updateWeek")
+//	public int updateWeekForNote(@RequestBody Note note) {
+//		log.debug("Updating note: " + note);
+//		return service.updateWeekForNote(note);
+//
+//	}
 
 	/**
 	 * Delete a note by id

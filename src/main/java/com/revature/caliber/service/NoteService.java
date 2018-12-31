@@ -60,6 +60,11 @@ public class NoteService {
 	public Note updateNote(Note n) {
 		return repo.save(n);
 	}
+	
+	
+//	public int updateWeekForNote(Note n) {
+//		return repo.updateWeekForNote(n.getWeek(), n.getNoteId());
+//	}
 
 
 }
