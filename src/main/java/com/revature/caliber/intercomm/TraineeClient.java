@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import com.revature.caliber.beans.Trainee;
 
-@FeignClient("user-service")
+@FeignClient(name="user", url="localhost:9085")
 public interface TraineeClient {
 	
 	/**

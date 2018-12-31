@@ -2,27 +2,20 @@ package com.revature.caliber.beans;
 
 import java.io.Serializable;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.validator.constraints.Length;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  * 
@@ -30,7 +23,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  */
 @Entity
 @Table(name = "CALIBER_NOTE")
-//@Cacheable
 public class Note implements Serializable{
 
 	private static final long serialVersionUID = 4960654794116385953L;
@@ -50,22 +42,18 @@ public class Note implements Serializable{
 	private short week;
 
 	/**
-	 * Will be null if the note is individual trainee feedback
+	 * Will be null if the note is individual traineeId feedback
 	 */
-	@ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-	@JoinColumn(name = "BATCH_ID", nullable = true)
-	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-	private Batch batch;
+	@Column(name = "BATCH_ID", nullable = true)
+	private int batchId;
 
 	/**
-	 * Will be null if the note is overall batch feedback
+	 * Will be null if the note is overall batchId feedback
 	 */
-	@ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-	@JoinColumn(name = "TRAINEE_ID", nullable = true)
-	@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
-	private Trainee trainee;
+	@Column(name = "TRAINEE_ID", nullable = true)
+	private int traineeId;
 
-	@Enumerated(EnumType.ORDINAL)
+	@Enumerated(EnumType.STRING)
 	@Column(name = "MAX_VISIBILITY")
 	private TrainerRole maxVisibility;
 
@@ -73,9 +61,6 @@ public class Note implements Serializable{
 	@Enumerated(EnumType.STRING)
 	@Column(name = "NOTE_TYPE")
 	private NoteType type;
-
-	@Column(name = "IS_QC_FEEDBACK", nullable = false)
-	private boolean qcFeedback;
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "QC_STATUS", nullable = true)
@@ -86,20 +71,18 @@ public class Note implements Serializable{
 		this.maxVisibility = TrainerRole.ROLE_TRAINER;
 	}
 
-	public Note(int noteId, String content, short week, Batch batch, Trainee trainee, TrainerRole maxVisibility,
-			NoteType type, boolean qcFeedback, QCStatus qcStatus) {
+	public Note(int noteId, String content, short week, int batchIdId, int traineeIdId, TrainerRole maxVisibility,
+			NoteType type, QCStatus qcStatus) {
 		super();
 		this.noteId = noteId;
 		this.content = content;
 		this.week = week;
-		this.batch = batch;
-		this.trainee = trainee;
+		this.batchId = batchIdId;
+		this.traineeId = traineeIdId;
 		this.maxVisibility = maxVisibility;
 		this.type = type;
-		this.qcFeedback = qcFeedback;
 		this.qcStatus = qcStatus;
 	}
-	
 	
 
 	public Note(int noteId, String content, short week) {
@@ -133,20 +116,20 @@ public class Note implements Serializable{
 		this.week = week;
 	}
 
-	public Batch getBatch() {
-		return batch;
+	public int getbatchId() {
+		return batchId;
 	}
 
-	public void setBatch(Batch batch) {
-		this.batch = batch;
+	public void setbatchId(int batchId) {
+		this.batchId = batchId;
 	}
 
-	public Trainee getTrainee() {
-		return trainee;
+	public int gettraineeId() {
+		return traineeId;
 	}
 
-	public void setTrainee(Trainee trainee) {
-		this.trainee = trainee;
+	public void settraineeId(int traineeId) {
+		this.traineeId = traineeId;
 	}
 
 	public TrainerRole getMaxVisibility() {
@@ -165,14 +148,6 @@ public class Note implements Serializable{
 		this.type = type;
 	}
 
-	public boolean isQcFeedback() {
-		return qcFeedback;
-	}
-
-	public void setQcFeedback(boolean qcFeedback) {
-		this.qcFeedback = qcFeedback;
-	}
-
 	public QCStatus getQcStatus() {
 		return qcStatus;
 	}
@@ -187,8 +162,8 @@ public class Note implements Serializable{
 
 	@Override
 	public String toString() {
-		return "Note [noteId=" + noteId + ", content=" + content + ", week=" + week + ", batch=" + batch + ", trainee="
-				+ trainee + ", maxVisibility=" + maxVisibility + ", type=" + type + ", qcFeedback=" + qcFeedback
+		return "Note [noteId=" + noteId + ", content=" + content + ", week=" + week + ", batchId=" + batchId + ", traineeId="
+				+ traineeId + ", maxVisibility=" + maxVisibility + ", type=" + type
 				+ ", qcStatus=" + qcStatus + "]";
 	}
 
