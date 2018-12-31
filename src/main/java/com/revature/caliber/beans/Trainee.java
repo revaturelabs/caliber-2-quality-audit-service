@@ -1,39 +1,15 @@
 package com.revature.caliber.beans;
 
-import java.io.Serializable;
 import java.util.Set;
 
-import javax.persistence.Cacheable;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotEmpty;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+public class Trainee {
 
-public class Trainee implements Serializable{
-
-	private static final long serialVersionUID = 2324102408079648929L;
 	
 	private int traineeId;
 	private String name;
+	private String email;
 	private TrainingStatus trainingStatus;
 	private Batch batch;
 	private TraineeFlag flagStatus;
@@ -113,9 +89,16 @@ public class Trainee implements Serializable{
 	public void setNotes(Set<Note> notes) {
 		this.notes = notes;
 	}
+	
+	
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	@Override

@@ -36,7 +36,6 @@ public class Trainer implements Serializable{
 	private TrainerRole tier;
 	private Set<Batch> batches;
 
-
 	public Trainer() {
 		super();
 	}

@@ -1,12 +1,10 @@
 package com.revature.caliber.beans;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-
-public class BatchEntity {
+public class BatchEntity implements Serializable{
 	
 private static final long serialVersionUID = 2916173221333913998L;
 	
@@ -47,7 +45,6 @@ private static final long serialVersionUID = 2916173221333913998L;
 	public void setTrainees(Set<Trainee> trainees) {
 		this.trainees = trainees;
 	}
-	
 	
 
 }

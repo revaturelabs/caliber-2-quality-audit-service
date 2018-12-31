@@ -36,6 +36,12 @@ public class Note implements Serializable{
 	@Length(min=0, max=4000)
 	@Column(name = "NOTE_CONTENT")
 	private String content;
+	
+	@Column(name="IS_QC_FEEDBACK")
+	private int qcFeedback;
+	
+	@Column(name="NOTE_TYPE")
+	private String noteType;
 
 	@Min(value=1)
 	@Column(name = "WEEK_NUMBER")
@@ -67,8 +73,7 @@ public class Note implements Serializable{
 	private QCStatus qcStatus;
 
 	public Note() {
-		super();
-		this.maxVisibility = TrainerRole.ROLE_TRAINER;
+		super();	
 	}
 
 	public Note(int noteId, String content, short week, int batchIdId, int traineeIdId, TrainerRole maxVisibility,
@@ -84,14 +89,6 @@ public class Note implements Serializable{
 		this.qcStatus = qcStatus;
 	}
 	
-
-	public Note(int noteId, String content, short week) {
-		super();
-		this.noteId = noteId;
-		this.content = content;
-		this.week = week;
-	}
-
 	public int getNoteId() {
 		return noteId;
 	}
@@ -106,14 +103,6 @@ public class Note implements Serializable{
 
 	public void setContent(String content) {
 		this.content = content;
-	}
-
-	public short getWeek() {
-		return week;
-	}
-
-	public void setWeek(short week) {
-		this.week = week;
 	}
 
 	public int getbatchId() {
@@ -132,28 +121,28 @@ public class Note implements Serializable{
 		this.traineeId = traineeId;
 	}
 
-	public TrainerRole getMaxVisibility() {
-		return maxVisibility;
+	public String getNoteType() {
+		return noteType;
 	}
 
-	public void setMaxVisibility(TrainerRole maxVisibility) {
-		this.maxVisibility = maxVisibility;
+	public void setNoteType(String noteType) {
+		this.noteType = noteType;
 	}
 
-	public NoteType getType() {
-		return type;
+	public short getWeek() {
+		return week;
 	}
 
-	public void setType(NoteType type) {
-		this.type = type;
+	public void setWeek(short week) {
+		this.week = week;
 	}
 
 	public QCStatus getQcStatus() {
 		return qcStatus;
 	}
 
-	public void setQcStatus(QCStatus qcStatus) {
-		this.qcStatus = qcStatus;
+	public void setTraineeId(int traineeId) {
+		this.traineeId = traineeId;
 	}
 
 	public static long getSerialversionuid() {
@@ -167,10 +156,6 @@ public class Note implements Serializable{
 				+ ", qcStatus=" + qcStatus + "]";
 	}
 
-	
-	
-	
-	
 	
 }
 
