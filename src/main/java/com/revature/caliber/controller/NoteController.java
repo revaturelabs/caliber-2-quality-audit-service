@@ -62,6 +62,11 @@ public class NoteController {
 		log.trace("IN FIND ONE NOTE");
 		return service.findById(id);
 	}
+	
+	@GetMapping(value = "/notes/{batch}/{week}")
+	public List<Note> getNotesByBatchAndWeek(@PathVariable Integer batch, @PathVariable Short week){
+		return service.findByBatchAndWeek(batch, week);
+	}
 
 	/**
 	 * Handles post request for creating a note

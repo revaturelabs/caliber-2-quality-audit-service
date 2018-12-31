@@ -5,9 +5,12 @@ import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -15,6 +18,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.DynamicUpdate;
+
 import org.hibernate.validator.constraints.Length;
 
 
@@ -39,30 +43,32 @@ public class Note implements Serializable{
 	@Length(min=0, max=4000)
 	@Column(name = "NOTE_CONTENT")
 	private String content;
-	
-	@Column(name="MAX_VISIBILITY")
-	private int maxVisibility;
-	
-	@Column(name="IS_QC_FEEDBACK")
-	private int qcFeedback;
-	
-	@Column(name="QC_STATUS")
-	private String qcStatus;
-	
-	@Column(name="NOTE_TYPE")
-	private String noteType;
 
 	@NotNull
 	@Min(value=1)
 	@Column(name = "WEEK_NUMBER")
 	private short week;
 	
-	@NotNull
-	@Column(name="BATCH_ID")
+	/**
+	 * Will be null if the note is individual traineeId feedback
+	 */
+	@Column(name = "BATCH_ID", nullable = true)
 	private int batchId;
-	
-	@Column(name="TRAINEE_ID")
+
+	/**
+	 * Will be null if the note is overall batchId feedback
+	 */
+	@Column(name = "TRAINEE_ID", nullable = true)
 	private int traineeId;
+
+	@NotNull
+	@Enumerated(EnumType.STRING)
+	@Column(name = "NOTE_TYPE")
+	private NoteType type;
+
+	@Enumerated(EnumType.STRING)
+	@Column(name = "QC_STATUS", nullable = true)
+	private QCStatus qcStatus;
 	
 	@Column(name="MODIFY_DATE")
 	private Timestamp modifyDate;
@@ -74,130 +80,74 @@ public class Note implements Serializable{
 
 
 
-	public Note(int noteId, String content, int maxVisibility, int qcFeedback, String qcStatus, String noteType,
-			short week, int batchId, int traineeId, Timestamp modifyDate) {
+	public Note(int noteId, String content, short week, int batchIdId, int traineeIdId,
+			NoteType type, QCStatus qcStatus) {
 		super();
 		this.noteId = noteId;
 		this.content = content;
-		this.maxVisibility = maxVisibility;
-		this.qcFeedback = qcFeedback;
-		this.qcStatus = qcStatus;
-		this.noteType = noteType;
 		this.week = week;
-		this.batchId = batchId;
-		this.traineeId = traineeId;
+		this.batchId = batchIdId;
+		this.traineeId = traineeIdId;
+		this.type = type;
+		this.qcStatus = qcStatus;
 		this.modifyDate = new Timestamp(System.currentTimeMillis());
 	}
-
-
 
 	public int getNoteId() {
 		return noteId;
 	}
 
-
-
 	public void setNoteId(int noteId) {
 		this.noteId = noteId;
 	}
-
-
 
 	public String getContent() {
 		return content;
 	}
 
-
-
 	public void setContent(String content) {
 		this.content = content;
 	}
-
-
-
-	public int getMaxVisibility() {
-		return maxVisibility;
-	}
-
-
-
-	public void setMaxVisibility(int maxVisibility) {
-		this.maxVisibility = maxVisibility;
-	}
-
-
-
-	public int getQcFeedback() {
-		return qcFeedback;
-	}
-
-
-
-	public void setQcFeedback(int qcFeedback) {
-		this.qcFeedback = qcFeedback;
-	}
-
-
-
-	public String getQcStatus() {
-		return qcStatus;
-	}
-
-
-
-	public void setQcStatus(String qcStatus) {
-		this.qcStatus = qcStatus;
-	}
-
-
-
-	public String getNoteType() {
-		return noteType;
-	}
-
-
-
-	public void setNoteType(String noteType) {
-		this.noteType = noteType;
-	}
-
-
 
 	public short getWeek() {
 		return week;
 	}
 
-
-
 	public void setWeek(short week) {
 		this.week = week;
 	}
-
-
 
 	public int getBatchId() {
 		return batchId;
 	}
 
-
-
 	public void setBatchId(int batchId) {
 		this.batchId = batchId;
 	}
-
-
 
 	public int getTraineeId() {
 		return traineeId;
 	}
 
-
-
 	public void setTraineeId(int traineeId) {
 		this.traineeId = traineeId;
 	}
 
+	public NoteType getType() {
+		return type;
+	}
 
+	public void setType(NoteType type) {
+		this.type = type;
+	}
+
+	public QCStatus getQcStatus() {
+		return qcStatus;
+	}
+
+	public void setQcStatus(QCStatus qcStatus) {
+		this.qcStatus = qcStatus;
+	}
 
 	public String getModifyDate() {
 		return modifyDate.toString();
@@ -213,9 +163,10 @@ public class Note implements Serializable{
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
+
 	}
 
-
+	
 	@Override
 	public boolean equals(Object obj) {
 		
@@ -230,25 +181,24 @@ public class Note implements Serializable{
 		
 		result = prime * result + noteId;
 		result = prime * result + ((content == null) ? 0 : content.hashCode());
-		result = prime * result + maxVisibility;
-		result = prime * result + qcFeedback;
 		result = prime * result + ((qcStatus == null) ? 0 : qcStatus.hashCode());
-		result = prime * result + ((noteType == null) ? 0 : noteType.hashCode());
+		result = prime * result + ((type == null) ? 0 : type.hashCode());
 		result = prime * result + week;
 		result = prime * result + batchId;
 		result = prime * result + traineeId;
 		result = prime * result + ((modifyDate == null) ? 0 : modifyDate.hashCode());
 		return super.hashCode();
+
 	}
+	
 
 	@Override
 	public String toString() {
-		return "Note [noteId=" + noteId + ", content=" + content + ", maxVisibility=" + maxVisibility + ", qcFeedback="
-				+ qcFeedback + ", qcStatus=" + qcStatus + ", noteType=" + noteType + ", week=" + week + ", batchId="
-				+ batchId + ", traineeId=" + traineeId + ", modifyDate=" + modifyDate.toString() + "]";
-	}
 
-	
+		return "Note [noteId=" + noteId + ", content=" + content + ", qcStatus=" + qcStatus + ", noteType=" + type + ", week=" + week + ", batchId="
+				+ batchId + ", traineeId=" + traineeId + ", modifyDate=" + modifyDate.toString() + "]";
+
+	}
 	
 }
 

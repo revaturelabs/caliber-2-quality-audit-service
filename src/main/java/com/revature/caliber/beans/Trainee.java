@@ -8,7 +8,6 @@ public class Trainee {
 
 	
 	private int traineeId;
-	private String resourceId;
 	private String name;
 	private String email;
 	private TrainingStatus trainingStatus;
@@ -27,7 +26,6 @@ public class Trainee {
 			TraineeFlag flagStatus, String flagNotes) {
 		super();
 		this.traineeId = traineeId;
-		this.resourceId = resourceId;
 		this.name = name;
 		this.trainingStatus = trainingStatus;
 		this.batchId = batchId;
@@ -42,14 +40,6 @@ public class Trainee {
 
 	public void setTraineeId(int traineeId) {
 		this.traineeId = traineeId;
-	}
-
-	public String getResourceId() {
-		return resourceId;
-	}
-
-	public void setResourceId(String resourceId) {
-		this.resourceId = resourceId;
 	}
 
 	public String getName() {
@@ -110,8 +100,8 @@ public class Trainee {
 
 	@Override
 	public String toString() {
-		return "Trainee [traineeId=" + traineeId + ", resourceId=" + resourceId + ", name=" + name + ", trainingStatus="
-				+ trainingStatus + "batchId=" + batchId + ", batch=" + batch + ", flagStatus=" + flagStatus + ", flagNotes=" + flagNotes
+		return "Trainee [traineeId=" + traineeId + ", name=" + name + ", trainingStatus="
+				+ trainingStatus + ", batch=" + batch + ", flagStatus=" + flagStatus + ", flagNotes=" + flagNotes
 				+  "]";
 	}
 	

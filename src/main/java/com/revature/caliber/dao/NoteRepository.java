@@ -1,7 +1,10 @@
 package com.revature.caliber.dao;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
+
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -21,4 +24,10 @@ public interface NoteRepository extends JpaRepository <Note, Integer> {
 //	int updateWeekForNote(@Param("weekNumber") short weekNumber, @Param("noteId") int noteId);
 	
 
+	@Query("SELECT n FROM Note n WHERE n.batchId = :batchId AND n.week = :week")
+	public List<Note> findByBatchAndWeek(
+			@Param("batchId") Integer batchId,
+			@Param("week") Short week);
+	
+	
 }
