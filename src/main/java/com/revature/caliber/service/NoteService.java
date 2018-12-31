@@ -10,7 +10,6 @@ import com.revature.caliber.dao.NoteRepository;
 
 /**
  * Implementing the business logic for handling Note objects
- * @author thienle
  *
  */
 @Service
@@ -59,6 +58,10 @@ public class NoteService {
 	 */
 	public Note updateNote(Note n) {
 		return repo.save(n);
+	}
+	
+	public List<Note> findByBatchAndWeek(Integer batchId, Short week) {
+		return repo.findByBatchAndWeek(batchId, week);
 	}
 
 
