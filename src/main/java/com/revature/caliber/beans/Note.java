@@ -36,12 +36,6 @@ public class Note implements Serializable{
 	@Length(min=0, max=4000)
 	@Column(name = "NOTE_CONTENT")
 	private String content;
-	
-	@Column(name="IS_QC_FEEDBACK")
-	private int qcFeedback;
-	
-	@Column(name="NOTE_TYPE")
-	private String noteType;
 
 	@Min(value=1)
 	@Column(name = "WEEK_NUMBER")
@@ -59,10 +53,6 @@ public class Note implements Serializable{
 	@Column(name = "TRAINEE_ID", nullable = true)
 	private int traineeId;
 
-	@Enumerated(EnumType.STRING)
-	@Column(name = "MAX_VISIBILITY")
-	private TrainerRole maxVisibility;
-
 	@NotNull
 	@Enumerated(EnumType.STRING)
 	@Column(name = "NOTE_TYPE")
@@ -76,7 +66,7 @@ public class Note implements Serializable{
 		super();	
 	}
 
-	public Note(int noteId, String content, short week, int batchIdId, int traineeIdId, TrainerRole maxVisibility,
+	public Note(int noteId, String content, short week, int batchIdId, int traineeIdId,
 			NoteType type, QCStatus qcStatus) {
 		super();
 		this.noteId = noteId;
@@ -84,7 +74,6 @@ public class Note implements Serializable{
 		this.week = week;
 		this.batchId = batchIdId;
 		this.traineeId = traineeIdId;
-		this.maxVisibility = maxVisibility;
 		this.type = type;
 		this.qcStatus = qcStatus;
 	}
@@ -121,14 +110,6 @@ public class Note implements Serializable{
 		this.traineeId = traineeId;
 	}
 
-	public String getNoteType() {
-		return noteType;
-	}
-
-	public void setNoteType(String noteType) {
-		this.noteType = noteType;
-	}
-
 	public short getWeek() {
 		return week;
 	}
@@ -152,8 +133,7 @@ public class Note implements Serializable{
 	@Override
 	public String toString() {
 		return "Note [noteId=" + noteId + ", content=" + content + ", week=" + week + ", batchId=" + batchId + ", traineeId="
-				+ traineeId + ", maxVisibility=" + maxVisibility + ", type=" + type
-				+ ", qcStatus=" + qcStatus + "]";
+				+ traineeId + ", type=" + type + ", qcStatus=" + qcStatus + "]";
 	}
 
 	
