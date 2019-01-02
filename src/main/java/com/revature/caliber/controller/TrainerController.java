@@ -18,7 +18,7 @@ import com.revature.caliber.beans.Trainer;
 
 /**
  * Retrieve trainer data from user-service
- * @author thienle
+ * @author
  *
  */
 @RestController
@@ -31,9 +31,13 @@ public class TrainerController {
 	@Autowired
 	private TrainerClient client;
 	
-	
+	/**
+	 * Handling get request to return list of trainers
+	 * @return trainers
+	 */
 	@GetMapping("/trainers")
 	public ResponseEntity<List<Trainer>> getAllTrainers() {
+		log.trace("IN AUDIT, TRAINER CONTROLLER: ");
 		return client.getAllTrainers();
 	}
 	

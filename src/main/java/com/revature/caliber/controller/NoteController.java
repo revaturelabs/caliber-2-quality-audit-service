@@ -20,13 +20,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.caliber.beans.Note;
-import com.revature.caliber.intercomm.TraineeClient;
 import com.revature.caliber.service.NoteService;
 
 /**
  * Controllers for handling all requests having to do with notes.
  * 
- * @author thienle
+ * @author 
  *
  */
 @RestController
@@ -39,9 +38,7 @@ public class NoteController {
 	@Autowired
 	private NoteService service;
 
-	// Retrieve trainee data from user-service
-	@Autowired
-	private TraineeClient client;
+	
 	/**
 	 * Handles get request for returning all notes
 	 * 
@@ -50,21 +47,27 @@ public class NoteController {
 	@GetMapping("/notes")
 	public List<Note> getAllNotes() {
 
-		log.trace("in notes: Looking for note");
+		log.trace("IN AUDIT: RETURNING ALL NOTES");
 		return service.getAllNotes();
 	}
 
 	/**
-	 * 
+	 * get request to return a note based on id.
 	 * @param id
 	 * @return a note based on noteId
 	 */
 	@GetMapping(value = "/note/{id}")
 	public Note getNote(@PathVariable Integer id) {
-		log.trace("IN FIND ONE NOTE");
+		log.trace("IN AUDIT: FIND ONE NOTE");
 		return service.findById(id);
 	}
 	
+	/**
+	 * Querying notes based on batch and week.
+	 * @param batch
+	 * @param week
+	 * @return
+	 */
 	@GetMapping(value = "/notes/{batch}/{week}")
 	public List<Note> getNotesByBatchAndWeek(@PathVariable Integer batch, @PathVariable Short week){
 		return service.findByBatchAndWeek(batch, week);
@@ -79,7 +82,7 @@ public class NoteController {
 	@PostMapping(path = "/create", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Note> createNote(@RequestBody Note note) {
 
-		log.debug("CREATING NOTE: " + note);
+		log.debug("IN AUDIT, CREATING NOTE: " + note);
 		note = service.createNote(note);
 
 		if (note == null) {
@@ -98,7 +101,7 @@ public class NoteController {
 	 */
 	@PutMapping(path = "/update")
 	public ResponseEntity<Note> updateNote(@RequestBody Note note) {
-		log.debug("Updating note: " + note);
+		log.debug("IN AUDIT, UPDATING NOTE: " + note);
 		note = service.updateNote(note);
 
 		if (note == null) {
@@ -113,12 +116,12 @@ public class NoteController {
 	 * @param note
 	 * @return
 	 */
-	@PutMapping(path = "/updateWeek")
+	@PutMapping(path = "/updateContentWeek")
 	@Transactional
-	public int updateWeekForNote(@RequestBody Note note) {
+	public int updateContentWeekForNote(@RequestBody Note note) {
 		log.debug("Updating note: " + note);
 	
-		return service.updateWeekForNote(note.getWeek(), note.getNoteId());
+		return service.updateWeekForNote(note.getContent(), note.getWeek(), note.getNoteId());
 
 	}
 
@@ -126,10 +129,11 @@ public class NoteController {
 	 * Delete a note by id
 	 * 
 	 * @param id
-	 * @return
+	 * @return true
 	 */
 	@DeleteMapping(value = "/delete/{id}")
 	public boolean deleteNote(@PathVariable Integer id) {
+		log.trace("IN AUDIT, DELETING A NOTE");
 		service.deleteNote(id);
 		return true;
 	}

@@ -1,8 +1,5 @@
 package com.revature.caliber.beans;
 
-import java.util.Set;
-
-
 
 public class Trainee {
 
@@ -12,7 +9,6 @@ public class Trainee {
 	private String email;
 	private TrainingStatus trainingStatus;
 	private Integer batchId;
-	private Batch batch;
 	private TraineeFlag flagStatus;
 	private String flagNotes;
 	
@@ -101,7 +97,7 @@ public class Trainee {
 	@Override
 	public String toString() {
 		return "Trainee [traineeId=" + traineeId + ", name=" + name + ", trainingStatus="
-				+ trainingStatus + ", batch=" + batch + ", flagStatus=" + flagStatus + ", flagNotes=" + flagNotes
+				+ trainingStatus + ", flagStatus=" + flagStatus + ", flagNotes=" + flagNotes
 				+  "]";
 	}
 	

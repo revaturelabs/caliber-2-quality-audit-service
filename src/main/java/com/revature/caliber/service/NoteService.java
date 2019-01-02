@@ -60,9 +60,15 @@ public class NoteService {
 		return repo.save(n);
 	}
 	
-	
-	public int updateWeekForNote(short week, int id) {
-		return repo.updateWeekForNote(week, id);
+	/**
+	 * updating partial columns of the note table
+	 * @param content
+	 * @param week
+	 * @param id
+	 * @return
+	 */
+	public int updateWeekForNote(String content, short week, int id) {
+		return repo.updateWeekForNote(content, week, id);
 	}
 	
 	

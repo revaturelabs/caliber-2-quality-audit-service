@@ -19,11 +19,23 @@ import com.revature.caliber.beans.Note;
 @Repository
 public interface NoteRepository extends JpaRepository <Note, Integer> {
 	
+	/**
+	 * Updating content, week columns of note table.
+	 * @param content
+	 * @param weekNumber
+	 * @param noteId
+	 * @return 1 if success
+	 */
 	@Modifying
-	@Query("UPDATE Note n SET n.week = :weekNumber where n.noteId = :noteId")
-	int updateWeekForNote(@Param("weekNumber") short weekNumber, @Param("noteId") int noteId);
+	@Query("UPDATE Note n SET n.content = :noteContent, n.week = :weekNumber where n.noteId = :noteId")
+	int updateWeekForNote(@Param("noteContent") String content, @Param("weekNumber") short weekNumber, @Param("noteId") int noteId);
 	
-
+	/**
+	 * 
+	 * @param batchId
+	 * @param week
+	 * @return
+	 */
 	@Query("SELECT n FROM Note n WHERE n.batchId = :batchId AND n.week = :week")
 	public List<Note> findByBatchAndWeek(
 			@Param("batchId") Integer batchId,

@@ -72,10 +72,15 @@ public class Note implements Serializable{
 	
 	@Column(name="CREATION_TIME")
 	private Timestamp creationTime;
+	
+	@NotNull
+	@Column(name="LAST_SAVED_BY")
+	private int lastSavedBy;
 
 	public Note() {
 		super();
 		this.creationTime = new Timestamp(System.currentTimeMillis());
+		this.lastSavedBy = 1;
 	}
 
 
@@ -91,6 +96,7 @@ public class Note implements Serializable{
 		this.type = type;
 		this.qcStatus = qcStatus;
 		this.creationTime = new Timestamp(System.currentTimeMillis());
+		this.lastSavedBy = 1;
 	}
 
 	public int getNoteId() {
@@ -160,6 +166,18 @@ public class Note implements Serializable{
 
 
 
+	public int getLastSavedBy() {
+		return lastSavedBy;
+	}
+
+
+
+	public void setLastSavedBy(int lastSavedBy) {
+		this.lastSavedBy = lastSavedBy;
+	}
+
+
+
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 
@@ -186,6 +204,7 @@ public class Note implements Serializable{
 		result = prime * result + batchId;
 		result = prime * result + traineeId;
 		result = prime * result + ((creationTime == null) ? 0 : creationTime.hashCode());
+		result = prime * result + lastSavedBy;
 		return super.hashCode();
 
 	}
@@ -195,7 +214,7 @@ public class Note implements Serializable{
 	public String toString() {
 
 		return "Note [noteId=" + noteId + ", content=" + content + ", qcStatus=" + qcStatus + ", noteType=" + type + ", week=" + week + ", batchId="
-				+ batchId + ", traineeId=" + traineeId + ", creationTime=" + "creationTime.toString()" + "]";
+				+ batchId + ", traineeId=" + traineeId + ", lastSavedBy=" + lastSavedBy + ", creationTime=" + "creationTime.toString()" + "]";
 
 	}
 	
