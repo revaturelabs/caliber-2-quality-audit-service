@@ -77,7 +77,7 @@ public class Note implements Serializable{
 		this.type = type;
 		this.qcStatus = qcStatus;
 	}
-	
+
 	public int getNoteId() {
 		return noteId;
 	}
@@ -94,22 +94,6 @@ public class Note implements Serializable{
 		this.content = content;
 	}
 
-	public int getbatchId() {
-		return batchId;
-	}
-
-	public void setbatchId(int batchId) {
-		this.batchId = batchId;
-	}
-
-	public int gettraineeId() {
-		return traineeId;
-	}
-
-	public void settraineeId(int traineeId) {
-		this.traineeId = traineeId;
-	}
-
 	public short getWeek() {
 		return week;
 	}
@@ -118,23 +102,45 @@ public class Note implements Serializable{
 		this.week = week;
 	}
 
-	public QCStatus getQcStatus() {
-		return qcStatus;
+	public int getBatchId() {
+		return batchId;
+	}
+
+	public void setBatchId(int batchId) {
+		this.batchId = batchId;
+	}
+
+	public int getTraineeId() {
+		return traineeId;
 	}
 
 	public void setTraineeId(int traineeId) {
 		this.traineeId = traineeId;
 	}
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
+	public NoteType getType() {
+		return type;
+	}
+
+	public void setType(NoteType type) {
+		this.type = type;
+	}
+
+	public QCStatus getQcStatus() {
+		return qcStatus;
+	}
+
+	public void setQcStatus(QCStatus qcStatus) {
+		this.qcStatus = qcStatus;
 	}
 
 	@Override
 	public String toString() {
-		return "Note [noteId=" + noteId + ", content=" + content + ", week=" + week + ", batchId=" + batchId + ", traineeId="
-				+ traineeId + ", type=" + type + ", qcStatus=" + qcStatus + "]";
+		return "Note [noteId=" + noteId + ", content=" + content + ", week=" + week + ", batchId=" + batchId
+				+ ", traineeId=" + traineeId + ", type=" + type + ", qcStatus=" + qcStatus + "]";
 	}
+	
+	
 
 	
 }
