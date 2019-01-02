@@ -2,6 +2,8 @@ package com.revature.caliber.controller;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -40,7 +42,6 @@ public class NoteController {
 	// Retrieve trainee data from user-service
 	@Autowired
 	private TraineeClient client;
-
 	/**
 	 * Handles get request for returning all notes
 	 * 
@@ -105,6 +106,20 @@ public class NoteController {
 		} else {
 			return new ResponseEntity<>(note, HttpStatus.CREATED);
 		}
+	}
+	
+	/**
+	 * Update partial columns of note table
+	 * @param note
+	 * @return
+	 */
+	@PutMapping(path = "/updateWeek")
+	@Transactional
+	public int updateWeekForNote(@RequestBody Note note) {
+		log.debug("Updating note: " + note);
+	
+		return service.updateWeekForNote(note.getWeek(), note.getNoteId());
+
 	}
 
 	/**

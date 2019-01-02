@@ -1,6 +1,7 @@
 package com.revature.caliber.beans;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,6 +15,8 @@ import javax.persistence.Table;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.DynamicUpdate;
+
 import org.hibernate.validator.constraints.Length;
 
 
@@ -23,6 +26,7 @@ import org.hibernate.validator.constraints.Length;
  */
 @Entity
 @Table(name = "CALIBER_NOTE")
+@DynamicUpdate
 public class Note implements Serializable{
 
 	private static final long serialVersionUID = 4960654794116385953L;
@@ -33,14 +37,15 @@ public class Note implements Serializable{
 	@SequenceGenerator(name = "NOTE_ID_SEQUENCE", sequenceName = "NOTE_ID_SEQUENCE")
 	private int noteId;
 
+	@NotNull
 	@Length(min=0, max=4000)
 	@Column(name = "NOTE_CONTENT")
 	private String content;
 
+	@NotNull
 	@Min(value=1)
 	@Column(name = "WEEK_NUMBER")
 	private short week;
-
 	/**
 	 * Will be null if the note is individual traineeId feedback
 	 */
@@ -61,10 +66,16 @@ public class Note implements Serializable{
 	@Enumerated(EnumType.STRING)
 	@Column(name = "QC_STATUS", nullable = true)
 	private QCStatus qcStatus;
+	
+	@Column(name="CREATION_TIME")
+	private Timestamp creationTime;
 
 	public Note() {
-		super();	
+		super();
+		this.creationTime = new Timestamp(System.currentTimeMillis());
 	}
+
+
 
 	public Note(int noteId, String content, short week, int batchIdId, int traineeIdId,
 			NoteType type, QCStatus qcStatus) {
@@ -76,6 +87,7 @@ public class Note implements Serializable{
 		this.traineeId = traineeIdId;
 		this.type = type;
 		this.qcStatus = qcStatus;
+		this.creationTime = new Timestamp(System.currentTimeMillis());
 	}
 
 	public int getNoteId() {
@@ -134,12 +146,54 @@ public class Note implements Serializable{
 		this.qcStatus = qcStatus;
 	}
 
+	public String getcreationTime() {
+		return creationTime.toString();
+	}
+
+
+	public void setcreationTime(Timestamp creationTime) {
+		this.creationTime = creationTime;
+	}
+
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+
+	}
+
+	
 	@Override
-	public String toString() {
-		return "Note [noteId=" + noteId + ", content=" + content + ", week=" + week + ", batchId=" + batchId
-				+ ", traineeId=" + traineeId + ", type=" + type + ", qcStatus=" + qcStatus + "]";
+	public boolean equals(Object obj) {
+		
+		return super.equals(obj);
 	}
 	
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		
+		result = prime * result + noteId;
+		result = prime * result + ((content == null) ? 0 : content.hashCode());
+		result = prime * result + ((qcStatus == null) ? 0 : qcStatus.hashCode());
+		result = prime * result + ((type == null) ? 0 : type.hashCode());
+		result = prime * result + week;
+		result = prime * result + batchId;
+		result = prime * result + traineeId;
+		result = prime * result + ((creationTime == null) ? 0 : creationTime.hashCode());
+		return super.hashCode();
+
+	}
+	
+
+	@Override
+	public String toString() {
+
+		return "Note [noteId=" + noteId + ", content=" + content + ", qcStatus=" + qcStatus + ", noteType=" + type + ", week=" + week + ", batchId="
+				+ batchId + ", traineeId=" + traineeId + ", creationTime=" + "creationTime.toString()" + "]";
+
+	}
 	
 
 	
