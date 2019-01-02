@@ -70,12 +70,12 @@ public class Note implements Serializable{
 	@Column(name = "QC_STATUS", nullable = true)
 	private QCStatus qcStatus;
 	
-	@Column(name="MODIFY_DATE")
-	private Timestamp modifyDate;
+	@Column(name="CREATION_TIME")
+	private Timestamp creationTime;
 
 	public Note() {
 		super();
-		this.modifyDate = new Timestamp(System.currentTimeMillis());
+		this.creationTime = new Timestamp(System.currentTimeMillis());
 	}
 
 
@@ -90,7 +90,7 @@ public class Note implements Serializable{
 		this.traineeId = traineeIdId;
 		this.type = type;
 		this.qcStatus = qcStatus;
-		this.modifyDate = new Timestamp(System.currentTimeMillis());
+		this.creationTime = new Timestamp(System.currentTimeMillis());
 	}
 
 	public int getNoteId() {
@@ -149,13 +149,13 @@ public class Note implements Serializable{
 		this.qcStatus = qcStatus;
 	}
 
-	public String getModifyDate() {
-		return modifyDate.toString();
+	public String getcreationTime() {
+		return creationTime.toString();
 	}
 
 
-	public void setModifyDate(Timestamp modifyDate) {
-		this.modifyDate = modifyDate;
+	public void setcreationTime(Timestamp creationTime) {
+		this.creationTime = creationTime;
 	}
 
 
@@ -185,7 +185,7 @@ public class Note implements Serializable{
 		result = prime * result + week;
 		result = prime * result + batchId;
 		result = prime * result + traineeId;
-		//result = prime * result + ((modifyDate == null) ? 0 : modifyDate.hashCode());
+		result = prime * result + ((creationTime == null) ? 0 : creationTime.hashCode());
 		return super.hashCode();
 
 	}
@@ -195,7 +195,7 @@ public class Note implements Serializable{
 	public String toString() {
 
 		return "Note [noteId=" + noteId + ", content=" + content + ", qcStatus=" + qcStatus + ", noteType=" + type + ", week=" + week + ", batchId="
-				+ batchId + ", traineeId=" + traineeId + ", modifyDate=" + "modifyDate.toString()" + "]";
+				+ batchId + ", traineeId=" + traineeId + ", creationTime=" + "creationTime.toString()" + "]";
 
 	}
 	
