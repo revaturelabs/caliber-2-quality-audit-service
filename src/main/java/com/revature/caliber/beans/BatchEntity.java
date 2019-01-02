@@ -5,15 +5,20 @@ import java.util.Date;
 import java.util.Set;
 
 public class BatchEntity implements Serializable{
-	
-private static final long serialVersionUID = 2916173221333913998L;
-	
-	private Integer batchId;
-	private Trainer trainer;	
-	private Date startDate;
-	private Set<Trainee> trainees;
-	
 
+	private static final long serialVersionUID = 2916173221333913998L;
+
+	private Integer batchId;
+	private Integer weeks;
+	
+	public BatchEntity() {}
+
+	public BatchEntity(Integer batchId, Integer weeks) {
+		super();
+		this.batchId = batchId;
+		this.weeks = weeks;
+	}
+	
 	public Integer getBatchId() {
 		return batchId;
 	}
@@ -22,29 +27,22 @@ private static final long serialVersionUID = 2916173221333913998L;
 		this.batchId = batchId;
 	}
 
-	public Trainer getTrainer() {
-		return trainer;
+
+	public Integer getWeeks() {
+		return weeks;
 	}
 
-	public void setTrainer(Trainer trainer) {
-		this.trainer = trainer;
+	public void setWeeks(Integer weeks) {
+		this.weeks = weeks;
 	}
 
-	public Date getStartDate() {
-		return startDate;
+	@Override
+	public String toString() {
+		return "BatchEntity [batchId=" + batchId + ", weeks=" + weeks + "]";
 	}
 
-	public void setStartDate(Date startDate) {
-		this.startDate = startDate;
-	}
-
-	public Set<Trainee> getTrainees() {
-		return trainees;
-	}
-
-	public void setTrainees(Set<Trainee> trainees) {
-		this.trainees = trainees;
-	}
 	
+	
+
 
 }

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.revature.caliber.beans.BatchEntity;
 import com.revature.caliber.beans.Note;
 import com.revature.caliber.intercomm.TraineeClient;
 import com.revature.caliber.service.NoteService;
@@ -78,16 +79,24 @@ public class NoteController {
 	 */
 	@PostMapping(path = "/create", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Note> createNote(@RequestBody Note note) {
-
 		log.debug("CREATING NOTE: " + note);
 		note = service.createNote(note);
-
 		if (note == null) {
 			return new ResponseEntity<>(HttpStatus.CONFLICT);
 		} else {
 			return new ResponseEntity<>(note, HttpStatus.CREATED);
 		}
-
+	}
+	
+	@PostMapping(path = "/note/create-batch-notes", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<Note>> createBatchNotes(@RequestBody BatchEntity batch){		
+		List<Note> notes = service.createBatchNotes(batch);
+		if (notes == null) {
+			return new ResponseEntity<>(HttpStatus.CONFLICT);
+		}
+		else {
+			return new ResponseEntity<>(notes, HttpStatus.CREATED);
+		}
 	}
 
 	/**
