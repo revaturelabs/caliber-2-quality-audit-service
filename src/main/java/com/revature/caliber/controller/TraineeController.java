@@ -49,6 +49,8 @@ public class TraineeController {
 	public ResponseEntity<List<Trainee>> findAllByBatch(@RequestParam(defaultValue = "1") Integer batch) {
 		return client.findAllByBatch(batch);
 	}
+	
+	
 
 	/**
 	 * Handles put request for creating a trainee in a batch

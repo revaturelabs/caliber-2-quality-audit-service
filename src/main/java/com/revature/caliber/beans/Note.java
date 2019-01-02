@@ -5,15 +5,14 @@ import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
@@ -41,14 +40,13 @@ public class Note implements Serializable{
 
 	@NotNull
 	@Length(min=0, max=4000)
-	@Column(name = "NOTE_CONTENT")
+	@Column(name = "NOTE_CONTENT", nullable = true)
 	private String content;
 
 	@NotNull
 	@Min(value=1)
 	@Column(name = "WEEK_NUMBER")
 	private short week;
-	
 	/**
 	 * Will be null if the note is individual traineeId feedback
 	 */
@@ -56,8 +54,11 @@ public class Note implements Serializable{
 	private int batchId;
 
 	/**
-	 * Will be null if the note is overall batchId feedback
+	 * Will be null if the note is overall batch feedback
 	 */
+	@Transient
+	private Trainee trainee;
+	
 	@Column(name = "TRAINEE_ID", nullable = true)
 	private int traineeId;
 
@@ -70,29 +71,55 @@ public class Note implements Serializable{
 	@Column(name = "QC_STATUS", nullable = true)
 	private QCStatus qcStatus;
 	
-	@Column(name="CREATION_TIME")
-	private Timestamp creationTime;
+	@Column(name="UPDATE_TIME")
+	private Timestamp updateTime;
+	
+	@Column(name="UPDATED_BY")
+	private Trainer updateTrainer;	// Will be null until login page is implemented
 
 	public Note() {
 		super();
-		this.creationTime = new Timestamp(System.currentTimeMillis());
+		this.updateTime = new Timestamp(System.currentTimeMillis());
 	}
 
-
-
-	public Note(int noteId, String content, short week, int batchIdId, int traineeIdId,
-			NoteType type, QCStatus qcStatus) {
-		super();
-		this.noteId = noteId;
-		this.content = content;
+	/**
+	 * 
+	 * @param week
+	 * @param batchId
+	 * @param trainee
+	 * 
+	 * Create individual associate notes per batch per week.
+	 * 
+	 */
+	public Note(short week, int batchId, Trainee trainee) {
+		this.content = " ";
 		this.week = week;
-		this.batchId = batchIdId;
-		this.traineeId = traineeIdId;
-		this.type = type;
-		this.qcStatus = qcStatus;
-		this.creationTime = new Timestamp(System.currentTimeMillis());
+		this.batchId = batchId;
+		this.trainee = trainee;
+		this.traineeId = trainee.getTraineeId();
+		this.type = NoteType.QC_TRAINEE;
+		this.qcStatus = QCStatus.Undefined;
+		this.updateTime = new Timestamp(System.currentTimeMillis());
 	}
-
+	
+	/**
+	 * 
+	 * @param week
+	 * @param batchId
+	 * 
+	 * Create overall batch note per week.
+	 * 
+	 */
+	public Note(short week, int batchId) {
+		this.content = " ";
+		this.week = week;
+		this.batchId = batchId;
+		this.type = NoteType.QC_BATCH;
+		this.qcStatus = QCStatus.Undefined;	// "Overall Feedback"
+		this.updateTime = new Timestamp(System.currentTimeMillis());
+	}
+	
+	
 	public int getNoteId() {
 		return noteId;
 	}
@@ -148,31 +175,37 @@ public class Note implements Serializable{
 	public void setQcStatus(QCStatus qcStatus) {
 		this.qcStatus = qcStatus;
 	}
-
-	public String getcreationTime() {
-		return creationTime.toString();
-	}
-
-
-	public void setcreationTime(Timestamp creationTime) {
-		this.creationTime = creationTime;
-	}
-
-
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-
-	}
-
 	
+	public Trainee getTrainee() {
+		return trainee;
+	}
+
+	public void setTrainee(Trainee trainee) {
+		this.trainee = trainee;
+	}
+	
+	public Timestamp getUpdateTime() {
+		return updateTime;
+	}
+
+	public void setUpdateTime(Timestamp updateTime) {
+		this.updateTime = updateTime;
+	}
+
+	public Trainer getUpdateTrainer() {
+		return updateTrainer;
+	}
+
+	public void setUpdateTrainer(Trainer updateTrainer) {
+		this.updateTrainer = updateTrainer;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		
 		return super.equals(obj);
 	}
-	
-	
+		
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -185,19 +218,21 @@ public class Note implements Serializable{
 		result = prime * result + week;
 		result = prime * result + batchId;
 		result = prime * result + traineeId;
-		result = prime * result + ((creationTime == null) ? 0 : creationTime.hashCode());
+		result = prime * result + ((updateTime == null) ? 0 : updateTime.hashCode());
 		return super.hashCode();
-
 	}
-	
 
 	@Override
 	public String toString() {
-
-		return "Note [noteId=" + noteId + ", content=" + content + ", qcStatus=" + qcStatus + ", noteType=" + type + ", week=" + week + ", batchId="
-				+ batchId + ", traineeId=" + traineeId + ", creationTime=" + "creationTime.toString()" + "]";
-
+		return "Note [noteId=" + noteId + ", content=" + content + ", week=" + week + ", batchId=" + batchId
+				+ ", trainee=" + trainee + ", traineeId=" + traineeId + ", type=" + type + ", qcStatus=" + qcStatus
+				+ ", updateTime=" + updateTime + ", updateTrainer=" + updateTrainer + "]";
 	}
+	
+	
+
+
+
 	
 }
 

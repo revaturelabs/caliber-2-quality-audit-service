@@ -33,8 +33,6 @@ public class Trainer implements Serializable{
 	
 	private int trainerId;
 	private String name;
-	private TrainerRole tier;
-	private Set<Batch> batches;
 
 	public Trainer() {
 		super();
@@ -44,8 +42,6 @@ public class Trainer implements Serializable{
 		super();
 		this.trainerId = trainerId;
 		this.name = name;
-		this.tier = tier;
-		this.batches = batches;
 	}
 
 
@@ -65,25 +61,10 @@ public class Trainer implements Serializable{
 		this.name = name;
 	}
 
-	public TrainerRole getTier() {
-		return tier;
-	}
-
-	public void setTier(TrainerRole tier) {
-		this.tier = tier;
-	}
-
-	public Set<Batch> getBatches() {
-		return batches;
-	}
-
-	public void setBatches(Set<Batch> batches) {
-		this.batches = batches;
-	}
 
 	@Override
 	public String toString() {
-		return "Trainer [trainerId=" + trainerId + ", name=" + name + ", tier=" + tier + ", batches=" + batches + "]";
+		return "Trainer [trainerId=" + trainerId + ", name=" + name + "]";
 	}
 	
 	
