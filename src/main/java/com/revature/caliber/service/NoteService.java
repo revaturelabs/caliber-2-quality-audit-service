@@ -60,6 +60,12 @@ public class NoteService {
 		return repo.save(n);
 	}
 	
+	
+	public int updateWeekForNote(short week, int id) {
+		return repo.updateWeekForNote(week, id);
+	}
+	
+	
 	public List<Note> findByBatchAndWeek(Integer batchId, Short week) {
 		return repo.findByBatchAndWeek(batchId, week);
 	}
