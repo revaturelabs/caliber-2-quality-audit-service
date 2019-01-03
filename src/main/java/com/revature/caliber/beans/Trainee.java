@@ -56,7 +56,6 @@ public class Trainee {
 		this.trainingStatus = trainingStatus;
 	}
 
-
 	public TraineeFlag getFlagStatus() {
 		return flagStatus;
 	}

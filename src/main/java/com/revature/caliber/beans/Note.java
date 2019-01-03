@@ -20,7 +20,6 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import org.hibernate.validator.constraints.Length;
 
-
 /**
  * 
  *
@@ -28,7 +27,7 @@ import org.hibernate.validator.constraints.Length;
 @Entity
 @Table(name = "CALIBER_NOTE")
 @DynamicUpdate
-public class Note implements Serializable{
+public class Note implements Serializable {
 
 	private static final long serialVersionUID = 4960654794116385953L;
 
@@ -44,7 +43,7 @@ public class Note implements Serializable{
 	private String content;
 
 	@NotNull
-	@Min(value=1)
+	@Min(value = 1)
 	@Column(name = "WEEK_NUMBER")
 	private short week;
 	/**
@@ -70,12 +69,13 @@ public class Note implements Serializable{
 	@Enumerated(EnumType.STRING)
 	@Column(name = "QC_STATUS", nullable = true)
 	private QCStatus qcStatus;
-	
-	@Column(name="UPDATE_TIME")
+
+	@Column(name = "UPDATE_TIME")
 	private Timestamp updateTime;
-	
-	@Column(name="UPDATED_BY")
-	private Trainer updateTrainer;	// Will be null until login page is implemented
+
+	@NotNull
+	@Column(name = "LAST_SAVED_BY")
+	private Trainer lastSavedBy;
 
 	public Note() {
 		super();
@@ -192,25 +192,24 @@ public class Note implements Serializable{
 		this.updateTime = updateTime;
 	}
 
-	public Trainer getUpdateTrainer() {
-		return updateTrainer;
+	public Trainer getLastSavedBy() {
+		return lastSavedBy;
 	}
 
-	public void setUpdateTrainer(Trainer updateTrainer) {
-		this.updateTrainer = updateTrainer;
+	public void setUpdateTrainer(Trainer lastSavedBy) {
+		this.lastSavedBy = lastSavedBy;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		
+
 		return super.equals(obj);
 	}
-		
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		
+
 		result = prime * result + noteId;
 		result = prime * result + ((content == null) ? 0 : content.hashCode());
 		result = prime * result + ((qcStatus == null) ? 0 : qcStatus.hashCode());
@@ -219,6 +218,7 @@ public class Note implements Serializable{
 		result = prime * result + batchId;
 		result = prime * result + traineeId;
 		result = prime * result + ((updateTime == null) ? 0 : updateTime.hashCode());
+		result = prime * result + ((lastSavedBy == null) ? 0 : lastSavedBy.hashCode());;
 		return super.hashCode();
 	}
 
@@ -226,7 +226,7 @@ public class Note implements Serializable{
 	public String toString() {
 		return "Note [noteId=" + noteId + ", content=" + content + ", week=" + week + ", batchId=" + batchId
 				+ ", trainee=" + trainee + ", traineeId=" + traineeId + ", type=" + type + ", qcStatus=" + qcStatus
-				+ ", updateTime=" + updateTime + ", updateTrainer=" + updateTrainer + "]";
+				+ ", updateTime=" + updateTime + ", updateTrainer=" + lastSavedBy + "]";
 	}
 	
 	
@@ -235,4 +235,5 @@ public class Note implements Serializable{
 
 	
 }
+
 

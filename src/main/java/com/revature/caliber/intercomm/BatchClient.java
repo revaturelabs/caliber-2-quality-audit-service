@@ -6,11 +6,9 @@ import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import com.revature.caliber.beans.Batch;
 import com.revature.caliber.beans.BatchEntity;
 
 @FeignClient(name="batch-service",  url="http://caliber-v2-1680103809.eu-west-2.elb.amazonaws.com/batch")
-//@FeignClient(name="batch-service",  url="${BATCH_SERVICE_URL}") 
 public interface BatchClient {
 	
 	@GetMapping("/qc/batch/all")

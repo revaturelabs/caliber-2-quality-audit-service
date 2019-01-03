@@ -25,7 +25,7 @@ import feign.RetryableException;
  */
 @Service
 public class NoteService {
-	
+
 	/**
 	 * The repository is responsible for interacting with the note table
 	 */
@@ -94,7 +94,7 @@ public class NoteService {
 	public Note findById(Integer id) {
 		return repo.findOne(id);
 	}
-	
+
 	/**
 	 * 
 	 * Update a note. If it is an trainee qc note, check for auto flagging and calculate 
@@ -108,12 +108,19 @@ public class NoteService {
 		}
 		return repo.save(note);		
 	}
-		
-	public int updateWeekForNote(short week, int id) {
-		return repo.updateWeekForNote(week, id);
+
+	/**
+	 * updating partial columns of the note table
+	 * 
+	 * @param content
+	 * @param week
+	 * @param id
+	 * @return
+	 */
+	public int updateWeekForNote(String content, short week, int id) {
+		return repo.updateWeekForNote(content, week, id);
 	}
-	
-	
+
 	public List<Note> findByBatchAndWeek(Integer batchId, Short week) {
 		List<Note> notes = repo.findByBatchAndWeek(batchId, week);
 		List<Trainee> trainees = traineeClient.findAllByBatch(batchId).getBody();
@@ -130,6 +137,5 @@ public class NoteService {
 	public Note findOverallNoteByBatchAndWeek(Integer batchId, Short week) {
 		return repo.findQCBatchNotes(batchId, week, NoteType.QC_BATCH);
 	}
-
 
 }

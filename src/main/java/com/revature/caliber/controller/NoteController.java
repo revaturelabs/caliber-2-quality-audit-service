@@ -25,7 +25,7 @@ import com.revature.caliber.service.NoteService;
 /**
  * Controllers for handling all requests having to do with notes.
  * 
- * @author thienle
+ * @author
  *
  */
 @RestController
@@ -46,18 +46,19 @@ public class NoteController {
 	@GetMapping("/notes")
 	public List<Note> getAllNotes() {
 
-		log.trace("in notes: Looking for note");
+		log.trace("IN AUDIT: RETURNING ALL NOTES");
 		return service.getAllNotes();
 	}
 
 	/**
+	 * get request to return a note based on id.
 	 * 
 	 * @param id
 	 * @return a note based on noteId
 	 */
 	@GetMapping(value = "/note/{id}")
 	public Note getNote(@PathVariable Integer id) {
-		log.trace("IN FIND ONE NOTE");
+		log.trace("IN AUDIT: FIND ONE NOTE");
 		return service.findById(id);
 	}
 	
@@ -68,7 +69,7 @@ public class NoteController {
 	 * @return a list of associate notes according to batch and week
 	 */
 	@GetMapping(value = "/notes/{batch}/{week}")
-	public List<Note> getNotesByBatchAndWeek(@PathVariable Integer batch, @PathVariable Short week){
+	public List<Note> getNotesByBatchAndWeek(@PathVariable Integer batch, @PathVariable Short week) {
 		return service.findByBatchAndWeek(batch, week);
 	}
 	
@@ -114,7 +115,7 @@ public class NoteController {
 	 */
 	@PutMapping(path = "/update")
 	public ResponseEntity<Note> updateNote(@RequestBody Note note) {
-		log.debug("Updating note: " + note);
+		log.debug("IN AUDIT, UPDATING NOTE: " + note);
 		note = service.updateNote(note);
 
 		if (note == null) {
@@ -123,18 +124,19 @@ public class NoteController {
 			return new ResponseEntity<>(note, HttpStatus.CREATED);
 		}
 	}
-	
+
 	/**
 	 * Update partial columns of note table
+	 * 
 	 * @param note
 	 * @return
 	 */
-	@PutMapping(path = "/updateWeek")
+	@PutMapping(path = "/updateContentWeek")
 	@Transactional
-	public int updateWeekForNote(@RequestBody Note note) {
+	public int updateContentWeekForNote(@RequestBody Note note) {
 		log.debug("Updating note: " + note);
-	
-		return service.updateWeekForNote(note.getWeek(), note.getNoteId());
+
+		return service.updateWeekForNote(note.getContent(), note.getWeek(), note.getNoteId());
 
 	}
 
