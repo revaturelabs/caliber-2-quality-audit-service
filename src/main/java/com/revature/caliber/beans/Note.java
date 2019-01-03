@@ -73,9 +73,11 @@ public class Note implements Serializable {
 	@Column(name = "UPDATE_TIME")
 	private Timestamp updateTime;
 
-	@NotNull
-	@Column(name = "LAST_SAVED_BY")
+	@Transient
 	private Trainer lastSavedBy;
+	
+	@Column(name = "LAST_SAVED_BY")
+	private int lastSavedById;
 
 	public Note() {
 		super();
@@ -218,7 +220,8 @@ public class Note implements Serializable {
 		result = prime * result + batchId;
 		result = prime * result + traineeId;
 		result = prime * result + ((updateTime == null) ? 0 : updateTime.hashCode());
-		result = prime * result + ((lastSavedBy == null) ? 0 : lastSavedBy.hashCode());;
+		result = prime * result + ((lastSavedBy == null) ? 0 : lastSavedBy.hashCode());
+		result = prime * result + lastSavedById;
 		return super.hashCode();
 	}
 

@@ -34,7 +34,7 @@ public class TraineeController {
 	@Autowired
 	private TraineeClient client;
 
-	private static final Logger log = Logger.getLogger(TraineeController.class);
+//	private static final Logger log = Logger.getLogger(TraineeController.class);
 
 	/**
 	 * Handles get request for returning all trainees with the given batch id as a

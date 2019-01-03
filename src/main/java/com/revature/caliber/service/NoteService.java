@@ -120,10 +120,6 @@ public class NoteService {
 	public int updateWeekForNote(String content, short week, int id) {
 		return repo.updateWeekForNote(content, week, id);
 	}
-	
-	public List<Note> findByBatchAndWeek(Integer batchId, Short week) {
-		return repo.findByBatchAndWeek(batchId, week);
-	}
 
 	public List<Note> findByBatchAndWeek(Integer batchId, Short week) {
 		List<Note> notes = repo.findByBatchAndWeek(batchId, week);
