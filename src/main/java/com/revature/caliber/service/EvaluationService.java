@@ -91,7 +91,7 @@ public class EvaluationService {
 		if(batchId !=  null) {
 			Note overallNote = noteRepo.findQCBatchNotes(batchId, weekId, NoteType.QC_BATCH);
 			double average = 0.0f;
-			List<Note> traineeNoteList = noteRepo.findByBatchAndWeek(batchId, weekId);
+			List<Note> traineeNoteList = noteRepo.findQCNotesByBatchAndWeek(batchId, weekId, NoteType.QC_TRAINEE);
 			int denominator = traineeNoteList.size();
 			for(Note note : traineeNoteList) {
 				switch(note.getQcStatus()) {

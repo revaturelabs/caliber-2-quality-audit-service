@@ -71,7 +71,7 @@ public class NoteController {
 	 */
 	@GetMapping(value = "/notes/{batch}/{week}")
 	public List<Note> getNotesByBatchAndWeek(@PathVariable Integer batch, @PathVariable Short week) {
-		return service.findByBatchAndWeek(batch, week);
+		return service.findQCNotesByBatchAndWeek(batch, week);
 	}
 
 	@GetMapping(value = "/notes/overall/{batch}/{week}")

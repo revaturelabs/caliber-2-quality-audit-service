@@ -81,8 +81,6 @@ public class NoteService {
 			e.printStackTrace();
 			return null;
 		}
-		// Shuffle list of notes so names are displayed in random order on the client side
-		Collections.shuffle(notes);
 		// Create an "overall batch feedback" note and append to the end of the list
 		Note overallNote = new Note(week, batchId);
 		overallNote = repo.save(overallNote);
@@ -120,9 +118,10 @@ public class NoteService {
 	public int updateWeekForNote(String content, short week, int id) {
 		return repo.updateWeekForNote(content, week, id);
 	}
+	
 
-	public List<Note> findByBatchAndWeek(Integer batchId, Short week) {
-		List<Note> notes = repo.findByBatchAndWeek(batchId, week);
+	public List<Note> findQCNotesByBatchAndWeek(Integer batchId, Short week) {
+		List<Note> notes = repo.findQCNotesByBatchAndWeek(batchId, week, NoteType.QC_TRAINEE);
 		List<Trainee> trainees = traineeClient.findAllByBatch(batchId).getBody();
 		for (Note n: notes) {
 			for (Trainee t: trainees) {
@@ -130,8 +129,10 @@ public class NoteService {
 					n.setTrainee(t);
 				}
 			}
-		}	
-		return repo.findByBatchAndWeek(batchId, week);
+		}
+		// Shuffle list of notes so names are displayed in random order on the client side
+		Collections.shuffle(notes);
+		return notes;
 	}
 	
 	public Note findOverallNoteByBatchAndWeek(Integer batchId, Short week) {
