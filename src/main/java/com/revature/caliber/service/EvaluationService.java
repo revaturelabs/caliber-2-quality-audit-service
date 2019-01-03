@@ -39,8 +39,8 @@ public class EvaluationService {
 		if (note != null && note.getType().equals(NoteType.QC_TRAINEE)) {
 			// Cannot be auto flagged on week 1
 			if (note.getWeek() < 2) return;
-			// Return if trainee was already auto flagged
-			else if (note.getTrainee().getFlagNotes().contains("Trainee was automatically flagged by Caliber")) return;
+//			// Return if trainee was already auto flagged
+//			else if (note.getTrainee().getFlagNotes().contains("Trainee was automatically flagged by Caliber")) return;
 
 			// Retrieve a list of all notes in week ASC order
 			List<Note> notes = noteRepo.findByTraineeId(note.getTraineeId(), new Sort("week"));
@@ -70,14 +70,13 @@ public class EvaluationService {
 						trainee.setFlagNotes("Trainee was automatically flagged by Caliber. ");
 
 					traineeClient.updateTrainee(trainee);
-				} 
-// Get rid of the remove flag functionality from the monolith				
-//				else {
-//					// remove the flag status in database
-//					Trainee trainee = note.getTrainee();
-//					trainee.setFlagStatus(TraineeFlag.NONE);
-//					traineeClient.updateTrainee(trainee);
-//				}
+				} 			
+				else {
+					// remove the flag status in database
+					Trainee trainee = note.getTrainee();
+					trainee.setFlagStatus(TraineeFlag.NONE);
+					traineeClient.updateTrainee(trainee);
+				}
 			} catch(RetryableException e) {
 				log.debug("Failed to connect to User Service");
 			} catch (Exception e) {
@@ -90,7 +89,7 @@ public class EvaluationService {
 	
 	public void calculateAverage(short weekId, Integer batchId) {
 		if(batchId !=  null) {
-			Note overallNote = noteRepo.findQCBatchNotes(batchId, weekId);
+			Note overallNote = noteRepo.findQCBatchNotes(batchId, weekId, NoteType.QC_BATCH);
 			double average = 0.0f;
 			List<Note> traineeNoteList = noteRepo.findByBatchAndWeek(batchId, weekId);
 			int denominator = traineeNoteList.size();

@@ -115,7 +115,20 @@ public class NoteService {
 	
 	
 	public List<Note> findByBatchAndWeek(Integer batchId, Short week) {
+		List<Note> notes = repo.findByBatchAndWeek(batchId, week);
+		List<Trainee> trainees = traineeClient.findAllByBatch(batchId).getBody();
+		for (Note n: notes) {
+			for (Trainee t: trainees) {
+				if (n.getTraineeId() == t.getTraineeId()) {
+					n.setTrainee(t);
+				}
+			}
+		}	
 		return repo.findByBatchAndWeek(batchId, week);
+	}
+	
+	public Note findOverallNoteByBatchAndWeek(Integer batchId, Short week) {
+		return repo.findQCBatchNotes(batchId, week, NoteType.QC_BATCH);
 	}
 
 

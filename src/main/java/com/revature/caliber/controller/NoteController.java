@@ -61,11 +61,22 @@ public class NoteController {
 		return service.findById(id);
 	}
 	
+	/**
+	 * 
+	 * @param batchId
+	 * @param week number
+	 * @return a list of associate notes according to batch and week
+	 */
 	@GetMapping(value = "/notes/{batch}/{week}")
 	public List<Note> getNotesByBatchAndWeek(@PathVariable Integer batch, @PathVariable Short week){
 		return service.findByBatchAndWeek(batch, week);
 	}
-
+	
+	@GetMapping(value = "/notes/overall/{batch}/{week}")
+	public Note getOverallNoteByBatchAndWeek(@PathVariable Integer batch, @PathVariable Short week){
+		return service.findOverallNoteByBatchAndWeek(batch, week);
+	}
+	
 	/**
 	 * Handles post request for creating a note
 	 * 
@@ -82,6 +93,7 @@ public class NoteController {
 //			return new ResponseEntity<>(note, HttpStatus.CREATED);
 //		}
 //	}
+	
 	
 	@PostMapping(path = "/note/create-batch-notes", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Note>> createBatchNotes(@RequestBody BatchEntity batch){		
