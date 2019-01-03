@@ -3,7 +3,7 @@ package com.revature.caliber.controller;
 import java.util.List;
 
 import javax.validation.Valid;
-
+import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Isolation;
@@ -34,7 +34,7 @@ public class TraineeController {
 	@Autowired
 	private TraineeClient client;
 
-//	private static final Logger log = Logger.getLogger(TraineeController.class);
+	private static final Logger log = Logger.getLogger(TraineeController.class);
 
 	/**
 	 * Handles get request for returning all trainees with the given batch id as a
