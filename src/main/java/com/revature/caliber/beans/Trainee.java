@@ -1,38 +1,36 @@
 package com.revature.caliber.beans;
 
-import java.util.Set;
-
-
+import java.sql.Timestamp;
 
 public class Trainee {
-
 	
 	private int traineeId;
 	private String name;
-	private String email;
 	private TrainingStatus trainingStatus;
-	private Batch batch;
+	private Integer batchId;
 	private TraineeFlag flagStatus;
 	private String flagNotes;
-	
-	private Set<Note> notes;
-	
+	private Trainer flagAuthor;	// Will be null until login page is implemented
+	private Timestamp flagNoteTimeStamp;
+		
 	public Trainee() {
 		super();
 		this.flagStatus = TraineeFlag.NONE;
 	}
 
-	public Trainee(int traineeId, String resourceId, String name, TrainingStatus trainingStatus, Batch batch,
-			TraineeFlag flagStatus, String flagNotes, Set<Note> notes) {
+	public Trainee(int traineeId, String name, TrainingStatus trainingStatus, Integer batchId,
+			TraineeFlag flagStatus, String flagNotes, Trainer flagAuthor, Timestamp flagNoteTimeStamp) {
 		super();
 		this.traineeId = traineeId;
 		this.name = name;
 		this.trainingStatus = trainingStatus;
-		this.batch = batch;
+		this.batchId = batchId;
 		this.flagStatus = flagStatus;
 		this.flagNotes = flagNotes;
-		this.notes = notes;
+		this.flagAuthor = flagAuthor;
+		this.flagNoteTimeStamp = flagNoteTimeStamp;
 	}
+
 
 	public int getTraineeId() {
 		return traineeId;
@@ -58,14 +56,6 @@ public class Trainee {
 		this.trainingStatus = trainingStatus;
 	}
 
-	public Batch getBatch() {
-		return batch;
-	}
-
-	public void setBatch(Batch batch) {
-		this.batch = batch;
-	}
-
 	public TraineeFlag getFlagStatus() {
 		return flagStatus;
 	}
@@ -82,34 +72,35 @@ public class Trainee {
 		this.flagNotes = flagNotes;
 	}
 
-	public Set<Note> getNotes() {
-		return notes;
+	public Integer getBatchId() {
+		return batchId;
 	}
 
-	public void setNotes(Set<Note> notes) {
-		this.notes = notes;
+	public void setBatchId(Integer batchId) {
+		this.batchId = batchId;
+	}
+
+	public Trainer getFlagAuthor() {
+		return flagAuthor;
+	}
+
+	public void setFlagAuthor(Trainer flagAuthor) {
+		this.flagAuthor = flagAuthor;
+	}
+
+	public Timestamp getFlagNoteTimeStamp() {
+		return flagNoteTimeStamp;
+	}
+
+	public void setFlagNoteTimeStamp(Timestamp flagNoteTimeStamp) {
+		this.flagNoteTimeStamp = flagNoteTimeStamp;
 	}
 	
-	
-
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
 	@Override
 	public String toString() {
 		return "Trainee [traineeId=" + traineeId + ", name=" + name + ", trainingStatus="
-				+ trainingStatus + ", batch=" + batch + ", flagStatus=" + flagStatus + ", flagNotes=" + flagNotes
-				+ ", notes=" + notes + "]";
+				+ trainingStatus + ", batchId=" + batchId + ", flagStatus=" + flagStatus + ", flagNotes=" + flagNotes
+				+ ", flagAuthor=" + flagAuthor + ", flagNoteTimeStamp=" + flagNoteTimeStamp + "]";
 	}
-	
-
-	
-	
 
 }

@@ -5,6 +5,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.netflix.feign.EnableFeignClients;
 
+/**
+ * This microservice allows us to retrieve, persist, and manipulate note information. 
+ * The microservice is discoverable by Eureka and is a Spring.
+ * Boot application.
+ * @author 
+ *
+ */
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableFeignClients
