@@ -24,16 +24,16 @@ import feign.RetryableException;
  */
 @Service
 public class NoteService {
-	
+
 	/**
 	 * The repository is responsible for interacting with the note table
 	 */
 	@Autowired
 	NoteRepository repo;
-	
+
 	@Autowired
 	private TraineeClient tClient;
-	
+
 	/**
 	 * 
 	 * @return notes
@@ -41,23 +41,25 @@ public class NoteService {
 	public List<Note> getAllNotes() {
 		return repo.findAll();
 	}
-	
+
 	/**
 	 * Save note
+	 * 
 	 * @param n
 	 * @return
 	 */
 	public Note createNote(Note n) {
 		return repo.save(n);
 	}
-	
+
 	/**
 	 * 
 	 * @param batch
-	 * @return A list of new QC notes for all non-dropped associates in the specified batch. The order of the list is
-	 * 		   randomized and a new overall batch note is appended to the end.
+	 * @return A list of new QC notes for all non-dropped associates in the
+	 *         specified batch. The order of the list is randomized and a new
+	 *         overall batch note is appended to the end.
 	 */
-	public List<Note> createBatchNotes(BatchEntity batch){
+	public List<Note> createBatchNotes(BatchEntity batch) {
 		// Retrieve batchId and week number from batch entity
 		int batchId = batch.getBatchId();
 		int weekInt = batch.getWeeks();
@@ -66,7 +68,7 @@ public class NoteService {
 		try {
 			// Use Feign Client to retrieve list of trainees from the User Service
 			ResponseEntity<List<Trainee>> response = tClient.findAllByBatch(batchId);
-			if(response != null && response.hasBody()) {
+			if (response != null && response.hasBody()) {
 				List<Trainee> trainees = response.getBody();
 				Iterator<Trainee> itr = trainees.iterator();
 				Trainee t = new Trainee();
@@ -79,15 +81,15 @@ public class NoteService {
 						notes.add(n);
 					}
 				}
-			}
-			else {
+			} else {
 				return null;
 			}
-		}catch(RetryableException e) {
+		} catch (RetryableException e) {
 			e.printStackTrace();
 			return null;
 		}
-		// Shuffle list of notes so names are displayed in random order on the client side
+		// Shuffle list of notes so names are displayed in random order on the client
+		// side
 		Collections.shuffle(notes);
 		// Create an "overall feedback" note and append to the end of the list
 		Note batchNote = new Note(week, batchId);
@@ -95,37 +97,44 @@ public class NoteService {
 		notes.add(batchNote);
 		return notes;
 	}
-	
+
 	/**
 	 * Delete a note
+	 * 
 	 * @param id
 	 */
 	public void deleteNote(Integer id) {
 		repo.delete(id);
 	}
-	
+
 	public Note findById(Integer id) {
 		return repo.findOne(id);
 	}
-	
+
 	/**
 	 * Update a note
+	 * 
 	 * @param n
 	 * @return
 	 */
 	public Note updateNote(Note n) {
 		return repo.save(n);
 	}
-	
-	
-	public int updateWeekForNote(short week, int id) {
-		return repo.updateWeekForNote(week, id);
+
+	/**
+	 * updating partial columns of the note table
+	 * 
+	 * @param content
+	 * @param week
+	 * @param id
+	 * @return
+	 */
+	public int updateWeekForNote(String content, short week, int id) {
+		return repo.updateWeekForNote(content, week, id);
 	}
-	
-	
+
 	public List<Note> findByBatchAndWeek(Integer batchId, Short week) {
 		return repo.findByBatchAndWeek(batchId, week);
 	}
-
 
 }

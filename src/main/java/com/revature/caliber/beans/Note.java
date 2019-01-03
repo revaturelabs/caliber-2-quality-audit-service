@@ -5,11 +5,13 @@ import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -20,7 +22,6 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import org.hibernate.validator.constraints.Length;
 
-
 /**
  * 
  *
@@ -28,7 +29,7 @@ import org.hibernate.validator.constraints.Length;
 @Entity
 @Table(name = "CALIBER_NOTE")
 @DynamicUpdate
-public class Note implements Serializable{
+public class Note implements Serializable {
 
 	private static final long serialVersionUID = 4960654794116385953L;
 
@@ -39,12 +40,12 @@ public class Note implements Serializable{
 	private int noteId;
 
 	@NotNull
-	@Length(min=0, max=4000)
+	@Length(min = 0, max = 4000)
 	@Column(name = "NOTE_CONTENT", nullable = true)
 	private String content;
 
 	@NotNull
-	@Min(value=1)
+	@Min(value = 1)
 	@Column(name = "WEEK_NUMBER")
 	private short week;
 	/**
@@ -58,7 +59,7 @@ public class Note implements Serializable{
 	 */
 	@Transient
 	private Trainee trainee;
-	
+
 	@Column(name = "TRAINEE_ID", nullable = true)
 	private int traineeId;
 
@@ -70,44 +71,40 @@ public class Note implements Serializable{
 	@Enumerated(EnumType.STRING)
 	@Column(name = "QC_STATUS", nullable = true)
 	private QCStatus qcStatus;
-	
-	@Column(name="UPDATE_TIME")
+
+	@Column(name = "UPDATE_TIME")
 	private Timestamp updateTime;
-	
-	@Column(name="UPDATED_BY")
-	private Trainer updateTrainer;	// Will be null until login page is implemented
+
+	@NotNull
+	@Column(name = "LAST_SAVED_BY")
+	private int lastSavedBy;
 
 	public Note() {
 		super();
 		this.updateTime = new Timestamp(System.currentTimeMillis());
+		this.lastSavedBy = 1;
+	}
+
+	public Note(int noteId, String content, short week, int batchIdId, int traineeIdId, NoteType type,
+			QCStatus qcStatus) {
+		super();
+		this.noteId = noteId;
+		this.content = content;
+		this.week = week;
+		this.batchId = batchIdId;
+		this.traineeId = traineeIdId;
+		this.type = type;
+		this.qcStatus = qcStatus;
+		this.updateTime = new Timestamp(System.currentTimeMillis());
+		this.lastSavedBy = 1;
 	}
 
 	/**
 	 * 
 	 * @param week
 	 * @param batchId
-	 * @param trainee
 	 * 
-	 * Create individual associate notes per batch per week.
-	 * 
-	 */
-	public Note(short week, int batchId, Trainee trainee) {
-		this.content = " ";
-		this.week = week;
-		this.batchId = batchId;
-		this.trainee = trainee;
-		this.traineeId = trainee.getTraineeId();
-		this.type = NoteType.QC_TRAINEE;
-		this.qcStatus = QCStatus.Undefined;
-		this.updateTime = new Timestamp(System.currentTimeMillis());
-	}
-	
-	/**
-	 * 
-	 * @param week
-	 * @param batchId
-	 * 
-	 * Create overall batch note per week.
+	 *                Create overall batch note per week.
 	 * 
 	 */
 	public Note(short week, int batchId) {
@@ -115,11 +112,10 @@ public class Note implements Serializable{
 		this.week = week;
 		this.batchId = batchId;
 		this.type = NoteType.QC_BATCH;
-		this.qcStatus = QCStatus.Undefined;	// "Overall Feedback"
+		this.qcStatus = QCStatus.Undefined; // "Overall Feedback"
 		this.updateTime = new Timestamp(System.currentTimeMillis());
 	}
-	
-	
+
 	public int getNoteId() {
 		return noteId;
 	}
@@ -175,7 +171,7 @@ public class Note implements Serializable{
 	public void setQcStatus(QCStatus qcStatus) {
 		this.qcStatus = qcStatus;
 	}
-	
+
 	public Trainee getTrainee() {
 		return trainee;
 	}
@@ -183,7 +179,7 @@ public class Note implements Serializable{
 	public void setTrainee(Trainee trainee) {
 		this.trainee = trainee;
 	}
-	
+
 	public Timestamp getUpdateTime() {
 		return updateTime;
 	}
@@ -192,25 +188,17 @@ public class Note implements Serializable{
 		this.updateTime = updateTime;
 	}
 
-	public Trainer getUpdateTrainer() {
-		return updateTrainer;
-	}
-
-	public void setUpdateTrainer(Trainer updateTrainer) {
-		this.updateTrainer = updateTrainer;
-	}
-
 	@Override
 	public boolean equals(Object obj) {
-		
+
 		return super.equals(obj);
 	}
-		
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		
+
 		result = prime * result + noteId;
 		result = prime * result + ((content == null) ? 0 : content.hashCode());
 		result = prime * result + ((qcStatus == null) ? 0 : qcStatus.hashCode());
@@ -222,17 +210,56 @@ public class Note implements Serializable{
 		return super.hashCode();
 	}
 
+	public String getcreationTime() {
+		return updateTime.toString();
+	}
+
+	public void setcreationTime(Timestamp updateTime) {
+		this.updateTime = updateTime;
+	}
+
+	public int getLastSavedBy() {
+		return lastSavedBy;
+	}
+
+	public void setLastSavedBy(int lastSavedBy) {
+		this.lastSavedBy = lastSavedBy;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+
+		return super.equals(obj);
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+
+		result = prime * result + noteId;
+		result = prime * result + ((content == null) ? 0 : content.hashCode());
+		result = prime * result + ((qcStatus == null) ? 0 : qcStatus.hashCode());
+		result = prime * result + ((type == null) ? 0 : type.hashCode());
+		result = prime * result + week;
+		result = prime * result + batchId;
+		result = prime * result + traineeId;
+		result = prime * result + ((updateTime == null) ? 0 : updateTime.hashCode());
+		result = prime * result + lastSavedBy;
+		return super.hashCode();
+
+	}
+
 	@Override
 	public String toString() {
 		return "Note [noteId=" + noteId + ", content=" + content + ", week=" + week + ", batchId=" + batchId
 				+ ", trainee=" + trainee + ", traineeId=" + traineeId + ", type=" + type + ", qcStatus=" + qcStatus
-				+ ", updateTime=" + updateTime + ", updateTrainer=" + updateTrainer + "]";
+				+ ", updateTime=" + updateTime + "]";
 	}
-	
-	
 
-
-
-	
 }
-
