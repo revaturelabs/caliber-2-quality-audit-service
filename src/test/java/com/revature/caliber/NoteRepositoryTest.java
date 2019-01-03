@@ -113,12 +113,12 @@ public class NoteRepositoryTest {
 	
 	@Before
 	public void setUp() throws Exception {
-		when(repo.findByBatchAndWeek(BATCH_ID, WEEK_NUMBER)).thenReturn(notes);
+		when(repo.findQCNotesByBatchAndWeek(BATCH_ID, WEEK_NUMBER,NoteType.QC_TRAINEE)).thenReturn(notes);
 	}
 
 	@Test
 	public void testFindByBatchAndWeek() {
-		List<Note> list = repo.findByBatchAndWeek(BATCH_ID, WEEK_NUMBER);
+		List<Note> list = repo.findQCNotesByBatchAndWeek(BATCH_ID, WEEK_NUMBER,NoteType.QC_TRAINEE);
 		assertEquals(notes, list);
 	}
 }
