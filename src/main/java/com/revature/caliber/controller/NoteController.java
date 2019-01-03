@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.caliber.beans.BatchEntity;
 import com.revature.caliber.beans.Note;
+import com.revature.caliber.intercomm.TraineeClient;
 import com.revature.caliber.service.NoteService;
 
 /**
@@ -61,48 +62,47 @@ public class NoteController {
 		log.trace("IN AUDIT: FIND ONE NOTE");
 		return service.findById(id);
 	}
-	
+
 	/**
 	 * 
 	 * @param batchId
-	 * @param week number
+	 * @param week    number
 	 * @return a list of associate notes according to batch and week
 	 */
 	@GetMapping(value = "/notes/{batch}/{week}")
 	public List<Note> getNotesByBatchAndWeek(@PathVariable Integer batch, @PathVariable Short week) {
 		return service.findByBatchAndWeek(batch, week);
 	}
-	
+
 	@GetMapping(value = "/notes/overall/{batch}/{week}")
-	public Note getOverallNoteByBatchAndWeek(@PathVariable Integer batch, @PathVariable Short week){
+	public Note getOverallNoteByBatchAndWeek(@PathVariable Integer batch, @PathVariable Short week) {
 		return service.findOverallNoteByBatchAndWeek(batch, week);
 	}
-	
+
 	/**
 	 * Handles post request for creating a note
 	 * 
 	 * @param note
 	 * @return The created note as well as an OK status code
 	 */
-//	@PostMapping(path = "/create", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-//	public ResponseEntity<Note> createNote(@RequestBody Note note) {
-//		log.debug("CREATING NOTE: " + note);
-//		note = service.createNote(note);
-//		if (note == null) {
-//			return new ResponseEntity<>(HttpStatus.CONFLICT);
-//		} else {
-//			return new ResponseEntity<>(note, HttpStatus.CREATED);
-//		}
-//	}
-	
-	
+	// @PostMapping(path = "/create", consumes = MediaType.APPLICATION_JSON_VALUE,
+	// produces = MediaType.APPLICATION_JSON_VALUE)
+	// public ResponseEntity<Note> createNote(@RequestBody Note note) {
+	// log.debug("CREATING NOTE: " + note);
+	// note = service.createNote(note);
+	// if (note == null) {
+	// return new ResponseEntity<>(HttpStatus.CONFLICT);
+	// } else {
+	// return new ResponseEntity<>(note, HttpStatus.CREATED);
+	// }
+	// }
+
 	@PostMapping(path = "/note/create-batch-notes", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<Note>> createBatchNotes(@RequestBody BatchEntity batch){		
+	public ResponseEntity<List<Note>> createBatchNotes(@RequestBody BatchEntity batch) {
 		List<Note> notes = service.createBatchNotes(batch);
 		if (notes == null) {
 			return new ResponseEntity<>(HttpStatus.CONFLICT);
-		}
-		else {
+		} else {
 			return new ResponseEntity<>(notes, HttpStatus.CREATED);
 		}
 	}
@@ -139,6 +139,5 @@ public class NoteController {
 		return service.updateWeekForNote(note.getContent(), note.getWeek(), note.getNoteId());
 
 	}
-
 
 }

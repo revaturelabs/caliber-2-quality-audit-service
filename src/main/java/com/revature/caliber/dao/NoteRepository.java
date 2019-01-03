@@ -42,18 +42,13 @@ public interface NoteRepository extends JpaRepository<Note, Integer> {
 	 * @return
 	 */
 	@Query("SELECT n FROM Note n WHERE n.batchId = :batchId AND n.week = :week")
-	public List<Note> findByBatchAndWeek(
-			@Param("batchId") Integer batchId,
-			@Param("week") Short week);
-	
+	public List<Note> findByBatchAndWeek(@Param("batchId") Integer batchId, @Param("week") Short week);
+
 	@Query("SELECT n FROM Note n WHERE n.batchId = :batchId AND n.week = :week AND n.type = :type")
-	public Note findQCBatchNotes(
-			@Param("batchId") Integer batchId,
-			@Param("week") Short week,
+	public Note findQCBatchNotes(@Param("batchId") Integer batchId, @Param("week") Short week,
 			@Param("type") NoteType type);
-	
+
 	@Query("SELECT n FROM Note n WHERE n.traineeId = :traineeId")
 	public List<Note> findByTraineeId(@Param("traineeId") int traineeId, Sort sort);
-		
-	
+
 }

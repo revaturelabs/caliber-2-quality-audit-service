@@ -103,10 +103,4 @@ public class Trainee {
 				+ ", flagAuthor=" + flagAuthor + ", flagNoteTimeStamp=" + flagNoteTimeStamp + "]";
 	}
 
-
-	
-
-	
-	
-
 }
