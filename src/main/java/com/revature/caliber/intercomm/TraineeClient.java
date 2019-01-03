@@ -19,7 +19,8 @@ import com.revature.caliber.beans.Trainee;
 
 /**
  * FeignClient interfaces handling requests to user-service
- * @author 
+ * 
+ * @author
  *
  */
 @FeignClient(name = "user-service", url = "http://caliber-v2-1680103809.eu-west-2.elb.amazonaws.com/user/")

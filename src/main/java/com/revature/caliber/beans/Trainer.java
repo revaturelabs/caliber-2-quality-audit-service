@@ -2,13 +2,11 @@ package com.revature.caliber.beans;
 
 import java.util.Set;
 
-
 /**
  * The type Trainer.
  */
 public class Trainer {
 
-	
 	private int trainerId;
 	private String name;
 	private TrainerRole tier;
@@ -22,10 +20,7 @@ public class Trainer {
 		super();
 		this.trainerId = trainerId;
 		this.name = name;
-		this.tier = tier;
-		this.batches = batches;
 	}
-
 
 	public int getTrainerId() {
 		return trainerId;
@@ -61,9 +56,7 @@ public class Trainer {
 
 	@Override
 	public String toString() {
-		return "Trainer [trainerId=" + trainerId + ", name=" + name + ", tier=" + tier + ", batches=" + batches + "]";
+		return "Trainer [trainerId=" + trainerId + ", name=" + name + "]";
 	}
-	
-	
 
 }

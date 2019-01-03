@@ -14,13 +14,13 @@ import javax.persistence.Enumerated;
 
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.DynamicUpdate;
 
 import org.hibernate.validator.constraints.Length;
-
 
 /**
  * 
@@ -29,7 +29,7 @@ import org.hibernate.validator.constraints.Length;
 @Entity
 @Table(name = "CALIBER_NOTE")
 @DynamicUpdate
-public class Note implements Serializable{
+public class Note implements Serializable {
 
 	private static final long serialVersionUID = 4960654794116385953L;
 
@@ -40,15 +40,14 @@ public class Note implements Serializable{
 	private int noteId;
 
 	@NotNull
-	@Length(min=0, max=4000)
-	@Column(name = "NOTE_CONTENT")
+	@Length(min = 0, max = 4000)
+	@Column(name = "NOTE_CONTENT", nullable = true)
 	private String content;
 
 	@NotNull
-	@Min(value=1)
+	@Min(value = 1)
 	@Column(name = "WEEK_NUMBER")
 	private short week;
-	
 	/**
 	 * Will be null if the note is individual traineeId feedback
 	 */
@@ -56,8 +55,11 @@ public class Note implements Serializable{
 	private int batchId;
 
 	/**
-	 * Will be null if the note is overall batchId feedback
+	 * Will be null if the note is overall batch feedback
 	 */
+	@Transient
+	private Trainee trainee;
+
 	@Column(name = "TRAINEE_ID", nullable = true)
 	private int traineeId;
 
@@ -69,24 +71,22 @@ public class Note implements Serializable{
 	@Enumerated(EnumType.STRING)
 	@Column(name = "QC_STATUS", nullable = true)
 	private QCStatus qcStatus;
-	
-	@Column(name="CREATION_TIME")
-	private Timestamp creationTime;
-	
+
+	@Column(name = "UPDATE_TIME")
+	private Timestamp updateTime;
+
 	@NotNull
-	@Column(name="LAST_SAVED_BY")
+	@Column(name = "LAST_SAVED_BY")
 	private int lastSavedBy;
 
 	public Note() {
 		super();
-		this.creationTime = new Timestamp(System.currentTimeMillis());
+		this.updateTime = new Timestamp(System.currentTimeMillis());
 		this.lastSavedBy = 1;
 	}
 
-
-
-	public Note(int noteId, String content, short week, int batchIdId, int traineeIdId,
-			NoteType type, QCStatus qcStatus) {
+	public Note(int noteId, String content, short week, int batchIdId, int traineeIdId, NoteType type,
+			QCStatus qcStatus) {
 		super();
 		this.noteId = noteId;
 		this.content = content;
@@ -95,8 +95,25 @@ public class Note implements Serializable{
 		this.traineeId = traineeIdId;
 		this.type = type;
 		this.qcStatus = qcStatus;
-		this.creationTime = new Timestamp(System.currentTimeMillis());
+		this.updateTime = new Timestamp(System.currentTimeMillis());
 		this.lastSavedBy = 1;
+	}
+
+	/**
+	 * 
+	 * @param week
+	 * @param batchId
+	 * 
+	 *                Create overall batch note per week.
+	 * 
+	 */
+	public Note(short week, int batchId) {
+		this.content = " ";
+		this.week = week;
+		this.batchId = batchId;
+		this.type = NoteType.QC_BATCH;
+		this.qcStatus = QCStatus.Undefined; // "Overall Feedback"
+		this.updateTime = new Timestamp(System.currentTimeMillis());
 	}
 
 	public int getNoteId() {
@@ -155,47 +172,33 @@ public class Note implements Serializable{
 		this.qcStatus = qcStatus;
 	}
 
-	public String getcreationTime() {
-		return creationTime.toString();
+	public Trainee getTrainee() {
+		return trainee;
 	}
 
-
-	public void setcreationTime(Timestamp creationTime) {
-		this.creationTime = creationTime;
+	public void setTrainee(Trainee trainee) {
+		this.trainee = trainee;
 	}
 
-
-
-	public int getLastSavedBy() {
-		return lastSavedBy;
+	public Timestamp getUpdateTime() {
+		return updateTime;
 	}
 
-
-
-	public void setLastSavedBy(int lastSavedBy) {
-		this.lastSavedBy = lastSavedBy;
+	public void setUpdateTime(Timestamp updateTime) {
+		this.updateTime = updateTime;
 	}
 
-
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-
-	}
-
-	
 	@Override
 	public boolean equals(Object obj) {
-		
+
 		return super.equals(obj);
 	}
-	
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		
+
 		result = prime * result + noteId;
 		result = prime * result + ((content == null) ? 0 : content.hashCode());
 		result = prime * result + ((qcStatus == null) ? 0 : qcStatus.hashCode());
@@ -203,20 +206,60 @@ public class Note implements Serializable{
 		result = prime * result + week;
 		result = prime * result + batchId;
 		result = prime * result + traineeId;
-		result = prime * result + ((creationTime == null) ? 0 : creationTime.hashCode());
+		result = prime * result + ((updateTime == null) ? 0 : updateTime.hashCode());
+		return super.hashCode();
+	}
+
+	public String getcreationTime() {
+		return updateTime.toString();
+	}
+
+	public void setcreationTime(Timestamp updateTime) {
+		this.updateTime = updateTime;
+	}
+
+	public int getLastSavedBy() {
+		return lastSavedBy;
+	}
+
+	public void setLastSavedBy(int lastSavedBy) {
+		this.lastSavedBy = lastSavedBy;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+
+		return super.equals(obj);
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+
+		result = prime * result + noteId;
+		result = prime * result + ((content == null) ? 0 : content.hashCode());
+		result = prime * result + ((qcStatus == null) ? 0 : qcStatus.hashCode());
+		result = prime * result + ((type == null) ? 0 : type.hashCode());
+		result = prime * result + week;
+		result = prime * result + batchId;
+		result = prime * result + traineeId;
+		result = prime * result + ((updateTime == null) ? 0 : updateTime.hashCode());
 		result = prime * result + lastSavedBy;
 		return super.hashCode();
 
 	}
-	
 
 	@Override
 	public String toString() {
-
-		return "Note [noteId=" + noteId + ", content=" + content + ", qcStatus=" + qcStatus + ", noteType=" + type + ", week=" + week + ", batchId="
-				+ batchId + ", traineeId=" + traineeId + ", lastSavedBy=" + lastSavedBy + ", creationTime=" + "creationTime.toString()" + "]";
-
+		return "Note [noteId=" + noteId + ", content=" + content + ", week=" + week + ", batchId=" + batchId
+				+ ", trainee=" + trainee + ", traineeId=" + traineeId + ", type=" + type + ", qcStatus=" + qcStatus
+				+ ", updateTime=" + updateTime + "]";
 	}
-	
-}
 
+}

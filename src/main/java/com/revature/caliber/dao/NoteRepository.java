@@ -13,14 +13,16 @@ import com.revature.caliber.beans.Note;
 
 /**
  * Handles retrieving notes from a database
- * @author 
+ * 
+ * @author
  *
  */
 @Repository
-public interface NoteRepository extends JpaRepository <Note, Integer> {
-	
+public interface NoteRepository extends JpaRepository<Note, Integer> {
+
 	/**
 	 * Updating content, week columns of note table.
+	 * 
 	 * @param content
 	 * @param weekNumber
 	 * @param noteId
@@ -28,8 +30,9 @@ public interface NoteRepository extends JpaRepository <Note, Integer> {
 	 */
 	@Modifying
 	@Query("UPDATE Note n SET n.content = :noteContent, n.week = :weekNumber where n.noteId = :noteId")
-	int updateWeekForNote(@Param("noteContent") String content, @Param("weekNumber") short weekNumber, @Param("noteId") int noteId);
-	
+	int updateWeekForNote(@Param("noteContent") String content, @Param("weekNumber") short weekNumber,
+			@Param("noteId") int noteId);
+
 	/**
 	 * 
 	 * @param batchId
@@ -37,9 +40,6 @@ public interface NoteRepository extends JpaRepository <Note, Integer> {
 	 * @return
 	 */
 	@Query("SELECT n FROM Note n WHERE n.batchId = :batchId AND n.week = :week")
-	public List<Note> findByBatchAndWeek(
-			@Param("batchId") Integer batchId,
-			@Param("week") Short week);
-	
-	
+	public List<Note> findByBatchAndWeek(@Param("batchId") Integer batchId, @Param("week") Short week);
+
 }

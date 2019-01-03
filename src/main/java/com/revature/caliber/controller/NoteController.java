@@ -19,13 +19,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.revature.caliber.beans.BatchEntity;
 import com.revature.caliber.beans.Note;
 import com.revature.caliber.service.NoteService;
 
 /**
  * Controllers for handling all requests having to do with notes.
  * 
- * @author 
+ * @author
  *
  */
 @RestController
@@ -38,7 +39,6 @@ public class NoteController {
 	@Autowired
 	private NoteService service;
 
-	
 	/**
 	 * Handles get request for returning all notes
 	 * 
@@ -53,6 +53,7 @@ public class NoteController {
 
 	/**
 	 * get request to return a note based on id.
+	 * 
 	 * @param id
 	 * @return a note based on noteId
 	 */
@@ -61,15 +62,16 @@ public class NoteController {
 		log.trace("IN AUDIT: FIND ONE NOTE");
 		return service.findById(id);
 	}
-	
+
 	/**
 	 * Querying notes based on batch and week.
+	 * 
 	 * @param batch
 	 * @param week
 	 * @return
 	 */
 	@GetMapping(value = "/notes/{batch}/{week}")
-	public List<Note> getNotesByBatchAndWeek(@PathVariable Integer batch, @PathVariable Short week){
+	public List<Note> getNotesByBatchAndWeek(@PathVariable Integer batch, @PathVariable Short week) {
 		return service.findByBatchAndWeek(batch, week);
 	}
 
@@ -84,13 +86,21 @@ public class NoteController {
 
 		log.debug("IN AUDIT, CREATING NOTE: " + note);
 		note = service.createNote(note);
-
 		if (note == null) {
 			return new ResponseEntity<>(HttpStatus.CONFLICT);
 		} else {
 			return new ResponseEntity<>(note, HttpStatus.CREATED);
 		}
+	}
 
+	@PostMapping(path = "/note/create-batch-notes", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<Note>> createBatchNotes(@RequestBody BatchEntity batch) {
+		List<Note> notes = service.createBatchNotes(batch);
+		if (notes == null) {
+			return new ResponseEntity<>(HttpStatus.CONFLICT);
+		} else {
+			return new ResponseEntity<>(notes, HttpStatus.CREATED);
+		}
 	}
 
 	/**
@@ -110,9 +120,10 @@ public class NoteController {
 			return new ResponseEntity<>(note, HttpStatus.CREATED);
 		}
 	}
-	
+
 	/**
 	 * Update partial columns of note table
+	 * 
 	 * @param note
 	 * @return
 	 */
@@ -120,7 +131,7 @@ public class NoteController {
 	@Transactional
 	public int updateContentWeekForNote(@RequestBody Note note) {
 		log.debug("Updating note: " + note);
-	
+
 		return service.updateWeekForNote(note.getContent(), note.getWeek(), note.getNoteId());
 
 	}

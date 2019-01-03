@@ -22,6 +22,7 @@ import com.revature.caliber.intercomm.TraineeClient;
 
 /**
  * Controller for handling all requests having to do with trainees.
+ * 
  * @author
  *
  */
@@ -32,6 +33,8 @@ public class TraineeController {
 
 	@Autowired
 	private TraineeClient client;
+
+	private static final Logger log = Logger.getLogger(TraineeController.class);
 
 	/**
 	 * Handles get request for returning all trainees with the given batch id as a
@@ -45,7 +48,6 @@ public class TraineeController {
 
 		return client.findAllByBatch(batch);
 	}
-	
 
 	/**
 	 * Handles put request for updating a trainee in a batch
