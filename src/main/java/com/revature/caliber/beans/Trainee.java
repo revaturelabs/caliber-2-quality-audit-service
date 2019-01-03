@@ -3,23 +3,23 @@ package com.revature.caliber.beans;
 import java.sql.Timestamp;
 
 public class Trainee {
-
+	
 	private int traineeId;
 	private String name;
 	private TrainingStatus trainingStatus;
 	private Integer batchId;
 	private TraineeFlag flagStatus;
 	private String flagNotes;
-	private Trainer flagAuthor; // Will be null until login page is implemented
+	private Trainer flagAuthor;	// Will be null until login page is implemented
 	private Timestamp flagNoteTimeStamp;
-
+		
 	public Trainee() {
 		super();
 		this.flagStatus = TraineeFlag.NONE;
 	}
 
-	public Trainee(int traineeId, String name, TrainingStatus trainingStatus, Integer batchId, TraineeFlag flagStatus,
-			String flagNotes, Trainer flagAuthor, Timestamp flagNoteTimeStamp) {
+	public Trainee(int traineeId, String name, TrainingStatus trainingStatus, Integer batchId,
+			TraineeFlag flagStatus, String flagNotes, Trainer flagAuthor, Timestamp flagNoteTimeStamp) {
 		super();
 		this.traineeId = traineeId;
 		this.name = name;
@@ -30,6 +30,7 @@ public class Trainee {
 		this.flagAuthor = flagAuthor;
 		this.flagNoteTimeStamp = flagNoteTimeStamp;
 	}
+
 
 	public int getTraineeId() {
 		return traineeId;
@@ -91,23 +92,21 @@ public class Trainee {
 		return flagNoteTimeStamp;
 	}
 
-	public Integer getBatchId() {
-		return batchId;
-	}
-
-	public void setBatchId(Integer batchId) {
-		this.batchId = batchId;
-	}
-
 	public void setFlagNoteTimeStamp(Timestamp flagNoteTimeStamp) {
 		this.flagNoteTimeStamp = flagNoteTimeStamp;
 	}
-
+	
 	@Override
 	public String toString() {
-		return "Trainee [traineeId=" + traineeId + ", name=" + name + ", trainingStatus=" + trainingStatus
-				+ ", batchId=" + batchId + ", flagStatus=" + flagStatus + ", flagNotes=" + flagNotes + ", flagAuthor="
-				+ flagAuthor + ", flagNoteTimeStamp=" + flagNoteTimeStamp + "]";
+		return "Trainee [traineeId=" + traineeId + ", name=" + name + ", trainingStatus="
+				+ trainingStatus + ", batchId=" + batchId + ", flagStatus=" + flagStatus + ", flagNotes=" + flagNotes
+				+ ", flagAuthor=" + flagAuthor + ", flagNoteTimeStamp=" + flagNoteTimeStamp + "]";
 	}
+
+
+	
+
+	
+	
 
 }

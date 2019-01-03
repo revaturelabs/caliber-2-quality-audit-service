@@ -9,8 +9,6 @@ public class Trainer {
 
 	private int trainerId;
 	private String name;
-	private TrainerRole tier;
-	private Set<BatchEntity> batches;
 
 	public Trainer() {
 		super();
@@ -38,21 +36,6 @@ public class Trainer {
 		this.name = name;
 	}
 
-	public TrainerRole getTier() {
-		return tier;
-	}
-
-	public void setTier(TrainerRole tier) {
-		this.tier = tier;
-	}
-
-	public Set<BatchEntity> getBatches() {
-		return batches;
-	}
-
-	public void setBatches(Set<BatchEntity> batches) {
-		this.batches = batches;
-	}
 
 	@Override
 	public String toString() {

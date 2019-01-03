@@ -48,6 +48,8 @@ public class TraineeController {
 
 		return client.findAllByBatch(batch);
 	}
+	
+	
 
 	/**
 	 * Handles put request for updating a trainee in a batch

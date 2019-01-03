@@ -143,11 +143,11 @@ public class NoteControllerTest {
 		assertEquals(notes, controller.getNotesByBatchAndWeek(BATCH_ID, WEEK_NUMBER));
 	}
 	
-	@Test
-	public void testCreateNote() {
-		controller.createNote(note5503);
-		verify(service).createNote(note5503);
-	}
+//	@Test
+//	public void testCreateNote() {
+//		controller.createNote(note5503);
+//		verify(service).createNote(note5503);
+//	}
 
 	@Test
 	public void testUpdateNote() {
@@ -157,9 +157,9 @@ public class NoteControllerTest {
 		verify(service).updateNote(changedNote);
 	}
 	
-	@Test
-	public void testDeleteNote() {
-		controller.deleteNote(note5501.getNoteId());
-		verify(service).deleteNote(note5501.getNoteId());
-	}
+//	@Test
+//	public void testDeleteNote() {
+//		controller.deleteNote(note5501.getNoteId());
+//		verify(service).deleteNote(note5501.getNoteId());
+//	}
 }

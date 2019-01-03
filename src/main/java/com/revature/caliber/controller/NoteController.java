@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -62,43 +61,48 @@ public class NoteController {
 		log.trace("IN AUDIT: FIND ONE NOTE");
 		return service.findById(id);
 	}
-
+	
 	/**
-	 * Querying notes based on batch and week.
 	 * 
-	 * @param batch
-	 * @param week
-	 * @return
+	 * @param batchId
+	 * @param week number
+	 * @return a list of associate notes according to batch and week
 	 */
 	@GetMapping(value = "/notes/{batch}/{week}")
 	public List<Note> getNotesByBatchAndWeek(@PathVariable Integer batch, @PathVariable Short week) {
 		return service.findByBatchAndWeek(batch, week);
 	}
-
+	
+	@GetMapping(value = "/notes/overall/{batch}/{week}")
+	public Note getOverallNoteByBatchAndWeek(@PathVariable Integer batch, @PathVariable Short week){
+		return service.findOverallNoteByBatchAndWeek(batch, week);
+	}
+	
 	/**
 	 * Handles post request for creating a note
 	 * 
 	 * @param note
 	 * @return The created note as well as an OK status code
 	 */
-	@PostMapping(path = "/create", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Note> createNote(@RequestBody Note note) {
-
-		log.debug("IN AUDIT, CREATING NOTE: " + note);
-		note = service.createNote(note);
-		if (note == null) {
-			return new ResponseEntity<>(HttpStatus.CONFLICT);
-		} else {
-			return new ResponseEntity<>(note, HttpStatus.CREATED);
-		}
-	}
-
+//	@PostMapping(path = "/create", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+//	public ResponseEntity<Note> createNote(@RequestBody Note note) {
+//		log.debug("CREATING NOTE: " + note);
+//		note = service.createNote(note);
+//		if (note == null) {
+//			return new ResponseEntity<>(HttpStatus.CONFLICT);
+//		} else {
+//			return new ResponseEntity<>(note, HttpStatus.CREATED);
+//		}
+//	}
+	
+	
 	@PostMapping(path = "/note/create-batch-notes", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<Note>> createBatchNotes(@RequestBody BatchEntity batch) {
+	public ResponseEntity<List<Note>> createBatchNotes(@RequestBody BatchEntity batch){		
 		List<Note> notes = service.createBatchNotes(batch);
 		if (notes == null) {
 			return new ResponseEntity<>(HttpStatus.CONFLICT);
-		} else {
+		}
+		else {
 			return new ResponseEntity<>(notes, HttpStatus.CREATED);
 		}
 	}
@@ -136,17 +140,5 @@ public class NoteController {
 
 	}
 
-	/**
-	 * Delete a note by id
-	 * 
-	 * @param id
-	 * @return true
-	 */
-	@DeleteMapping(value = "/delete/{id}")
-	public boolean deleteNote(@PathVariable Integer id) {
-		log.trace("IN AUDIT, DELETING A NOTE");
-		service.deleteNote(id);
-		return true;
-	}
 
 }

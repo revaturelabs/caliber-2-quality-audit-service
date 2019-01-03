@@ -1,7 +1,6 @@
 package com.revature.caliber.beans;
 
-import java.util.Date;
-import java.util.Set;
+import java.io.Serializable;
 
 public class BatchEntity implements Serializable{
 
@@ -39,4 +38,7 @@ public class BatchEntity implements Serializable{
 	public String toString() {
 		return "BatchEntity [batchId=" + batchId + ", weeks=" + weeks + "]";
 	}
+
+	
+
 }
