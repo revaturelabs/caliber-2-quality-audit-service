@@ -1,6 +1,7 @@
 package com.revature.caliber.beans;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,11 +12,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.validator.constraints.Length;
+import org.hibernate.annotations.DynamicUpdate;
 
+import org.hibernate.validator.constraints.Length;
 
 /**
  * 
@@ -23,7 +26,8 @@ import org.hibernate.validator.constraints.Length;
  */
 @Entity
 @Table(name = "CALIBER_NOTE")
-public class Note implements Serializable{
+@DynamicUpdate
+public class Note implements Serializable {
 
 	private static final long serialVersionUID = 4960654794116385953L;
 
@@ -33,14 +37,15 @@ public class Note implements Serializable{
 	@SequenceGenerator(name = "NOTE_ID_SEQUENCE", sequenceName = "NOTE_ID_SEQUENCE")
 	private int noteId;
 
+	@NotNull
 	@Length(min=0, max=4000)
-	@Column(name = "NOTE_CONTENT")
+	@Column(name = "NOTE_CONTENT", nullable = true)
 	private String content;
 
-	@Min(value=1)
+	@NotNull
+	@Min(value = 1)
 	@Column(name = "WEEK_NUMBER")
 	private short week;
-
 	/**
 	 * Will be null if the note is individual traineeId feedback
 	 */
@@ -48,8 +53,11 @@ public class Note implements Serializable{
 	private int batchId;
 
 	/**
-	 * Will be null if the note is overall batchId feedback
+	 * Will be null if the note is overall batch feedback
 	 */
+	@Transient
+	private Trainee trainee;
+	
 	@Column(name = "TRAINEE_ID", nullable = true)
 	private int traineeId;
 
@@ -62,22 +70,56 @@ public class Note implements Serializable{
 	@Column(name = "QC_STATUS", nullable = true)
 	private QCStatus qcStatus;
 
+	@Column(name = "UPDATE_TIME")
+	private Timestamp updateTime;
+
+	@NotNull
+	@Column(name = "LAST_SAVED_BY")
+	private Trainer lastSavedBy;
+
 	public Note() {
-		super();	
-	}
-
-	public Note(int noteId, String content, short week, int batchIdId, int traineeIdId,
-			NoteType type, QCStatus qcStatus) {
 		super();
-		this.noteId = noteId;
-		this.content = content;
-		this.week = week;
-		this.batchId = batchIdId;
-		this.traineeId = traineeIdId;
-		this.type = type;
-		this.qcStatus = qcStatus;
+		this.updateTime = new Timestamp(System.currentTimeMillis());
 	}
 
+	/**
+	 * 
+	 * @param week
+	 * @param batchId
+	 * @param trainee
+	 * 
+	 * Create individual associate notes per batch per week.
+	 * 
+	 */
+	public Note(short week, int batchId, Trainee trainee) {
+		this.content = " ";
+		this.week = week;
+		this.batchId = batchId;
+		this.trainee = trainee;
+		this.traineeId = trainee.getTraineeId();
+		this.type = NoteType.QC_TRAINEE;
+		this.qcStatus = QCStatus.Undefined;
+		this.updateTime = new Timestamp(System.currentTimeMillis());
+	}
+	
+	/**
+	 * 
+	 * @param week
+	 * @param batchId
+	 * 
+	 * Create overall batch note per week.
+	 * 
+	 */
+	public Note(short week, int batchId) {
+		this.content = " ";
+		this.week = week;
+		this.batchId = batchId;
+		this.type = NoteType.QC_BATCH;
+		this.qcStatus = QCStatus.Undefined;	// "Overall Feedback"
+		this.updateTime = new Timestamp(System.currentTimeMillis());
+	}
+	
+	
 	public int getNoteId() {
 		return noteId;
 	}
@@ -133,12 +175,65 @@ public class Note implements Serializable{
 	public void setQcStatus(QCStatus qcStatus) {
 		this.qcStatus = qcStatus;
 	}
+	
+	public Trainee getTrainee() {
+		return trainee;
+	}
+
+	public void setTrainee(Trainee trainee) {
+		this.trainee = trainee;
+	}
+	
+	public Timestamp getUpdateTime() {
+		return updateTime;
+	}
+
+	public void setUpdateTime(Timestamp updateTime) {
+		this.updateTime = updateTime;
+	}
+
+	public Trainer getLastSavedBy() {
+		return lastSavedBy;
+	}
+
+	public void setUpdateTrainer(Trainer lastSavedBy) {
+		this.lastSavedBy = lastSavedBy;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+
+		return super.equals(obj);
+	}
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+
+		result = prime * result + noteId;
+		result = prime * result + ((content == null) ? 0 : content.hashCode());
+		result = prime * result + ((qcStatus == null) ? 0 : qcStatus.hashCode());
+		result = prime * result + ((type == null) ? 0 : type.hashCode());
+		result = prime * result + week;
+		result = prime * result + batchId;
+		result = prime * result + traineeId;
+		result = prime * result + ((updateTime == null) ? 0 : updateTime.hashCode());
+		result = prime * result + ((lastSavedBy == null) ? 0 : lastSavedBy.hashCode());;
+		return super.hashCode();
+	}
 
 	@Override
 	public String toString() {
 		return "Note [noteId=" + noteId + ", content=" + content + ", week=" + week + ", batchId=" + batchId
-				+ ", traineeId=" + traineeId + ", type=" + type + ", qcStatus=" + qcStatus + "]";
+				+ ", trainee=" + trainee + ", traineeId=" + traineeId + ", type=" + type + ", qcStatus=" + qcStatus
+				+ ", updateTime=" + updateTime + ", updateTrainer=" + lastSavedBy + "]";
 	}
 	
+	
+
+
+
+	
 }
+
 

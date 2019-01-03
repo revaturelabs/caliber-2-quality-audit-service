@@ -11,7 +11,7 @@ import com.revature.caliber.beans.Trainer;
 /**
  * To intercomm with user-service to get trainer data.
  * 
- * @author thienle
+ * @author
  *
  */
 // @FeignClient(name= "user-service", url = "localhost:9085/")
