@@ -15,8 +15,7 @@ import com.revature.caliber.beans.Trainer;
  *
  */
 // @FeignClient(name= "user-service", url = "localhost:9085/")
-// @FeignClient(name= "user-service", url =
-// "http://caliber-v2-1680103809.eu-west-2.elb.amazonaws.com/user")
+// @FeignClient(name= "user-service", url = "http://caliber-v2-1680103809.eu-west-2.elb.amazonaws.com/user")
 @FeignClient(name = "user-service", url = "${USER_SERVICE_URL}")
 public interface TrainerClient {
 
