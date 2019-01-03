@@ -3,7 +3,7 @@ package com.revature.caliber.controller;
 import java.util.List;
 
 import javax.validation.Valid;
-
+import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Isolation;

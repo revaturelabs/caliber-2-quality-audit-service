@@ -122,10 +122,6 @@ public class NoteService {
 	}
 	
 	public List<Note> findByBatchAndWeek(Integer batchId, Short week) {
-		return repo.findByBatchAndWeek(batchId, week);
-	}
-
-	public List<Note> findByBatchAndWeek(Integer batchId, Short week) {
 		List<Note> notes = repo.findByBatchAndWeek(batchId, week);
 		List<Trainee> trainees = traineeClient.findAllByBatch(batchId).getBody();
 		for (Note n: notes) {
