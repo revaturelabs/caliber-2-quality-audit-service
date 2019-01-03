@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.caliber.beans.BatchEntity;
 import com.revature.caliber.beans.Note;
-import com.revature.caliber.intercomm.TraineeClient;
 import com.revature.caliber.service.NoteService;
 
 /**
@@ -40,9 +38,6 @@ public class NoteController {
 	@Autowired
 	private NoteService service;
 
-	// Retrieve trainee data from user-service
-	@Autowired
-	private TraineeClient client;
 	/**
 	 * Handles get request for returning all notes
 	 * 
@@ -77,16 +72,16 @@ public class NoteController {
 	 * @param note
 	 * @return The created note as well as an OK status code
 	 */
-	@PostMapping(path = "/create", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Note> createNote(@RequestBody Note note) {
-		log.debug("CREATING NOTE: " + note);
-		note = service.createNote(note);
-		if (note == null) {
-			return new ResponseEntity<>(HttpStatus.CONFLICT);
-		} else {
-			return new ResponseEntity<>(note, HttpStatus.CREATED);
-		}
-	}
+//	@PostMapping(path = "/create", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+//	public ResponseEntity<Note> createNote(@RequestBody Note note) {
+//		log.debug("CREATING NOTE: " + note);
+//		note = service.createNote(note);
+//		if (note == null) {
+//			return new ResponseEntity<>(HttpStatus.CONFLICT);
+//		} else {
+//			return new ResponseEntity<>(note, HttpStatus.CREATED);
+//		}
+//	}
 	
 	@PostMapping(path = "/note/create-batch-notes", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Note>> createBatchNotes(@RequestBody BatchEntity batch){		
@@ -131,16 +126,5 @@ public class NoteController {
 
 	}
 
-	/**
-	 * Delete a note by id
-	 * 
-	 * @param id
-	 * @return
-	 */
-	@DeleteMapping(value = "/delete/{id}")
-	public boolean deleteNote(@PathVariable Integer id) {
-		service.deleteNote(id);
-		return true;
-	}
 
 }

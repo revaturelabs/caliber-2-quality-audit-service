@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.revature.caliber.beans.BatchEntity;
 import com.revature.caliber.beans.Note;
+import com.revature.caliber.beans.NoteType;
 import com.revature.caliber.beans.Trainee;
 import com.revature.caliber.beans.TrainingStatus;
 import com.revature.caliber.dao.NoteRepository;
@@ -29,10 +30,11 @@ public class NoteService {
 	 * The repository is responsible for interacting with the note table
 	 */
 	@Autowired
-	NoteRepository repo;
-	
+	NoteRepository repo;	
 	@Autowired
-	private TraineeClient tClient;
+	private TraineeClient traineeClient;
+	@Autowired
+	private EvaluationService evaluationService;
 	
 	/**
 	 * 
@@ -42,14 +44,6 @@ public class NoteService {
 		return repo.findAll();
 	}
 	
-	/**
-	 * Save note
-	 * @param n
-	 * @return
-	 */
-	public Note createNote(Note n) {
-		return repo.save(n);
-	}
 	
 	/**
 	 * 
@@ -65,7 +59,7 @@ public class NoteService {
 		List<Note> notes = new ArrayList<Note>();
 		try {
 			// Use Feign Client to retrieve list of trainees from the User Service
-			ResponseEntity<List<Trainee>> response = tClient.findAllByBatch(batchId);
+			ResponseEntity<List<Trainee>> response = traineeClient.findAllByBatch(batchId);
 			if(response != null && response.hasBody()) {
 				List<Trainee> trainees = response.getBody();
 				Iterator<Trainee> itr = trainees.iterator();
@@ -83,41 +77,38 @@ public class NoteService {
 			else {
 				return null;
 			}
-		}catch(RetryableException e) {
+		} catch(RetryableException e) {
 			e.printStackTrace();
 			return null;
 		}
 		// Shuffle list of notes so names are displayed in random order on the client side
 		Collections.shuffle(notes);
-		// Create an "overall feedback" note and append to the end of the list
-		Note batchNote = new Note(week, batchId);
-		batchNote = repo.save(batchNote);
-		notes.add(batchNote);
+		// Create an "overall batch feedback" note and append to the end of the list
+		Note overallNote = new Note(week, batchId);
+		overallNote = repo.save(overallNote);
+		notes.add(overallNote);
 		return notes;
 	}
 	
-	/**
-	 * Delete a note
-	 * @param id
-	 */
-	public void deleteNote(Integer id) {
-		repo.delete(id);
-	}
 	
 	public Note findById(Integer id) {
 		return repo.findOne(id);
 	}
 	
 	/**
-	 * Update a note
-	 * @param n
-	 * @return
+	 * 
+	 * Update a note. If it is an trainee qc note, check for auto flagging and calculate 
+	 * overall batch qc status
+	 * 
 	 */
-	public Note updateNote(Note n) {
-		return repo.save(n);
+	public Note updateNote(Note note) {
+		if(note.getType() == NoteType.QC_TRAINEE) {
+			evaluationService.checkIfTraineeShouldBeFlagged(note);
+			evaluationService.calculateAverage(note.getWeek(), new Integer(note.getBatchId()));
+		}
+		return repo.save(note);		
 	}
-	
-	
+		
 	public int updateWeekForNote(short week, int id) {
 		return repo.updateWeekForNote(week, id);
 	}

@@ -1,8 +1,6 @@
 package com.revature.caliber.beans;
 
 import java.io.Serializable;
-import java.util.Date;
-import java.util.Set;
 
 public class BatchEntity implements Serializable{
 
@@ -42,7 +40,5 @@ public class BatchEntity implements Serializable{
 	}
 
 	
-	
-
 
 }
