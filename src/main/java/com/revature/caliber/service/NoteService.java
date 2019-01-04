@@ -13,6 +13,7 @@ import com.revature.caliber.beans.BatchEntity;
 import com.revature.caliber.beans.Note;
 import com.revature.caliber.beans.NoteType;
 import com.revature.caliber.beans.Trainee;
+import com.revature.caliber.beans.TraineeFlag;
 import com.revature.caliber.beans.TrainingStatus;
 import com.revature.caliber.dao.NoteRepository;
 import com.revature.caliber.intercomm.TraineeClient;
@@ -100,9 +101,12 @@ public class NoteService {
 	 * 
 	 */
 	public Note updateNote(Note note) {
+		// If note is a trainee note, return overall QC batch note.
 		if(note.getType() == NoteType.QC_TRAINEE) {
 			evaluationService.checkIfTraineeShouldBeFlagged(note);
 			evaluationService.calculateAverage(note.getWeek(), new Integer(note.getBatchId()));
+			repo.save(note);
+			return repo.findQCBatchNotes(note.getBatchId(), note.getWeek(), NoteType.QC_BATCH);
 		}
 		return repo.save(note);		
 	}
@@ -126,6 +130,9 @@ public class NoteService {
 		for (Note n: notes) {
 			for (Trainee t: trainees) {
 				if (n.getTraineeId() == t.getTraineeId()) {
+					// reset trainee flag status
+					t.setFlagStatus(TraineeFlag.NONE);
+					// set the note's trainee object
 					n.setTrainee(t);
 				}
 			}

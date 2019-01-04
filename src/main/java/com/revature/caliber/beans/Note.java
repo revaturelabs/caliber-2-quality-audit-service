@@ -37,7 +37,6 @@ public class Note implements Serializable {
 	@SequenceGenerator(name = "NOTE_ID_SEQUENCE", sequenceName = "NOTE_ID_SEQUENCE")
 	private int noteId;
 
-	@NotNull
 	@Length(min=0, max=4000)
 	@Column(name = "NOTE_CONTENT", nullable = true)
 	private String content;
@@ -53,11 +52,15 @@ public class Note implements Serializable {
 	private int batchId;
 
 	/**
-	 * Will be null if the note is overall batch feedback
+	 * Will be null if the note is overall batch feedback. Need the object to send to 
+	 * the client, but don't need to save the whole object into this service's database.
 	 */
 	@Transient
 	private Trainee trainee;
 	
+	/**
+	 * Will be 0 if the note is overall batch feedback
+	 */
 	@Column(name = "TRAINEE_ID", nullable = true)
 	private int traineeId;
 
@@ -73,6 +76,10 @@ public class Note implements Serializable {
 	@Column(name = "UPDATE_TIME")
 	private Timestamp updateTime;
 
+	/**
+	 * Need the object to send to the client, but don't need to save the whole 
+	 * object into this service's database.
+	 */
 	@Transient
 	private Trainer lastSavedBy;
 	
@@ -94,7 +101,6 @@ public class Note implements Serializable {
 	 * 
 	 */
 	public Note(short week, int batchId, Trainee trainee) {
-		this.content = " ";
 		this.week = week;
 		this.batchId = batchId;
 		this.trainee = trainee;
@@ -113,7 +119,6 @@ public class Note implements Serializable {
 	 * 
 	 */
 	public Note(short week, int batchId) {
-		this.content = " ";
 		this.week = week;
 		this.batchId = batchId;
 		this.type = NoteType.QC_BATCH;

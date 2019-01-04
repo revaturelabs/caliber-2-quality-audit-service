@@ -8,6 +8,7 @@ public class Trainee {
 	private String name;
 	private TrainingStatus trainingStatus;
 	private Integer batchId;
+	private String email;		// Need in order to update trainee in User Service
 	private TraineeFlag flagStatus;
 	private String flagNotes;
 	private Trainer flagAuthor;	// Will be null until login page is implemented
@@ -101,6 +102,14 @@ public class Trainee {
 		return "Trainee [traineeId=" + traineeId + ", name=" + name + ", trainingStatus="
 				+ trainingStatus + ", batchId=" + batchId + ", flagStatus=" + flagStatus + ", flagNotes=" + flagNotes
 				+ ", flagAuthor=" + flagAuthor + ", flagNoteTimeStamp=" + flagNoteTimeStamp + "]";
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 }
