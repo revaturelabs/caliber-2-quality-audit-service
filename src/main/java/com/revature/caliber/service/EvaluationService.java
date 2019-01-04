@@ -34,20 +34,18 @@ public class EvaluationService {
 	 * an "Average" directly followed by a "Poor".
 	 * 
 	 */
-	public void checkIfTraineeShouldBeFlagged(Note note) {
+	public Trainee checkIfTraineeShouldBeFlagged(Note note) {
 		if (note != null && note.getType().equals(NoteType.QC_TRAINEE)) {
 			// Cannot be auto flagged on week 1
-			if (note.getWeek() < 2) return;
-			//			// Return if trainee was already auto flagged
-			//			else if (note.getTrainee().getFlagNotes().contains("Trainee was automatically flagged by Caliber")) return;
+			if (note.getWeek() < 2) return note.getTrainee();
 
 			// Retrieve a list of all notes in week ASC order
 			List<Note> notes = noteRepo.findByTraineeId(note.getTraineeId(), new Sort("week"));
 
 			try {
-				QCStatus currentStatus = notes.get(note.getWeek() - 1).getQcStatus();
-				QCStatus prevStatus = notes.get(note.getWeek() - 1).getQcStatus();
-				// If trainee receives consecutive Poor --> Average, Average --> Poor, or Poor --> Poor
+				QCStatus currentStatus = note.getQcStatus();
+				QCStatus prevStatus = notes.get(note.getWeek() - 2).getQcStatus();
+				// If trainee receives consecutive Poor-->Average, Average-->Poor, or Poor-->Poor
 				// 	then consecutive = true.
 				boolean consecutive = ( (prevStatus.equals(QCStatus.Poor) && currentStatus.equals(QCStatus.Average)) 
 						|| (prevStatus.equals(QCStatus.Average) && currentStatus.equals(QCStatus.Poor))
@@ -55,37 +53,50 @@ public class EvaluationService {
 				int poor = 0;
 				for (Note n : notes) {
 					if (n.getQcStatus() == QCStatus.Poor) {
-						if (++poor == 2) break;
+						poor++;
 					}
 				}
 				// Auto flag
 				Trainee trainee = note.getTrainee();
 				if (consecutive || (poor >= 2)) {				
 					trainee.setFlagStatus(TraineeFlag.RED);
-					// If auto generated note does not already exist, create one.
-					if (!trainee.getFlagNotes().contains("Trainee was automatically flagged by Caliber.")) {
-						trainee.setFlagNotes("Trainee was automatically flagged by Caliber. " + trainee.getFlagNotes());
+					// If auto generated note does not exist, create one.
+					if (trainee.getFlagNotes() == null) {
+						trainee.setFlagNotes("Trainee was automatically flagged by Caliber on week "
+							+ note.getWeek() + ". ");
+					}
+					// Else if custom note exists, append auto generated note to the end.
+					else if (!trainee.getFlagNotes().contains("Trainee was automatically flagged by Caliber")) {
+						trainee.setFlagNotes(trainee.getFlagNotes() + " Trainee was automatically flagged by "
+								+ "Caliber on week " + note.getWeek() + ". ");
 					}
 					traineeClient.updateTrainee(trainee);
 				}
 				// Else if trainee was accidentally auto flagged, remove flag
-				else if (trainee.getFlagNotes().contains("Trainee was automatically flagged by Caliber.")){
+				else if (trainee.getFlagNotes().contains("Trainee was automatically flagged by Caliber")){
 					trainee.setFlagStatus(TraineeFlag.NONE);
+					trainee.setFlagNotes(trainee.getFlagNotes()
+							.substring(0, trainee.getFlagNotes().lastIndexOf("Trainee was automatically flagged by Caliber")));
 					traineeClient.updateTrainee(trainee);
 				}
+				return trainee;
 			} catch(RetryableException e) {
 				log.debug("Failed to connect to User Service");
+				return note.getTrainee();
 			} catch (Exception e) {
 				log.debug("Failed to autoflag associate with note: " + note);
 				log.debug(e);
+				return note.getTrainee();
 			}
 		}
+		return note.getTrainee();
 	}
 
 
 	public void calculateAverage(short weekId, Integer batchId) {
 		if(batchId !=  null) {
 			Note overallNote = noteRepo.findQCBatchNotes(batchId, weekId, NoteType.QC_BATCH);
+			log.trace("calculating average of overall note: " + overallNote);
 			double average = 0.0f;
 			List<Note> traineeNoteList = noteRepo.findQCNotesByBatchAndWeek(batchId, weekId, NoteType.QC_TRAINEE);
 			int denominator = traineeNoteList.size();

@@ -91,7 +91,7 @@ public class NoteController {
 	/**
 	 * 
 	 * @param Note to be updated
-	 * @return Overall batch
+	 * @return Overall batch QC note
 	 */
 	@PutMapping(path = "/update")
 	@Transactional

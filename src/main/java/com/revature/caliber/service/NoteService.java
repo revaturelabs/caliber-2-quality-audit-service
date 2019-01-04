@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import com.revature.caliber.beans.NoteType;
 import com.revature.caliber.beans.Trainee;
 import com.revature.caliber.beans.TraineeFlag;
 import com.revature.caliber.beans.TrainingStatus;
+import com.revature.caliber.controller.NoteController;
 import com.revature.caliber.dao.NoteRepository;
 import com.revature.caliber.intercomm.TraineeClient;
 
@@ -27,6 +29,8 @@ import feign.RetryableException;
 @Service
 public class NoteService {
 
+	private static final Logger log = Logger.getLogger(NoteService.class);
+	
 	/**
 	 * The repository is responsible for interacting with the note table
 	 */
@@ -101,14 +105,19 @@ public class NoteService {
 	 * 
 	 */
 	public Note updateNote(Note note) {
-		// If note is a trainee note, return overall QC batch note.
+		// Save trainee object
+		Trainee trainee = note.getTrainee();	
+		// If note is a trainee note, update overall note and check for auto flagging
 		if(note.getType() == NoteType.QC_TRAINEE) {
-			evaluationService.checkIfTraineeShouldBeFlagged(note);
-			evaluationService.calculateAverage(note.getWeek(), new Integer(note.getBatchId()));
-			repo.save(note);
-			return repo.findQCBatchNotes(note.getBatchId(), note.getWeek(), NoteType.QC_BATCH);
+			log.trace("Updating note: " + note);
+//			evaluationService.calculateAverage(note.getWeek(), new Integer(note.getBatchId()));
+			trainee = evaluationService.checkIfTraineeShouldBeFlagged(note);
+			log.trace("Updated trainee: " + trainee);
+			note.setTrainee(trainee);
 		}
-		return repo.save(note);		
+		note = repo.save(note);
+		note.setTrainee(trainee);
+		return note;
 	}
 
 	/**
