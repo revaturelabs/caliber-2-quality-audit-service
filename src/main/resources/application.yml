@@ -20,7 +20,7 @@ spring:
 eureka:
   client:
 #    service-url:
-    default-zone: ${EUREKA_HOME}
+#     default-zone: ${EUREKA_HOME}
     fetch-registry: false
     register-with-eureka: true
 
