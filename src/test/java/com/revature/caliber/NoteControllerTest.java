@@ -19,6 +19,8 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.context.embedded.LocalServerPort;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.revature.caliber.beans.Note;
@@ -123,9 +125,9 @@ public class NoteControllerTest {
 	public void setUp() throws Exception {
 		MockitoAnnotations.initMocks(this);
 		RestAssured.port = port;
-		when(controller.getAllNotes()).thenReturn(notes);
-		when(controller.getNote(note5500.getNoteId())).thenReturn(note5500);
-		when(controller.getNotesByBatchAndWeek(BATCH_ID, WEEK_NUMBER)).thenReturn(notes);
+		when(controller.getAllNotes()).thenReturn(new ResponseEntity<List<Note>>(notes, HttpStatus.OK));
+		when(controller.getNote(note5500.getNoteId())).thenReturn(new ResponseEntity<Note>(note5500, HttpStatus.OK));
+		when(controller.getNotesByBatchAndWeek(BATCH_ID, WEEK_NUMBER)).thenReturn(new ResponseEntity<List<Note>>(notes, HttpStatus.OK));
 	}
 
 	@Test
