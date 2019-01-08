@@ -1,9 +1,8 @@
 package com.revature.caliber.service;
 
-import java.util.Iterator;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -20,78 +19,92 @@ import feign.RetryableException;
 
 @Service
 public class EvaluationService {
-	
+
 	private static final Logger log = Logger.getLogger(EvaluationService.class);
-	
+
 	@Autowired
-    NoteRepository noteRepo;
+	NoteRepository noteRepo;
 	@Autowired
 	TraineeClient traineeClient;
 
 	/**
 	 * 
-	 * @param note
 	 * Auto flags a trainee if they receive more than 1 "Poor" QC status or 
-	 * an "Average" directly followed by a "Poor".
+	 * consecutive "Average" and "Poor." 
+	 * 
+	 * @param note - The Trainee's updated Note, which contains their QC Status
+	 * @return Trainee - The Trainee object with the updated FlagStatus and FlagNotes.
+	 * 		Returns the original Trainee if no update was made.
 	 * 
 	 */
-	public void checkIfTraineeShouldBeFlagged(Note note) {
+	public Trainee checkIfTraineeShouldBeFlagged(Note note) {
 		if (note != null && note.getType().equals(NoteType.QC_TRAINEE)) {
 			// Cannot be auto flagged on week 1
-			if (note.getWeek() < 2) return;
-//			// Return if trainee was already auto flagged
-//			else if (note.getTrainee().getFlagNotes().contains("Trainee was automatically flagged by Caliber")) return;
+			if (note.getWeek() < 2) return note.getTrainee();
 
 			// Retrieve a list of all notes in week ASC order
 			List<Note> notes = noteRepo.findByTraineeId(note.getTraineeId(), new Sort("week"));
-			
-			boolean consecutive = false;
-			int reds = 0;
-			try {				// Current week
-				consecutive = (notes.get(note.getWeek() - 1).getQcStatus().equals(QCStatus.Poor))
-						// Previous week
-						&& (notes.get(note.getWeek() - 2).getQcStatus().equals(QCStatus.Poor)
-								|| notes.get(note.getWeek() - 2).getQcStatus().equals(QCStatus.Average)) ? true : false;
-				Iterator<Note> itr = notes.iterator();
-				while (itr.hasNext()) {
-					if (itr.next().getQcStatus() == QCStatus.Poor) {
-						if (++reds == 2) break;
+			notes.add(note);	// add current note to list since it hasn't been saved yet
+			try {
+				QCStatus currentStatus = note.getQcStatus();
+				QCStatus prevStatus = notes.get(note.getWeek() - 2).getQcStatus();
+				// If trainee receives consecutive Poor-->Average, Average-->Poor, or Poor-->Poor
+				// 	then consecutive = true.
+				boolean consecutive = ( (prevStatus.equals(QCStatus.Poor) && currentStatus.equals(QCStatus.Average)) 
+						|| (prevStatus.equals(QCStatus.Average) && currentStatus.equals(QCStatus.Poor))
+						|| (prevStatus.equals(QCStatus.Poor) && currentStatus.equals(QCStatus.Poor)))
+						? true : false;
+				int poor = 0;
+				for (Note n : notes) {
+					if ((n.getQcStatus()).equals(QCStatus.Poor)) {
+						poor++;
 					}
-				}				
-				if (consecutive || (reds >= 2)) {					
-					// save the flag status in database
-					Trainee trainee = note.getTrainee();
+				}
+				// Auto flag
+				Trainee trainee = note.getTrainee();
+				if (consecutive || (poor >= 2)) {			
 					trainee.setFlagStatus(TraineeFlag.RED);
-					// concat a generated flag message at the end of the current trainee notes
-					if (trainee.getFlagNotes() != null
-							&& !trainee.getFlagNotes().contains("Trainee was automatically flagged by Caliber"))
-						trainee.setFlagNotes("Trainee was automatically flagged by Caliber. " + trainee.getFlagNotes());
-					else
-						trainee.setFlagNotes("Trainee was automatically flagged by Caliber. ");
-
-					traineeClient.updateTrainee(trainee);
-				} 			
-				else {
-					// remove the flag status in database
-					Trainee trainee = note.getTrainee();
-					trainee.setFlagStatus(TraineeFlag.NONE);
+					// If auto generated note does not exist, create one.
+					if (trainee.getFlagNotes() == null || (trainee.getFlagNotes()).equals("")) {
+						trainee.setFlagNotes("Trainee was automatically flagged by Caliber on week "
+							+ note.getWeek() + ". ");
+					}
+					// Else if custom note exists, append auto generated note to the end.
+					else if (!trainee.getFlagNotes().contains("Trainee was automatically flagged by Caliber")) {
+						trainee.setFlagNotes(trainee.getFlagNotes() + " Trainee was automatically flagged by "
+								+ "Caliber on week " + note.getWeek() + ". ");
+					}
 					traineeClient.updateTrainee(trainee);
 				}
+				// Else if trainee was accidentally auto flagged, remove flag
+				else if (trainee.getFlagNotes().contains("Trainee was automatically flagged by Caliber")){
+					trainee.setFlagStatus(TraineeFlag.NONE);
+					trainee.setFlagNotes(trainee.getFlagNotes()
+							.substring(0, trainee.getFlagNotes().lastIndexOf("Trainee was automatically flagged by Caliber")));
+					traineeClient.updateTrainee(trainee);
+				}
+				
+				return trainee;
+				
 			} catch(RetryableException e) {
 				log.debug("Failed to connect to User Service");
+				return note.getTrainee();
 			} catch (Exception e) {
 				log.debug("Failed to autoflag associate with note: " + note);
 				log.debug(e);
+				return note.getTrainee();
 			}
 		}
+		return note.getTrainee();
 	}
-	
-	
+
+
 	public void calculateAverage(short weekId, Integer batchId) {
 		if(batchId !=  null) {
 			Note overallNote = noteRepo.findQCBatchNotes(batchId, weekId, NoteType.QC_BATCH);
+			log.trace("calculating average of overall note: " + overallNote);
 			double average = 0.0f;
-			List<Note> traineeNoteList = noteRepo.findByBatchAndWeek(batchId, weekId);
+			List<Note> traineeNoteList = noteRepo.findQCNotesByBatchAndWeek(batchId, weekId, NoteType.QC_TRAINEE);
 			int denominator = traineeNoteList.size();
 			for(Note note : traineeNoteList) {
 				switch(note.getQcStatus()) {

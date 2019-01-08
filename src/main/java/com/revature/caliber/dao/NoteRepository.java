@@ -1,3 +1,4 @@
+
 package com.revature.caliber.dao;
 
 import java.util.List;
@@ -41,8 +42,11 @@ public interface NoteRepository extends JpaRepository<Note, Integer> {
 	 * @param week
 	 * @return
 	 */
-	@Query("SELECT n FROM Note n WHERE n.batchId = :batchId AND n.week = :week")
-	public List<Note> findByBatchAndWeek(@Param("batchId") Integer batchId, @Param("week") Short week);
+	@Query("SELECT n FROM Note n WHERE n.batchId = :batchId AND n.week = :week AND n.type = :type")
+	public List<Note> findQCNotesByBatchAndWeek(
+			@Param("batchId") Integer batchId,
+			@Param("week") Short week,
+			@Param("type") NoteType type);
 
 	@Query("SELECT n FROM Note n WHERE n.batchId = :batchId AND n.week = :week AND n.type = :type")
 	public Note findQCBatchNotes(@Param("batchId") Integer batchId, @Param("week") Short week,
