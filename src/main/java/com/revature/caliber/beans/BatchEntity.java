@@ -2,13 +2,7 @@ package com.revature.caliber.beans;
 
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
+
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -27,6 +21,7 @@ public class BatchEntity {
 	@Column(name="BATCH_ID")
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer batchId;
+	private Integer weeks;
 	
 	@NotNull
 	@Column(name="TRAINING_NAME")
@@ -50,9 +45,6 @@ public class BatchEntity {
 	@NotNull
 	@Column(name="LOCATION_ID")
 	private Integer locationId;
-	
-	
-	private String location;
 	
 	@NotNull
 	@Column(name="START_DATE")
@@ -253,13 +245,6 @@ public class BatchEntity {
 	 */
 	public void setBatchId(Integer batchId) {
 		this.batchId = batchId;
-	}
-	
-	public String getLocation() {
-		return location;
-	}
-	public void setLocation(String location) {
-		this.location = location;
 	}
 	
 	public Integer getLocationId() {
