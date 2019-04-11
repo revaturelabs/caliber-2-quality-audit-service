@@ -1,96 +1,37 @@
 package com.revature.caliber.beans;
 
-import java.io.Serializable;
-import java.util.Set;
+import java.sql.Timestamp;
 
-import javax.persistence.Cacheable;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotEmpty;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-@Entity
-@Table(name = "CALIBER_TRAINEE")
-@Cacheable
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class Trainee implements Serializable{
-
-	private static final long serialVersionUID = 2324102408079648929L;
+public class Trainee {
 	
-	@Id
-	@Column(name = "TRAINEE_ID")
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TRAINEE_ID_SEQUENCE")
-	@SequenceGenerator(name = "TRAINEE_ID_SEQUENCE", sequenceName = "TRAINEE_ID_SEQUENCE")
 	private int traineeId;
-
-	@Column(name = "RESOURCE_ID")
-	private String resourceId;
-
-	@NotEmpty
-	@Column(name = "TRAINEE_NAME")
 	private String name;
-	
-	@NotNull
-	@Enumerated(EnumType.STRING)
-	@Column(name = "TRAINING_STATUS")
 	private TrainingStatus trainingStatus;
-	
-	@NotNull
-	@ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-	@JoinColumn(name = "BATCH_ID", nullable = false)
-	@JsonBackReference(value = "traineeAndBatch")
-	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-	private Batch batch;
-	
-	@Enumerated(EnumType.STRING)
-	@Column(name = "FLAG_STATUS")
+	private Integer batchId;
+	private String email;		// Need in order to update trainee in User Service
 	private TraineeFlag flagStatus;
-	
-	@Length(min = 0, max = 4000)
-	@Column(name = "FLAG_NOTES", length = 4000)
 	private String flagNotes;
-	
-	@JsonIgnore
-	@OneToMany(mappedBy = "trainee", cascade = CascadeType.ALL)
-	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-	private Set<Note> notes;
-	
+	private Trainer flagAuthor;	// Will be null until login page is implemented
+	private Timestamp flagNoteTimeStamp;
+		
 	public Trainee() {
 		super();
 		this.flagStatus = TraineeFlag.NONE;
 	}
 
-	public Trainee(int traineeId, String resourceId, String name, TrainingStatus trainingStatus, Batch batch,
-			TraineeFlag flagStatus, String flagNotes, Set<Note> notes) {
+	public Trainee(int traineeId, String name, TrainingStatus trainingStatus, Integer batchId,
+			TraineeFlag flagStatus, String flagNotes, Trainer flagAuthor, Timestamp flagNoteTimeStamp) {
 		super();
 		this.traineeId = traineeId;
-		this.resourceId = resourceId;
 		this.name = name;
 		this.trainingStatus = trainingStatus;
-		this.batch = batch;
+		this.batchId = batchId;
 		this.flagStatus = flagStatus;
 		this.flagNotes = flagNotes;
-		this.notes = notes;
+		this.flagAuthor = flagAuthor;
+		this.flagNoteTimeStamp = flagNoteTimeStamp;
 	}
+
 
 	public int getTraineeId() {
 		return traineeId;
@@ -98,14 +39,6 @@ public class Trainee implements Serializable{
 
 	public void setTraineeId(int traineeId) {
 		this.traineeId = traineeId;
-	}
-
-	public String getResourceId() {
-		return resourceId;
-	}
-
-	public void setResourceId(String resourceId) {
-		this.resourceId = resourceId;
 	}
 
 	public String getName() {
@@ -124,14 +57,6 @@ public class Trainee implements Serializable{
 		this.trainingStatus = trainingStatus;
 	}
 
-	public Batch getBatch() {
-		return batch;
-	}
-
-	public void setBatch(Batch batch) {
-		this.batch = batch;
-	}
-
 	public TraineeFlag getFlagStatus() {
 		return flagStatus;
 	}
@@ -148,27 +73,43 @@ public class Trainee implements Serializable{
 		this.flagNotes = flagNotes;
 	}
 
-	public Set<Note> getNotes() {
-		return notes;
+	public Integer getBatchId() {
+		return batchId;
 	}
 
-	public void setNotes(Set<Note> notes) {
-		this.notes = notes;
+	public void setBatchId(Integer batchId) {
+		this.batchId = batchId;
 	}
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
+	public Trainer getFlagAuthor() {
+		return flagAuthor;
 	}
 
+	public void setFlagAuthor(Trainer flagAuthor) {
+		this.flagAuthor = flagAuthor;
+	}
+
+	public Timestamp getFlagNoteTimeStamp() {
+		return flagNoteTimeStamp;
+	}
+
+	public void setFlagNoteTimeStamp(Timestamp flagNoteTimeStamp) {
+		this.flagNoteTimeStamp = flagNoteTimeStamp;
+	}
+	
 	@Override
 	public String toString() {
-		return "Trainee [traineeId=" + traineeId + ", resourceId=" + resourceId + ", name=" + name + ", trainingStatus="
-				+ trainingStatus + ", batch=" + batch + ", flagStatus=" + flagStatus + ", flagNotes=" + flagNotes
-				+ ", notes=" + notes + "]";
+		return "Trainee [traineeId=" + traineeId + ", name=" + name + ", trainingStatus="
+				+ trainingStatus + ", batchId=" + batchId + ", flagStatus=" + flagStatus + ", flagNotes=" + flagNotes
+				+ ", flagAuthor=" + flagAuthor + ", flagNoteTimeStamp=" + flagNoteTimeStamp + "]";
 	}
-	
 
-	
-	
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
 }

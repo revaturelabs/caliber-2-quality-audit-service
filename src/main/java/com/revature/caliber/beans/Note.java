@@ -1,28 +1,24 @@
 package com.revature.caliber.beans;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.validator.constraints.Length;
+import org.hibernate.annotations.DynamicUpdate;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.validator.constraints.Length;
 
 /**
  * 
@@ -30,8 +26,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  */
 @Entity
 @Table(name = "CALIBER_NOTE")
-//@Cacheable
-public class Note implements Serializable{
+@DynamicUpdate
+public class Note implements Serializable {
 
 	private static final long serialVersionUID = 4960654794116385953L;
 
@@ -42,73 +38,95 @@ public class Note implements Serializable{
 	private int noteId;
 
 	@Length(min=0, max=4000)
-	@Column(name = "NOTE_CONTENT")
+	@Column(name = "NOTE_CONTENT", nullable = true)
 	private String content;
 
-	@Min(value=1)
+	@NotNull
+	@Min(value = 1)
 	@Column(name = "WEEK_NUMBER")
 	private short week;
+	/**
+	 * Will be null if the note is individual traineeId feedback
+	 */
+	@Column(name = "BATCH_ID", nullable = true)
+	private int batchId;
 
 	/**
-	 * Will be null if the note is individual trainee feedback
+	 * Will be null if the note is overall batch feedback. Need the object to send to 
+	 * the client, but don't need to save the whole object into this service's database.
 	 */
-	@ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-	@JoinColumn(name = "BATCH_ID", nullable = true)
-	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-	private Batch batch;
-
-	/**
-	 * Will be null if the note is overall batch feedback
-	 */
-	@ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-	@JoinColumn(name = "TRAINEE_ID", nullable = true)
-	@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
+	@Transient
 	private Trainee trainee;
-
-	@Enumerated(EnumType.ORDINAL)
-	@Column(name = "MAX_VISIBILITY")
-	private TrainerRole maxVisibility;
+	
+	/**
+	 * Will be 0 if the note is overall batch feedback
+	 */
+	@Column(name = "TRAINEE_ID", nullable = true)
+	private int traineeId;
 
 	@NotNull
 	@Enumerated(EnumType.STRING)
 	@Column(name = "NOTE_TYPE")
 	private NoteType type;
 
-	@Column(name = "IS_QC_FEEDBACK", nullable = false)
-	private boolean qcFeedback;
-
 	@Enumerated(EnumType.STRING)
 	@Column(name = "QC_STATUS", nullable = true)
 	private QCStatus qcStatus;
 
+	@Column(name = "UPDATE_TIME")
+	private Timestamp updateTime;
+
+	/**
+	 * Need the object to send to the client, but don't need to save the whole 
+	 * object into this service's database.
+	 */
+	@Transient
+	private Trainer lastSavedBy;
+	
+	@Column(name = "LAST_SAVED_BY")
+	private int lastSavedById;
+
 	public Note() {
 		super();
-		this.maxVisibility = TrainerRole.ROLE_TRAINER;
+		this.updateTime = new Timestamp(System.currentTimeMillis());
 	}
 
-	public Note(int noteId, String content, short week, Batch batch, Trainee trainee, TrainerRole maxVisibility,
-			NoteType type, boolean qcFeedback, QCStatus qcStatus) {
-		super();
-		this.noteId = noteId;
-		this.content = content;
+	/**
+	 * 
+	 * @param week
+	 * @param batchId
+	 * @param trainee
+	 * 
+	 * Create individual associate notes per batch per week.
+	 * 
+	 */
+	public Note(short week, int batchId, Trainee trainee) {
 		this.week = week;
-		this.batch = batch;
+		this.batchId = batchId;
 		this.trainee = trainee;
-		this.maxVisibility = maxVisibility;
-		this.type = type;
-		this.qcFeedback = qcFeedback;
-		this.qcStatus = qcStatus;
+		this.traineeId = trainee.getTraineeId();
+		this.type = NoteType.QC_TRAINEE;
+		this.qcStatus = QCStatus.Undefined;
+		this.updateTime = new Timestamp(System.currentTimeMillis());
 	}
 	
-	
-
-	public Note(int noteId, String content, short week) {
-		super();
-		this.noteId = noteId;
-		this.content = content;
+	/**
+	 * 
+	 * @param week
+	 * @param batchId
+	 * 
+	 * Create overall batch note per week.
+	 * 
+	 */
+	public Note(short week, int batchId) {
 		this.week = week;
+		this.batchId = batchId;
+		this.type = NoteType.QC_BATCH;
+		this.qcStatus = QCStatus.Undefined;	// "Overall Feedback"
+		this.updateTime = new Timestamp(System.currentTimeMillis());
 	}
-
+	
+	
 	public int getNoteId() {
 		return noteId;
 	}
@@ -133,28 +151,20 @@ public class Note implements Serializable{
 		this.week = week;
 	}
 
-	public Batch getBatch() {
-		return batch;
+	public int getBatchId() {
+		return batchId;
 	}
 
-	public void setBatch(Batch batch) {
-		this.batch = batch;
+	public void setBatchId(int batchId) {
+		this.batchId = batchId;
 	}
 
-	public Trainee getTrainee() {
-		return trainee;
+	public int getTraineeId() {
+		return traineeId;
 	}
 
-	public void setTrainee(Trainee trainee) {
-		this.trainee = trainee;
-	}
-
-	public TrainerRole getMaxVisibility() {
-		return maxVisibility;
-	}
-
-	public void setMaxVisibility(TrainerRole maxVisibility) {
-		this.maxVisibility = maxVisibility;
+	public void setTraineeId(int traineeId) {
+		this.traineeId = traineeId;
 	}
 
 	public NoteType getType() {
@@ -165,14 +175,6 @@ public class Note implements Serializable{
 		this.type = type;
 	}
 
-	public boolean isQcFeedback() {
-		return qcFeedback;
-	}
-
-	public void setQcFeedback(boolean qcFeedback) {
-		this.qcFeedback = qcFeedback;
-	}
-
 	public QCStatus getQcStatus() {
 		return qcStatus;
 	}
@@ -180,22 +182,66 @@ public class Note implements Serializable{
 	public void setQcStatus(QCStatus qcStatus) {
 		this.qcStatus = qcStatus;
 	}
+	
+	public Trainee getTrainee() {
+		return trainee;
+	}
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
+	public void setTrainee(Trainee trainee) {
+		this.trainee = trainee;
+	}
+	
+	public Timestamp getUpdateTime() {
+		return updateTime;
+	}
+
+	public void setUpdateTime(Timestamp updateTime) {
+		this.updateTime = updateTime;
+	}
+
+	public Trainer getLastSavedBy() {
+		return lastSavedBy;
+	}
+
+	public void setUpdateTrainer(Trainer lastSavedBy) {
+		this.lastSavedBy = lastSavedBy;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+
+		return super.equals(obj);
+	}
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+
+		result = prime * result + noteId;
+		result = prime * result + ((content == null) ? 0 : content.hashCode());
+		result = prime * result + ((qcStatus == null) ? 0 : qcStatus.hashCode());
+		result = prime * result + ((type == null) ? 0 : type.hashCode());
+		result = prime * result + week;
+		result = prime * result + batchId;
+		result = prime * result + traineeId;
+		result = prime * result + ((updateTime == null) ? 0 : updateTime.hashCode());
+		result = prime * result + ((lastSavedBy == null) ? 0 : lastSavedBy.hashCode());
+		result = prime * result + lastSavedById;
+		return super.hashCode();
 	}
 
 	@Override
 	public String toString() {
-		return "Note [noteId=" + noteId + ", content=" + content + ", week=" + week + ", batch=" + batch + ", trainee="
-				+ trainee + ", maxVisibility=" + maxVisibility + ", type=" + type + ", qcFeedback=" + qcFeedback
-				+ ", qcStatus=" + qcStatus + "]";
+		return "Note [noteId=" + noteId + ", content=" + content + ", week=" + week + ", batchId=" + batchId
+				+ ", trainee=" + trainee + ", traineeId=" + traineeId + ", type=" + type + ", qcStatus=" + qcStatus
+				+ ", updateTime=" + updateTime + ", updateTrainer=" + lastSavedBy + "]";
 	}
+	
+	
+
+
 
 	
-	
-	
-	
-	
 }
+
 
