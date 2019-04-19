@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-
 import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -20,6 +19,7 @@ import com.revature.caliber.beans.TraineeFlag;
 import com.revature.caliber.beans.TrainingStatus;
 import com.revature.caliber.dao.NoteRepository;
 import com.revature.caliber.intercomm.TraineeClient;
+import com.revature.caliber.service.EvaluationService;
 
 import feign.RetryableException;
 
@@ -31,7 +31,6 @@ import feign.RetryableException;
 public class NoteService {
 
 	private static final Logger log = Logger.getLogger(NoteService.class);
-	
 	/**
 	 * The repository is responsible for interacting with the note table
 	 */
