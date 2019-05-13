@@ -1,3 +1,6 @@
-FROM java:8
-COPY target/caliber-quality-audit-service-0.0.1-SNAPSHOT.jar /tmp/caliber-quality-audit-service-0.0.1-SNAPSHOT.jar
-CMD ["java", "-jar", "/tmp/caliber-quality-audit-service-0.0.1-SNAPSHOT.jar","--server.context-path=/qa","&"]
+FROM openjdk:8-jdk-alpine
+VOLUME /tmp
+ARG JAR_FILE
+EXPOSE 10005 
+COPY target/${JAR_FILE} app.jar
+ENTRYPOINT [ "sh", "-c", "java $JAVA_OPTS -Djava.security.egd=file:/dev/urandom -jar /app.jar" ]
