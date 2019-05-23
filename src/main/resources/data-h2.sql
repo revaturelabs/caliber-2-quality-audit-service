@@ -7,4 +7,8 @@ VALUES (2, 'Example content...', 1, 1, 5521, 'TRAINEE', 'Average', systimestamp,
 INSERT INTO CALIBER_NOTE (NOTE_ID, NOTE_CONTENT, WEEK_NUMBER, BATCH_ID, TRAINEE_ID, NOTE_TYPE, QC_STATUS, UPDATE_TIME, LAST_SAVED_BY) 
 VALUES (3, 'Example content', 1, 1, 5522, 'TRAINEE', 'Superstar', systimestamp, 0);
 
+INSERT INTO CALIBER_NOTE (NOTE_ID, NOTE_CONTENT, WEEK_NUMBER, BATCH_ID, TRAINEE_ID, NOTE_TYPE, QC_STATUS, UPDATE_TIME, LAST_SAVED_BY) 
+VALUES (4, 'Example content', 1, 1, 5523, 'TRAINEE', 'Poor', systimestamp, 0);
+
+
 commit;
