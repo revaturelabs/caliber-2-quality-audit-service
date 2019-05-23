@@ -21,6 +21,6 @@ public interface BatchClient {
 	public Batch getBatchById(@PathVariable("id") Integer id);
 	
 	
-	@GetMapping("/valid_year")
+	@GetMapping("all/batch/valid_years")
 	public List<Integer> batchYears();
 }

@@ -41,5 +41,43 @@ public class Batch implements Serializable {
 	@Column(name="START_DATE")
 	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
 	private Date startDate;
+
+	public Batch(Integer batchId, String trainer, Date startDate) {
+		super();
+		this.batchId = batchId;
+		this.trainer = trainer;
+		this.startDate = startDate;
+	}
+
+	public Batch() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public Integer getBatchId() {
+		return batchId;
+	}
+
+	public void setBatchId(Integer batchId) {
+		this.batchId = batchId;
+	}
+
+	public String getTrainer() {
+		return trainer;
+	}
+
+	public void setTrainer(String trainer) {
+		this.trainer = trainer;
+	}
+
+	public Date getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+	
+	
 	
 }
