@@ -1,10 +1,10 @@
 INSERT INTO CALIBER_NOTE (NOTE_ID, NOTE_CONTENT, WEEK_NUMBER, BATCH_ID, TRAINEE_ID, NOTE_TYPE, QC_STATUS, UPDATE_TIME, LAST_SAVED_BY) 
-VALUES (1, 'Example content... minimun is 0 and maximun is 4000', 1, 1, 5520, 'TRAINEE', 'Good', systimestamp, 0);
+VALUES (1, 'Example content... minimun is 0 and maximun is 4000', 1, 1, 5520, 'QC_TRAINEE', 'Good', systimestamp, 0);
 
 INSERT INTO CALIBER_NOTE (NOTE_ID, NOTE_CONTENT, WEEK_NUMBER, BATCH_ID, TRAINEE_ID, NOTE_TYPE, QC_STATUS, UPDATE_TIME, LAST_SAVED_BY) 
-VALUES (2, 'Example content...', 1, 1, 5521, 'TRAINEE', 'Average', systimestamp, 0);
+VALUES (2, 'Example content...', 1, 1, 5521, 'QC_TRAINEE', 'Average', systimestamp, 0);
 
 INSERT INTO CALIBER_NOTE (NOTE_ID, NOTE_CONTENT, WEEK_NUMBER, BATCH_ID, TRAINEE_ID, NOTE_TYPE, QC_STATUS, UPDATE_TIME, LAST_SAVED_BY) 
-VALUES (3, 'Example content', 1, 1, 5522, 'TRAINEE', 'Superstar', systimestamp, 0);
+VALUES (3, 'Example content', 1, 1, 5522, 'QC_TRAINEE', 'Superstar', systimestamp, 0);
 
 commit;

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.revature.caliber.beans.Batch;
 import com.revature.caliber.beans.BatchEntity;
@@ -12,15 +13,17 @@ import com.revature.caliber.beans.BatchEntity;
 @FeignClient("batch-service")
 public interface BatchClient {
 	
-	@GetMapping("/qc/batch/all")
-	//@GetMapping({ "/qc/batch/all", "/vp/batch/all" })
-	public List<Batch> getAllBatches();
+	@GetMapping("/vp/batch/all")
+	public List<BatchEntity> getAllBatches(@RequestParam(name="year", required=false) Integer year, @RequestParam(name="quarter", required=false) Integer quarter);
 
 	
 	@GetMapping("/all/batch/{id}")
-	public Batch getBatchById(@PathVariable("id") Integer id);
+	public BatchEntity getBatchById(@PathVariable("id") Integer id);
 	
+	@GetMapping("/vp/batch/{startYear}")
+	public List<BatchEntity> getBatchesByYear(@PathVariable("startYear") Integer startYear);
+										
 	
-	@GetMapping("/valid_year")
+	@GetMapping("/all/batch/valid_years")
 	public List<Integer> batchYears();
 }
