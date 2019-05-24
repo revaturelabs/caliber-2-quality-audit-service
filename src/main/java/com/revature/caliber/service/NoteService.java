@@ -145,7 +145,7 @@ public class NoteService {
 			}
 		}
 		// Shuffle list of notes so names are displayed in random order on the client side
-		Collections.shuffle(notes);
+//		Collections.shuffle(notes);
 		return notes;
 	}
 	
