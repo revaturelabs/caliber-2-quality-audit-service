@@ -41,6 +41,19 @@ public class Batch implements Serializable {
 	@Column(name="START_DATE")
 	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
 	private Date startDate;
+	
+	@Column(name="WEEKS")
+	private Integer weeks;
+	
+	
+
+	public Batch(Integer batchId, String trainer, Date startDate, Integer weeks) {
+		super();
+		this.batchId = batchId;
+		this.trainer = trainer;
+		this.startDate = startDate;
+		this.weeks = weeks;
+	}
 
 	public Batch(Integer batchId, String trainer, Date startDate) {
 		super();
@@ -77,7 +90,13 @@ public class Batch implements Serializable {
 	public void setStartDate(Date startDate) {
 		this.startDate = startDate;
 	}
-	
-	
+
+	public Integer getWeeks() {
+		return weeks;
+	}
+
+	public void setWeeks(Integer weeks) {
+		this.weeks = weeks;
+	}
 	
 }
