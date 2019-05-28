@@ -115,7 +115,7 @@ public class NoteService {
 		// If note is a trainee note, update overall note and check for auto flagging
 		if(note.getType() == NoteType.QC_TRAINEE) {
 			log.trace("Updating note: " + note);
-			evaluationService.calculateAverage(note.getWeek(), new Integer(note.getBatchId()));
+			//evaluationService.calculateAverage(note.getWeek(), new Integer(note.getBatchId())); <--TODO
 			// Updates trainee if they were auto flagged
 			trainee = evaluationService.checkIfTraineeShouldBeFlagged(note);
 			log.trace("Updated trainee: " + trainee);
@@ -126,6 +126,7 @@ public class NoteService {
 		note = repo.save(note);
 		// re-add trainee object to note to send back to client
 		note.setTrainee(trainee);
+		evaluationService.calculateAverage(note.getWeek(), new Integer(note.getBatchId()));
 		return note;
 	}
 	
