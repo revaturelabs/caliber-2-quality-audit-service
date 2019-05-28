@@ -42,7 +42,7 @@ public class BatchController {
 		return client.getBatchesByYearByQuarter(startYear, quarter);
 	}
 	
-	@GetMapping("/valid-year")
+	@GetMapping("/valid-years")
 	public List<Integer> batchYears() {
 		return client.batchYears();
 	}
