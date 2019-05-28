@@ -5,21 +5,21 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+
 import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.revature.caliber.beans.Batch;
 import com.revature.caliber.beans.BatchEntity;
 import com.revature.caliber.beans.Note;
 import com.revature.caliber.beans.NoteType;
 import com.revature.caliber.beans.Trainee;
-import com.revature.caliber.beans.TraineeFlag;
 import com.revature.caliber.beans.TrainingStatus;
 import com.revature.caliber.dao.NoteRepository;
 import com.revature.caliber.intercomm.TraineeClient;
-import com.revature.caliber.service.EvaluationService;
 
 import feign.RetryableException;
 
@@ -57,11 +57,13 @@ public class NoteService {
 	 * @return A list of new QC notes for all non-dropped associates in the specified batch as well
 	 * 			as a an overall batch note appended at the end of the list.
 	 */
-	public List<Note> createBatchNotes(BatchEntity batch){
-		// Retrieve batchId and week number from batch entity
+	public List<Note> createBatchNotesForWeek(BatchEntity batch, int week){
+		// If the week doesn't exist in the batch, don't create anything
+		if(week > batch.getWeeks()) {
+			return null;
+		}
+		
 		int batchId = batch.getBatchId();
-		int weekInt = batch.getWeeks();
-		short week = (short) weekInt;
 		List<Note> notes = new ArrayList<Note>();
 		try {
 			// Use Feign Client to retrieve list of trainees from the User Service
@@ -74,7 +76,7 @@ public class NoteService {
 				while (itr.hasNext()) {
 					t = itr.next();
 					if (t.getTrainingStatus() != TrainingStatus.Dropped) {
-						Note n = new Note(week, batchId, t);
+						Note n = new Note((short)week, batchId, t);
 						n = repo.save(n);
 						notes.add(n);
 					}
@@ -88,7 +90,7 @@ public class NoteService {
 			return null;
 		}
 		// Create an "overall batch feedback" note and append to the end of the list
-		Note overallNote = new Note(week, batchId);
+		Note overallNote = new Note((short)week, batchId);
 		overallNote = repo.save(overallNote);
 		notes.add(overallNote);
 		return notes;

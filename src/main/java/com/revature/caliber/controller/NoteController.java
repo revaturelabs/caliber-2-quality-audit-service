@@ -18,8 +18,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.revature.caliber.beans.Batch;
 import com.revature.caliber.beans.BatchEntity;
 import com.revature.caliber.beans.Note;
+import com.revature.caliber.beans.NoteType;
+import com.revature.caliber.intercomm.BatchClient;
 import com.revature.caliber.service.NoteService;
 
 /**
@@ -36,7 +39,10 @@ public class NoteController {
 	private static final Logger log = Logger.getLogger(NoteController.class);
 
 	@Autowired
-	private NoteService service;
+	private NoteService noteService;
+	
+	@Autowired
+	private BatchClient batchClient;
 
 	/**
 	 * 
@@ -45,7 +51,7 @@ public class NoteController {
 	@GetMapping("/notes")
 	public ResponseEntity<List<Note>> getAllNotes() {
 		log.trace("IN AUDIT: RETURNING ALL NOTES");
-		List<Note> notes = service.getAllNotes();
+		List<Note> notes = noteService.getAllNotes();
 		if (notes == null) {
 			return new ResponseEntity<List<Note>>(HttpStatus.CONFLICT);
 		}
@@ -63,7 +69,7 @@ public class NoteController {
 	@GetMapping(value = "/notes/{id}")
 	public ResponseEntity<Note> getNote(@PathVariable Integer id) {
 		log.trace("IN AUDIT: FIND ONE NOTE");
-		Note note = service.findById(id);
+		Note note = noteService.findById(id);
 		if (note == null) {
 			return new ResponseEntity<Note>(HttpStatus.CONFLICT);
 		}
@@ -78,14 +84,28 @@ public class NoteController {
 	 * @param week number.
 	 * @return a list of associate notes according to batch and week.
 	 */
-	@GetMapping(value = "/notes/{batch}/{week}")
-	public ResponseEntity<List<Note>> getNotesByBatchAndWeek(@PathVariable Integer batch, @PathVariable Short week) {
-		List<Note> notes = service.findQCNotesByBatchAndWeek(batch, week);
+	@GetMapping(value = "/notes/{batchId}/{week}")
+	public ResponseEntity<List<Note>> getNotesByBatchAndWeek(@PathVariable Integer batchId, @PathVariable Short week) {
+		List<Note> notes = noteService.findQCNotesByBatchAndWeek(batchId, week);
 		if (notes == null) {
 			return new ResponseEntity<List<Note>>(HttpStatus.CONFLICT);
-		} else {
-			return new ResponseEntity<List<Note>>(notes, HttpStatus.OK);
 		}
+		
+		// If we don't find any notes, try to create them.
+		// This will not create anything if we try to get notes for a week greater
+		// than the number of weeks in a batch.
+		if (notes.size() == 0) {
+			BatchEntity batch = batchClient.getBatchById(batchId);
+			notes = noteService.createBatchNotesForWeek(batch, week);
+			if (notes == null) {
+				return new ResponseEntity<List<Note>>(HttpStatus.CONFLICT);
+			}
+			// drop batch note from list
+			notes.removeIf(note->note.getType()==NoteType.QC_BATCH);
+		}
+		
+		return new ResponseEntity<List<Note>>(notes, HttpStatus.OK);
+		
 	}
 	
 	/**
@@ -95,7 +115,7 @@ public class NoteController {
 	 */
 	@GetMapping(value = "/notes/trainee/{traineeId}")
 	public ResponseEntity<List<Note>> getTraineeNotesById(@PathVariable Integer traineeId) {
-		List<Note> notes = service.findQCTraineeNotesById(traineeId);
+		List<Note> notes = noteService.findQCTraineeNotesById(traineeId);
 		if (notes == null) {
 			return new ResponseEntity<List<Note>>(HttpStatus.CONFLICT);
 		} else {
@@ -111,7 +131,7 @@ public class NoteController {
 	 */
 	@GetMapping(value = "/notes/overall/{batch}/{week}")
 	public ResponseEntity<Note> getOverallNoteByBatchAndWeek(@PathVariable Integer batch, @PathVariable Short week) {
-		Note note = service.findOverallNoteByBatchAndWeek(batch, week);
+		Note note = noteService.findOverallNoteByBatchAndWeek(batch, week);
 		if (note == null) {
 			return new ResponseEntity<Note>(HttpStatus.CONFLICT);
 		}
@@ -128,7 +148,7 @@ public class NoteController {
 	 */
 	@PostMapping(path = "/notes/create-batch-notes", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Note>> createBatchNotes(@RequestBody BatchEntity batch) {
-		List<Note> notes = service.createBatchNotes(batch);
+		List<Note> notes = noteService.createBatchNotesForWeek(batch, batch.getWeeks());
 		if (notes == null) {
 			return new ResponseEntity<List<Note>>(HttpStatus.CONFLICT);
 		} else {
@@ -145,7 +165,7 @@ public class NoteController {
 	@Transactional
 	public ResponseEntity<Note> updateNote(@RequestBody Note note) {
 		log.debug("IN AUDIT, UPDATING NOTE: " + note);
-		note = service.updateNote(note);
+		note = noteService.updateNote(note);
 		if (note == null) {
 			return new ResponseEntity<>(HttpStatus.CONFLICT);
 		} else {
