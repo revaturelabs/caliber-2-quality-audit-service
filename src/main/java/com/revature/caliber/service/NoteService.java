@@ -35,12 +35,12 @@ public class NoteService {
 	 * The repository is responsible for interacting with the note table
 	 */
 	@Autowired
-	NoteRepository repo;	
+	NoteRepository repo;
 	@Autowired
 	private TraineeClient traineeClient;
 	@Autowired
 	private EvaluationService evaluationService;
-	
+
 	/**
 	 * 
 	 * @return notes
@@ -48,27 +48,27 @@ public class NoteService {
 	public List<Note> getAllNotes() {
 		return repo.findAll();
 	}
-	
-	
+
 	/**
 	 * Creates empty QC notes for the entire batch, including an overall batch note.
 	 * 
 	 * @param batch - a BatchEntity that contains a batchId and week number.
-	 * @return A list of new QC notes for all non-dropped associates in the specified batch as well
-	 * 			as a an overall batch note appended at the end of the list.
+	 * @return A list of new QC notes for all non-dropped associates in the
+	 *         specified batch as well as a an overall batch note appended at the
+	 *         end of the list.
 	 */
-	public List<Note> createBatchNotesForWeek(BatchEntity batch, int week){
+	public List<Note> createBatchNotesForWeek(BatchEntity batch, int week) {
 		// If the week doesn't exist in the batch, don't create anything
-		if(week > batch.getWeeks()) {
+		if (week > batch.getWeeks()) {
 			return null;
 		}
-		
+
 		int batchId = batch.getBatchId();
 		List<Note> notes = new ArrayList<Note>();
 		try {
 			// Use Feign Client to retrieve list of trainees from the User Service
 			ResponseEntity<List<Trainee>> response = traineeClient.findAllByBatch(batchId);
-			if(response != null && response.hasBody()) {
+			if (response != null && response.hasBody()) {
 				List<Trainee> trainees = response.getBody();
 				Iterator<Trainee> itr = trainees.iterator();
 				Trainee t = new Trainee();
@@ -76,46 +76,45 @@ public class NoteService {
 				while (itr.hasNext()) {
 					t = itr.next();
 					if (t.getTrainingStatus() != TrainingStatus.Dropped) {
-						Note n = new Note((short)week, batchId, t);
+						Note n = new Note((short) week, batchId, t);
 						n = repo.save(n);
 						notes.add(n);
 					}
 				}
-			}
-			else {
+			} else {
 				return null;
 			}
-		} catch(RetryableException e) {
+		} catch (RetryableException e) {
 			e.printStackTrace();
 			return null;
 		}
 		// Create an "overall batch feedback" note and append to the end of the list
-		Note overallNote = new Note((short)week, batchId);
+		Note overallNote = new Note((short) week, batchId);
 		overallNote = repo.save(overallNote);
 		notes.add(overallNote);
 		return notes;
 	}
-	
-	
+
 	public Note findById(Integer id) {
 		return repo.findOne(id);
 	}
 
 	/**
 	 * 
-	 * Updates a note. If it's a QC Trainee note, recalculate the batch's overall average QC status
-	 * and checks if the trainee should be auto flagged. The note's update time is also updated.
+	 * Updates a note. If it's a QC Trainee note, recalculate the batch's overall
+	 * average QC status and checks if the trainee should be auto flagged. The
+	 * note's update time is also updated.
 	 * 
 	 * @param note - the Note to be updated.
 	 * @return the updated Note.
 	 */
 	public Note updateNote(Note note) {
 		// Save trainee object
-		Trainee trainee = note.getTrainee();	
-		// If note is a trainee note, update overall note and check for auto flagging
-		if(note.getType() == NoteType.QC_TRAINEE) {
-			log.trace("Updating note: " + note);
-			//evaluationService.calculateAverage(note.getWeek(), new Integer(note.getBatchId())); <--TODO
+		log.trace("Updating note: " + note);
+		Trainee trainee = note.getTrainee();
+		boolean noteIsTraineeNote = (note.getType() == NoteType.QC_TRAINEE);
+		// If note is a trainee note, check for auto flagging
+		if (noteIsTraineeNote) {
 			// Updates trainee if they were auto flagged
 			trainee = evaluationService.checkIfTraineeShouldBeFlagged(note);
 			log.trace("Updated trainee: " + trainee);
@@ -126,10 +125,15 @@ public class NoteService {
 		note = repo.save(note);
 		// re-add trainee object to note to send back to client
 		note.setTrainee(trainee);
-		evaluationService.calculateAverage(note.getWeek(), new Integer(note.getBatchId()));
+		//If note is a trainee note, update overall note
+		if (noteIsTraineeNote) {
+			log.trace("Updating note average.");
+			evaluationService.calculateAverage(note.getWeek(), new Integer(note.getBatchId()));
+		}
+		log.trace("Updated note: " + note);
 		return note;
 	}
-	
+
 	/**
 	 * 
 	 * @param batchId
@@ -139,28 +143,29 @@ public class NoteService {
 	public List<Note> findQCNotesByBatchAndWeek(Integer batchId, Short week) {
 		List<Note> notes = repo.findQCNotesByBatchAndWeek(batchId, week, NoteType.QC_TRAINEE);
 		List<Trainee> trainees = traineeClient.findAllByBatch(batchId).getBody();
-		for (Note n: notes) {
-			for (Trainee t: trainees) {
+		for (Note n : notes) {
+			for (Trainee t : trainees) {
 				if (n.getTraineeId() == t.getTraineeId()) {
 					// set the note's trainee object
 					n.setTrainee(t);
 				}
 			}
 		}
-		// Shuffle list of notes so names are displayed in random order on the client side
+		// Shuffle list of notes so names are displayed in random order on the client
+		// side
 //		Collections.shuffle(notes);
 		return notes;
 	}
-	
+
 	/**
 	 * 
 	 * @param traineeId
 	 * @return a list QC notes for specified trainee.
 	 */
-	public List<Note> findQCTraineeNotesById(Integer traineeId){
+	public List<Note> findQCTraineeNotesById(Integer traineeId) {
 		return repo.findByTraineeId(traineeId, new Sort("week"));
 	}
-	
+
 	/**
 	 * 
 	 * @param batchId
@@ -170,7 +175,5 @@ public class NoteService {
 	public Note findOverallNoteByBatchAndWeek(Integer batchId, Short week) {
 		return repo.findQCBatchNotes(batchId, week, NoteType.QC_BATCH);
 	}
-	
-	
 
 }
