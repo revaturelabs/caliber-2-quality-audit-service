@@ -38,6 +38,10 @@ public class BatchController {
 		return client.getBatchesByYear(startYear);
 	}
 	
+	@GetMapping("/{startYear}/{quarter}") List<BatchEntity> getBatchesByYearByQuarter(@PathVariable Integer startYear, @PathVariable Integer quarter){
+		return client.getBatchesByYearByQuarter(startYear, quarter);
+	}
+	
 	@GetMapping("/valid-year")
 	public List<Integer> batchYears() {
 		return client.batchYears();
