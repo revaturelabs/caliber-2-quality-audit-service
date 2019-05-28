@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.revature.caliber.beans.Batch;
+import com.revature.caliber.beans.BatchEntity;
 import com.revature.caliber.beans.Note;
 import com.revature.caliber.beans.NoteType;
 import com.revature.caliber.beans.Trainee;
@@ -56,7 +57,7 @@ public class NoteService {
 	 * @return A list of new QC notes for all non-dropped associates in the specified batch as well
 	 * 			as a an overall batch note appended at the end of the list.
 	 */
-	public List<Note> createBatchNotesForWeek(Batch batch, int week){
+	public List<Note> createBatchNotesForWeek(BatchEntity batch, int week){
 		// If the week doesn't exist in the batch, don't create anything
 		if(week > batch.getWeeks()) {
 			return null;

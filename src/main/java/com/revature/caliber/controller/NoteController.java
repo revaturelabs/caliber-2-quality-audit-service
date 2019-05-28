@@ -95,8 +95,11 @@ public class NoteController {
 		// This will not create anything if we try to get notes for a week greater
 		// than the number of weeks in a batch.
 		if (notes.size() == 0) {
-			Batch batch = batchClient.getBatchById(batchId);
+			BatchEntity batch = batchClient.getBatchById(batchId);
 			notes = noteService.createBatchNotesForWeek(batch, week);
+			if (notes == null) {
+				return new ResponseEntity<List<Note>>(HttpStatus.CONFLICT);
+			}
 			// drop batch note from list
 			notes.removeIf(note->note.getType()==NoteType.QC_BATCH);
 		}
@@ -144,7 +147,7 @@ public class NoteController {
 	 * 			as a an overall batch note appended at the end of the list.
 	 */
 	@PostMapping(path = "/notes/create-batch-notes", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<Note>> createBatchNotes(@RequestBody Batch batch) {
+	public ResponseEntity<List<Note>> createBatchNotes(@RequestBody BatchEntity batch) {
 		List<Note> notes = noteService.createBatchNotesForWeek(batch, batch.getWeeks());
 		if (notes == null) {
 			return new ResponseEntity<List<Note>>(HttpStatus.CONFLICT);
