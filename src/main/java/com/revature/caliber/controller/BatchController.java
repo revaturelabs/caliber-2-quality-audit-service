@@ -47,5 +47,4 @@ public class BatchController {
 		return client.batchYears();
 	}
 
-
 }
