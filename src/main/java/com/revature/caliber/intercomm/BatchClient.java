@@ -23,6 +23,8 @@ public interface BatchClient {
 	@GetMapping("/vp/batch/{startYear}")
 	public List<BatchEntity> getBatchesByYear(@PathVariable("startYear") Integer startYear);
 										
+	@GetMapping("/vp/batch/{startYear}/{quarter}")
+	public List<BatchEntity> getBatchesByYearByQuarter(@PathVariable("startYear") Integer startYear, @PathVariable("quarter") Integer quarter);
 	
 	@GetMapping("all/batch/valid_years")
 	public List<Integer> batchYears();
