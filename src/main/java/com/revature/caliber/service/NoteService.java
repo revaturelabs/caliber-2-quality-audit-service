@@ -19,6 +19,7 @@ import com.revature.caliber.beans.NoteType;
 import com.revature.caliber.beans.Trainee;
 import com.revature.caliber.beans.TrainingStatus;
 import com.revature.caliber.dao.NoteRepository;
+import com.revature.caliber.intercomm.BatchClient;
 import com.revature.caliber.intercomm.TraineeClient;
 
 import feign.RetryableException;
@@ -38,6 +39,8 @@ public class NoteService {
 	NoteRepository repo;
 	@Autowired
 	private TraineeClient traineeClient;
+	@Autowired
+	private BatchClient batchClient;
 	@Autowired
 	private EvaluationService evaluationService;
 
@@ -95,6 +98,19 @@ public class NoteService {
 		return notes;
 	}
 
+	public List<Note> createNewTraineeNotes(Trainee t) {
+		System.out.println(t);
+		List<Note> notes = new ArrayList<Note>();
+		BatchEntity batch = batchClient.getBatchById(t.getBatchId());
+		int weeks = batch.getWeeks();
+		for(int i = 1; i <= weeks; i++) {
+			Note n = new Note((short) i, t.getBatchId(), t);
+			n = repo.save(n);
+			notes.add(n);
+		}
+		return notes;
+	}
+	
 	public Note findById(Integer id) {
 		return repo.findOne(id);
 	}

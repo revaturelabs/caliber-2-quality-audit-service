@@ -22,6 +22,7 @@ import com.revature.caliber.beans.Batch;
 import com.revature.caliber.beans.BatchEntity;
 import com.revature.caliber.beans.Note;
 import com.revature.caliber.beans.NoteType;
+import com.revature.caliber.beans.Trainee;
 import com.revature.caliber.intercomm.BatchClient;
 import com.revature.caliber.service.NoteService;
 
@@ -155,7 +156,23 @@ public class NoteController {
 			return new ResponseEntity<List<Note>>(notes, HttpStatus.CREATED);
 		}
 	}
-
+	/**
+	 * In the case that a new trainee is added to a batch mid-training, QC notes for that trainee should be
+	 * created for each week the batch has gone through.
+	 * 
+	 * @param batch - a BatchEntity that contains a batchId and number of weeks.
+	 * @return A list of new QC notes by week for the new trainee in the specified batch.
+	 */
+	@PostMapping(path = "/notes/create-new-trainee-notes", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<Note>> createNewTraineeNotes(@RequestBody Trainee t) {
+		List<Note> notes = noteService.createNewTraineeNotes(t);
+		if (notes == null) {
+			return new ResponseEntity<List<Note>>(HttpStatus.CONFLICT);
+		} else {
+			return new ResponseEntity<List<Note>>(notes, HttpStatus.CREATED);
+		}
+	}
+	
 	/**
 	 * 
 	 * @param Note to be updated.
