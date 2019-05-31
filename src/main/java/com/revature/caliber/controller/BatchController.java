@@ -15,7 +15,7 @@ import com.revature.caliber.beans.BatchEntity;
 import com.revature.caliber.intercomm.BatchClient;
 
 @RestController
-@CrossOrigin("*")
+@CrossOrigin(value="*")
 @RequestMapping("/batch")
 public class BatchController {
 	
