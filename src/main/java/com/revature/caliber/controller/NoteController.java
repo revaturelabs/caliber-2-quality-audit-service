@@ -41,7 +41,7 @@ public class NoteController {
 
 	@Autowired
 	private NoteService noteService;
-	
+
 	@Autowired
 	private BatchClient batchClient;
 
@@ -55,8 +55,7 @@ public class NoteController {
 		List<Note> notes = noteService.getAllNotes();
 		if (notes == null) {
 			return new ResponseEntity<List<Note>>(HttpStatus.CONFLICT);
-		}
-		else {
+		} else {
 			return new ResponseEntity<List<Note>>(notes, HttpStatus.OK);
 		}
 	}
@@ -73,8 +72,7 @@ public class NoteController {
 		Note note = noteService.findById(id);
 		if (note == null) {
 			return new ResponseEntity<Note>(HttpStatus.CONFLICT);
-		}
-		else {
+		} else {
 			return new ResponseEntity<Note>(note, HttpStatus.OK);
 		}
 	}
@@ -82,7 +80,7 @@ public class NoteController {
 	/**
 	 * 
 	 * @param batchId.
-	 * @param week number.
+	 * @param week     number.
 	 * @return a list of associate notes according to batch and week.
 	 */
 	@GetMapping(value = "/notes/{batchId}/{week}")
@@ -91,24 +89,14 @@ public class NoteController {
 		if (notes == null) {
 			return new ResponseEntity<List<Note>>(HttpStatus.CONFLICT);
 		}
-		
-		// If we don't find any notes, try to create them.
-		// This will not create anything if we try to get notes for a week greater
-		// than the number of weeks in a batch.
-		if (notes.size() == 0) {
-			BatchEntity batch = batchClient.getBatchById(batchId);
-			notes = noteService.createBatchNotesForWeek(batch, week);
-			if (notes == null) {
-				return new ResponseEntity<List<Note>>(HttpStatus.CONFLICT);
-			}
-			// drop batch note from list
-			notes.removeIf(note->note.getType()==NoteType.QC_BATCH);
-		}
-		
+
+		// drop batch note from list
+		notes.removeIf(note -> note.getType() == NoteType.QC_BATCH);
+
 		return new ResponseEntity<List<Note>>(notes, HttpStatus.OK);
-		
+
 	}
-	
+
 	/**
 	 * 
 	 * @param traineeId.
@@ -127,7 +115,7 @@ public class NoteController {
 	/**
 	 * 
 	 * @param batch ID.
-	 * @param week number.
+	 * @param week  number.
 	 * @return the overall QC batch note for the give week.
 	 */
 	@GetMapping(value = "/notes/overall/{batch}/{week}")
@@ -135,17 +123,17 @@ public class NoteController {
 		Note note = noteService.findOverallNoteByBatchAndWeek(batch, week);
 		if (note == null) {
 			return new ResponseEntity<Note>(HttpStatus.CONFLICT);
-		}
-		else {
+		} else {
 			return new ResponseEntity<Note>(note, HttpStatus.OK);
 		}
 	}
-	
+
 	/**
 	 * 
 	 * @param batch - a BatchEntity that contains a batchId and week number.
-	 * @return A list of new QC notes for all non-dropped associates in the specified batch as well
-	 * 			as a an overall batch note appended at the end of the list.
+	 * @return A list of new QC notes for all non-dropped associates in the
+	 *         specified batch as well as a an overall batch note appended at the
+	 *         end of the list.
 	 */
 	@PostMapping(path = "/notes/create-batch-notes", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Note>> createBatchNotes(@RequestBody BatchEntity batch) {
@@ -156,12 +144,14 @@ public class NoteController {
 			return new ResponseEntity<List<Note>>(notes, HttpStatus.CREATED);
 		}
 	}
+
 	/**
-	 * In the case that a new trainee is added to a batch mid-training, QC notes for that trainee should be
-	 * created for each week the batch has gone through.
+	 * In the case that a new trainee is added to a batch mid-training, QC notes for
+	 * that trainee should be created for each week the batch has gone through.
 	 * 
 	 * @param batch - a BatchEntity that contains a batchId and number of weeks.
-	 * @return A list of new QC notes by week for the new trainee in the specified batch.
+	 * @return A list of new QC notes by week for the new trainee in the specified
+	 *         batch.
 	 */
 	@PostMapping(path = "/notes/create-new-trainee-notes", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Note>> createNewTraineeNotes(@RequestBody Trainee t) {
@@ -172,7 +162,7 @@ public class NoteController {
 			return new ResponseEntity<List<Note>>(notes, HttpStatus.CREATED);
 		}
 	}
-	
+
 	/**
 	 * 
 	 * @param Note to be updated.
@@ -189,6 +179,5 @@ public class NoteController {
 			return new ResponseEntity<>(note, HttpStatus.ACCEPTED);
 		}
 	}
-
 
 }
