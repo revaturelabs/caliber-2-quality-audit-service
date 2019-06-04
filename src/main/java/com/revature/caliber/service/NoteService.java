@@ -67,12 +67,21 @@ public class NoteService {
 		}
 
 		int batchId = batch.getBatchId();
-		List<Note> notes = new ArrayList<Note>();
+		// Grab any existing notes so they will not be recreated
+		List<Note> notes = repo.findQCNotesByBatchAndWeek(batch.getBatchId(), (short)week, NoteType.QC_TRAINEE);
+		
+		// Create a list of trainee IDs
+		List<Integer> noteTraineeIds = new ArrayList<Integer>();
+		notes.forEach(note -> noteTraineeIds.add(note.getTraineeId()));
+		
 		try {
 			// Use Feign Client to retrieve list of trainees from the User Service
 			ResponseEntity<List<Trainee>> response = traineeClient.findAllByBatch(batchId);
 			if (response != null && response.hasBody()) {
 				List<Trainee> trainees = response.getBody();
+				
+				// Remove trainees with notes so we do not recreate them
+				trainees.removeIf(t -> noteTraineeIds.contains(t.getTraineeId()));
 				Iterator<Trainee> itr = trainees.iterator();
 				Trainee t = new Trainee();
 				// Create and save empty QC note for each trainee
@@ -92,9 +101,19 @@ public class NoteService {
 			return null;
 		}
 		// Create an "overall batch feedback" note and append to the end of the list
-		Note overallNote = new Note((short) week, batchId);
-		overallNote = repo.save(overallNote);
+		List<Note> overallNotes = repo.findQCNotesByBatchAndWeek(batch.getBatchId(), (short)week, NoteType.QC_BATCH);
+		Note overallNote;
+		
+		// Create a new note only if it doesn't exist
+		if(overallNotes.isEmpty()) {
+			overallNote = new Note((short) week, batchId);
+			overallNote = repo.save(overallNote);
+		} else {
+			overallNote =overallNotes.get(0);
+		}
+		
 		notes.add(overallNote);
+		
 		return notes;
 	}
 
@@ -159,6 +178,12 @@ public class NoteService {
 	public List<Note> findQCNotesByBatchAndWeek(Integer batchId, Short week) {
 		List<Note> notes = repo.findQCNotesByBatchAndWeek(batchId, week, NoteType.QC_TRAINEE);
 		List<Trainee> trainees = traineeClient.findAllByBatch(batchId).getBody();
+
+		// If we don't have notes for each trainee, create blank notes
+		if (notes.size() < trainees.size()) {
+			BatchEntity batch = batchClient.getBatchById(batchId);
+			notes = createBatchNotesForWeek(batch, week);
+		}
 		for (Note n : notes) {
 			for (Trainee t : trainees) {
 				if (n.getTraineeId() == t.getTraineeId()) {
@@ -167,9 +192,6 @@ public class NoteService {
 				}
 			}
 		}
-		// Shuffle list of notes so names are displayed in random order on the client
-		// side
-//		Collections.shuffle(notes);
 		return notes;
 	}
 
