@@ -7,13 +7,16 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.revature.caliber.intercomm.BatchClient;
 import com.revature.caliber.beans.Batch;
+import com.revature.caliber.beans.BatchEntity;
+import com.revature.caliber.intercomm.BatchClient;
 
 @RestController
-@CrossOrigin("*")
+
+@CrossOrigin(value="*")
 @RequestMapping("/batch")
 public class BatchController {
 	
@@ -21,16 +24,26 @@ public class BatchController {
 	BatchClient client;
 	
 	@GetMapping("/batches")
-	public List<Batch> getAllBatches() {
-		return client.getAllBatches();
+	public List<BatchEntity> getAllBatches(@RequestParam(required=false) Integer year, @RequestParam(required=false) Integer quarter) {
+		return client.getAllBatches(year, quarter);
 	}
 	
 	@GetMapping("/batch/{id}")
-	public Batch getBatchById(@PathVariable Integer id) {
+	public BatchEntity getBatchById(@PathVariable Integer id) {
+		System.out.println("***************** " + id + " *****************");
 		return client.getBatchById(id);
 	}
 	
-	@GetMapping("/valid-year")
+	@GetMapping("/{startYear}")
+	public List<BatchEntity> getBatchesByYear(@PathVariable Integer startYear) {
+		return client.getBatchesByYear(startYear);
+	}
+
+	@GetMapping("/{startYear}/{quarter}") List<BatchEntity> getBatchesByYearByQuarter(@PathVariable Integer startYear, @PathVariable Integer quarter){
+		return client.getBatchesByYearByQuarter(startYear, quarter);
+	}
+	
+	@GetMapping("/valid-years")
 	public List<Integer> batchYears() {
 		return client.batchYears();
 	}
