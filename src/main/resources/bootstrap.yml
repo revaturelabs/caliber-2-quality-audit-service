@@ -1,4 +1,6 @@
- spring: 
+spring:
+  application:
+    name: quality-audit-service
   cloud:
     config:
       name: quality-audit-service
