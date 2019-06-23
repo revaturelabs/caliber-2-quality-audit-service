@@ -17,6 +17,6 @@ import com.revature.caliber.beans.Trainer;
 @FeignClient("user-service")
 public interface TrainerClient {
 
-	@GetMapping("/all/trainer/all")
+	@GetMapping("/user/all/trainer/all")
 	public ResponseEntity<List<Trainer>> getAllTrainers();
 }

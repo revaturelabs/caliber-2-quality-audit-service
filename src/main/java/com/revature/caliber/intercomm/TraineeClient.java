@@ -27,7 +27,7 @@ public interface TraineeClient {
 	 * @param batch The batch id representing the batch to get all the trainees from
 	 * @return The list of trainees with the correct batch id.
 	 */
-	@GetMapping(value = "/all/trainee", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/user/all/trainee", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Trainee>> findAllByBatch(@RequestParam("batch") Integer batch);
 
 	/**
@@ -36,7 +36,7 @@ public interface TraineeClient {
 	 * @param trainee The trainee to be updated
 	 * @return The updated Trainee object and an accepted http-status code
 	 */
-	@PutMapping(value = "all/trainee/update", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PutMapping(value = "/user/all/trainee/update", produces = MediaType.APPLICATION_JSON_VALUE)
 	@Transactional(isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED)
 	public ResponseEntity<Trainee> updateTrainee(@Valid @RequestBody Trainee trainee);
 
