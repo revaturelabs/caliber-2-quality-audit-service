@@ -15,6 +15,6 @@ public interface CategoryClient {
 	@GetMapping(value = "/category/all/active", produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<Category> getAllActiveCategories();
 	
-	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/category/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public Category getCategoryById(@PathVariable(name = "id") Integer id);
 }
