@@ -22,7 +22,7 @@ phases:
       - echo Pushing the Docker image...
       - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$SERVICE_NAME:$BUILD_ID
       - echo Writing image definitions file...
-      - printf '[{"name":"%s","imageUri":"%s"}]' $SERVICE_NAME $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$SERVICE_NAME:$BUILD_ID > imagedefinitions.json
+      - printf '[{"name":"%s","imageUri":"%s", "cpu":220, "memory":450}]' $SERVICE_NAME $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$SERVICE_NAME:$BUILD_ID > imagedefinitions.json
 artifacts:
   files:
     - imagedefinitions.json
