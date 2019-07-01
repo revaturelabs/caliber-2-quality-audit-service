@@ -76,6 +76,26 @@ public class NoteController {
 			return new ResponseEntity<Note>(note, HttpStatus.OK);
 		}
 	}
+	
+	/**
+	 * 
+	 * @param batchId.
+	 * @return a list of associate notes according to batch.
+	 */
+	@GetMapping(value = "/notes/all/{batch}")
+	public ResponseEntity<List<Note>> getNoteByBatch(@PathVariable Integer batch) {
+		
+		System.out.println("/n/n/n/nHERE/n");
+		List<Note> notes = noteService.findQCNotesByBatch(batch);
+		if (notes == null) {
+			return new ResponseEntity<List<Note>>(HttpStatus.CONFLICT);
+		}
+
+		// drop batch note from list
+		notes.removeIf(note -> note.getType() == NoteType.QC_BATCH);
+
+		return new ResponseEntity<List<Note>>(notes, HttpStatus.OK);
+	}
 
 	/**
 	 * 
