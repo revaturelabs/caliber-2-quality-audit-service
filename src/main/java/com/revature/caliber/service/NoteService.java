@@ -49,7 +49,16 @@ public class NoteService {
 	 * @return notes
 	 */
 	public List<Note> getAllNotes() {
-		return repo.findAll();
+		List<Note> temp = repo.findAll();
+		System.out.println("It is broken");
+		System.out.println("It is broken");	
+		for(Note note: temp) {
+			System.out.println(note);
+			System.out.println(note);
+			System.out.println(note);
+
+		}
+		return temp;
 	}
 
 	/**
