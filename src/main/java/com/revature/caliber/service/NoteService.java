@@ -168,6 +168,35 @@ public class NoteService {
 		log.trace("Updated note: " + note);
 		return note;
 	}
+	
+	/**
+	 * 
+	 * @param batchId
+	 * @param week
+	 * @return Randomized list of QC Trainee notes by batchId and week number.
+	 */
+	public List<Note> findQCNotesByBatch(Integer batchId) {
+		System.out.println("/n/n/n/nHERE/n");
+		List<Note> notes = repo.findQCNotesByBatch(batchId, NoteType.QC_TRAINEE);
+		System.out.println("/n/n/n/nHERE/n");
+		System.out.println(notes);
+//		List<Trainee> trainees = traineeClient.findAllByBatch(batchId).getBody();
+//
+//		// If we don't have notes for each trainee, create blank notes
+//		if (notes.size() < trainees.size()) {
+//			BatchEntity batch = batchClient.getBatchById(batchId);
+//			notes = createBatchNotesForWeek(batch, week);
+//		}
+//		for (Note n : notes) {
+//			for (Trainee t : trainees) {
+//				if (n.getTraineeId() == t.getTraineeId()) {
+//					// set the note's trainee object
+//					n.setTrainee(t);
+//				}
+//			}
+//		}
+		return notes;
+	}
 
 	/**
 	 * 
