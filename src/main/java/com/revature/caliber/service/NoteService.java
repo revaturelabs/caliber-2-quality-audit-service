@@ -186,7 +186,7 @@ public class NoteService {
 	 */
 	public List<Note> findQCNotesByBatch(Integer batchId) {
 		System.out.println("/n/n/n/nHERE/n");
-		List<Note> notes = repo.findQCNotesByBatch(batchId, NoteType.QC_TRAINEE);
+		List<Note> notes = repo.findQCNotesByBatch(batchId);//, NoteType.QC_TRAINEE);
 		System.out.println("/n/n/n/nHERE/n");
 		System.out.println(notes);
 //		List<Trainee> trainees = traineeClient.findAllByBatch(batchId).getBody();
