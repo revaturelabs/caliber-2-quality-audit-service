@@ -85,7 +85,6 @@ public class NoteController {
 	@GetMapping(value = "/notes/all/{batch}")
 	public ResponseEntity<List<Note>> getNoteByBatch(@PathVariable Integer batch) {
 		
-		System.out.println("/n/n/n/nHERE/n");
 		List<Note> notes = noteService.findQCNotesByBatch(batch);
 		if (notes == null) {
 			return new ResponseEntity<List<Note>>(HttpStatus.CONFLICT);
