@@ -43,9 +43,10 @@ public interface NoteRepository extends JpaRepository<Note, Integer> {
 	 * @return
 	 */
 	@Query("SELECT n FROM Note n WHERE n.batchId = :batchId")//AND n.type = :type")
-	public List<Note> findQCNotesByBatch(
-			@Param("batchId") Integer batchId);
-			//@Param("type") NoteType type);
+    public List<Note> findQCNotesByBatch(
+            @Param("batchId") Integer batchId);
+            //@Param("type") NoteType type);
+
 	
 	@Query("SELECT n FROM Note n WHERE n.batchId = :batchId AND n.week = :week AND n.type = :type")
 	public List<Note> findQCNotesByBatchAndWeek(

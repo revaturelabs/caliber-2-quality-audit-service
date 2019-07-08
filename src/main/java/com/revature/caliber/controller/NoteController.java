@@ -110,7 +110,7 @@ public class NoteController {
 		}
 
 		// drop batch note from list
-		notes.removeIf(note -> note.getType() == NoteType.QC_BATCH);
+		//notes.removeIf(note -> note.getType() == NoteType.QC_BATCH);
 
 		return new ResponseEntity<List<Note>>(notes, HttpStatus.OK);
 
