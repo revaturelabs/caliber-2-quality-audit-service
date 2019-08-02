@@ -20,7 +20,7 @@ import com.revature.caliber.beans.Trainer;
  */
 @RestController
 @RequestMapping("/trainer")
-@CrossOrigin(origins="*")
+@CrossOrigin(value="*")
 public class TrainerController {
 
 	private static final Logger log = Logger.getLogger(TrainerController.class);

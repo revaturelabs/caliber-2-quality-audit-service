@@ -34,7 +34,7 @@ import com.revature.caliber.service.NoteService;
  */
 @RestController
 @RequestMapping("/audit")
-@CrossOrigin(origins = "*")
+@CrossOrigin(value = "*")
 public class NoteController {
 
 	private static final Logger log = Logger.getLogger(NoteController.class);
