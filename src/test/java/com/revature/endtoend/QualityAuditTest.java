@@ -18,7 +18,8 @@ import org.testng.annotations.Test;
 
 public class QualityAuditTest {
 	public static WebDriver driver;	
-	public final String URL = "http://localhost:4200/caliber/vp/audit";
+	//public final String URL = "http://localhost:4200/caliber/vp/audit";
+	public final String URL = System.getenv("CALIBER_BASE_URL") + "/caliber/vp/audit";
 	
 	@BeforeClass
 	public void setup() {
@@ -96,19 +97,22 @@ public class QualityAuditTest {
 		
 		//test 3 times in case of extremely unlucky chance that random order is also alphabetical order.
 		for(int i = 0; i < 3; i++) {
-			//get list of sorted names
-			List<WebElement> sortedNameElements = driver.findElements(By.className("dropup"));
-			qualityAuditPOM.pressSortButton();
-			//get list of random names
-			List<WebElement> randomNameElements = driver.findElements(By.className("dropup"));
-			qualityAuditPOM.pressSortButton();
-			
-			//find any differences between the two lists of names
-			for(int j = 0; j < sortedNameElements.size(); j++) {
-				//if the names are different assertNotEquals
-				if(!sortedNameElements.get(j).getText().equals(randomNameElements.get(j).getText())){
-					assertNotEquals(sortedNameElements.get(j).getText(), randomNameElements.get(j).getText());
-					differenceFound = true;
+			//keep looking if a difference is not found yet
+			if(differenceFound == false) {
+				//get list of sorted names
+				List<WebElement> sortedNameElements = driver.findElements(By.className("dropup"));
+				qualityAuditPOM.pressSortButton();
+				//get list of random names
+				List<WebElement> randomNameElements = driver.findElements(By.className("dropup"));
+				qualityAuditPOM.pressSortButton();
+				
+				//find any differences between the two lists of names
+				for(int j = 0; j < sortedNameElements.size(); j++) {
+					//if the names are different assertNotEquals
+					if(!sortedNameElements.get(j).getText().equals(randomNameElements.get(j).getText())){
+						assertNotEquals(sortedNameElements.get(j).getText(), randomNameElements.get(j).getText());
+						differenceFound = true;
+					}
 				}
 			}
 		}
