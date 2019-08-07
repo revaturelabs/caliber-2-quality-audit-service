@@ -51,6 +51,12 @@ public class QualityAuditTest {
 		
 		//iterate through list of textareas and add a comment
 		List<WebElement> individualComments = driver.findElements(By.tagName("textarea"));
+		
+		//if there are no individual elements make the test false
+		if(individualComments.size() <= 1) {
+			individualCommentsSaved = false;
+		}
+		
 		for(int i = 0; i < individualComments.size()-1; i++) {
 			individualComments.get(i).clear();
 			individualComments.get(i).sendKeys("Comment " + i);
