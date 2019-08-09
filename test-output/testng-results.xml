@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testng-results skipped="0" failed="0" ignored="0" total="4" passed="4">
+  <reporter-output>
+  </reporter-output>
+  <suite name="Default suite" duration-ms="41137" started-at="2019-08-07T20:33:54Z" finished-at="2019-08-07T20:34:35Z">
+    <groups>
+    </groups>
+    <test name="Default test" duration-ms="41137" started-at="2019-08-07T20:33:54Z" finished-at="2019-08-07T20:34:35Z">
+      <class name="com.revature.endtoend.QualityAuditTest">
+        <test-method status="PASS" signature="setup()[pri:0, instance:com.revature.endtoend.QualityAuditTest@33f88ab]" name="setup" is-config="true" duration-ms="5268" started-at="2019-08-07T20:33:54Z" finished-at="2019-08-07T20:34:00Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setup -->
+        <test-method status="PASS" signature="confirmQualityAuditPage()[pri:1, instance:com.revature.endtoend.QualityAuditTest@33f88ab]" name="confirmQualityAuditPage" duration-ms="587" started-at="2019-08-07T20:34:00Z" finished-at="2019-08-07T20:34:00Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- confirmQualityAuditPage -->
+        <test-method status="PASS" signature="testWriteIndividualComments()[pri:2, instance:com.revature.endtoend.QualityAuditTest@33f88ab]" name="testWriteIndividualComments" duration-ms="28008" started-at="2019-08-07T20:34:00Z" finished-at="2019-08-07T20:34:28Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testWriteIndividualComments -->
+        <test-method status="PASS" signature="testSortRandomly()[pri:3, instance:com.revature.endtoend.QualityAuditTest@33f88ab]" name="testSortRandomly" duration-ms="4476" started-at="2019-08-07T20:34:28Z" finished-at="2019-08-07T20:34:33Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testSortRandomly -->
+        <test-method status="PASS" signature="testSortAlphabetically()[pri:0, instance:com.revature.endtoend.QualityAuditTest@33f88ab]" name="testSortAlphabetically" duration-ms="1810" started-at="2019-08-07T20:34:33Z" depends-on-methods="com.revature.endtoend.QualityAuditTest.testSortRandomly" finished-at="2019-08-07T20:34:35Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testSortAlphabetically -->
+        <test-method status="PASS" signature="teardown()[pri:0, instance:com.revature.endtoend.QualityAuditTest@33f88ab]" name="teardown" is-config="true" duration-ms="955" started-at="2019-08-07T20:34:35Z" finished-at="2019-08-07T20:34:35Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- teardown -->
+      </class> <!-- com.revature.endtoend.QualityAuditTest -->
+    </test> <!-- Default test -->
+  </suite> <!-- Default suite -->
+</testng-results>

@@ -19,7 +19,7 @@ import com.revature.caliber.beans.Note;
 import com.revature.caliber.service.CategoryService;
 
 @RestController
-@CrossOrigin("*")
+@CrossOrigin(value="*")
 @RequestMapping("/category")
 public class CategoryController {
 

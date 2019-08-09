@@ -28,7 +28,7 @@ import com.revature.caliber.intercomm.TraineeClient;
  */
 @RestController
 @RequestMapping("/trainee")
-@CrossOrigin(origins = "*")
+@CrossOrigin(value = "*")
 public class TraineeController {
 
 	@Autowired
