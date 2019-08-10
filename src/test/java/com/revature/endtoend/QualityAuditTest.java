@@ -2,6 +2,7 @@ package com.revature.endtoend;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotEquals;
+import static org.testng.Assert.assertTrue;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -45,6 +46,33 @@ public class QualityAuditTest {
 	public void confirmQualityAuditPage() {
 		QualityAuditPOM qualityAuditPOM = new QualityAuditPOM(driver);
 		assertEquals(driver.getTitle(), qualityAuditPOM.title);
+	}
+	
+	@Test(dependsOnMethods = { "confirmQualityAuditPage"})
+	public void testOverallComments(){
+		
+		WebDriverWait wait = new WebDriverWait(driver, 7);
+		List<WebElement> overallCommentList = driver.findElements(By.tagName("textarea"));
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.tagName(overallCommentList.get(overallCommentList.size()-1).getTagName())));
+		
+		String placeHolder = overallCommentList.get(overallCommentList.size()-1).getAttribute("value");
+		
+		overallCommentList.get(overallCommentList.size()-1).clear();
+		overallCommentList.get(overallCommentList.size()-1).sendKeys("Hello");
+		
+		List <WebElement> overallTitleElement = driver.findElements(By.tagName("a"));
+		overallTitleElement.get(0).click();
+		
+		driver.navigate().refresh();
+		overallCommentList = driver.findElements(By.tagName("textarea"));
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.tagName(overallCommentList.get(overallCommentList.size()-1).getTagName())));
+		
+		assertTrue("Hello".equals(overallCommentList.get(overallCommentList.size()-1).getAttribute("value")));
+		
+		overallCommentList.get(overallCommentList.size()-1).clear();
+		overallCommentList.get(overallCommentList.size()-1).sendKeys(placeHolder);
+		overallTitleElement = driver.findElements(By.tagName("a"));
+		overallTitleElement.get(0).click();
 	}
 
 	@Test(priority = 2)
