@@ -8,6 +8,7 @@
           <include name="testSortRandomly"/>
           <include name="setup"/>
           <include name="teardown"/>
+          <include name="testWriteIndividualComments"/>
           <include name="testSortAlphabetically"/>
         </methods>
       </class> <!-- com.revature.endtoend.QualityAuditTest -->
