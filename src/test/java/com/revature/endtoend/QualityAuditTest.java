@@ -28,7 +28,6 @@ public class QualityAuditTest {
 	public void setup() {
 		
 		System.setProperty("webdriver.chrome.driver", "src/test/drivers/chromedriver.exe");
-		//System.setProperty("webdriver.chrome.driver", "D:/chromedriver.exe");
 	    ChromeOptions chromeOptions = new ChromeOptions();
 	    chromeOptions.addArguments("--headless");
 	    chromeOptions.addArguments("--start-maximized");
@@ -259,32 +258,127 @@ public class QualityAuditTest {
 		}
 		assertEquals(true, inOrder);
 	}
+	
 	@Test(priority=7)
-	  public void CategoryTest() throws InterruptedException {
+	  public void testCategory() throws InterruptedException {
 	
 		String baseUrl = "http://localhost:4200/caliber/";
 		
-		String actualTitle = "";
-		driver.manage().timeouts().implicitlyWait(10,TimeUnit.SECONDS);
-
-		// launch Fire fox and direct it to the Base URL
-		driver.get(baseUrl);
+		String actualTitle = "";		    
 		    
-		    
-		    //TimeUnit.MILLISECONDS.sleep(600);
-		    driver.findElement(By.id("quality-link")).click();
-		    //TimeUnit.SECONDS.sleep(4);
-		    driver.findElement(By.cssSelector(".fa-plus")).click();
-		    //TimeUnit.SECONDS.sleep(1);
-		    driver.findElement(By.linkText("ALM")).click();
-		    
-		    driver.findElement(By.cssSelector(".fa-plus")).click();
-		    //TimeUnit.SECONDS.sleep(1);
-		   
-		    driver.findElement(By.linkText("JUnit")).click();
-		
-		    assertTrue(driver.findElement(By.xpath("//span[contains(.,\'JUnit ×\')]")).isDisplayed());
-		    //assertTrue(driver.findElement(By.xpath("//span[contains(.,\'ASP.NET �\')]")).isDisplayed());
+	    //TimeUnit.MILLISECONDS.sleep(600);
+	    driver.findElement(By.id("quality-link")).click();
+	    //TimeUnit.SECONDS.sleep(4);
+	    driver.findElement(By.cssSelector(".fa-plus")).click();
+	    //TimeUnit.SECONDS.sleep(1);
+	    driver.findElement(By.linkText("ALM")).click();
+	    
+	    driver.findElement(By.cssSelector(".fa-plus")).click();
+	    //TimeUnit.SECONDS.sleep(1);
+	   
+	    driver.findElement(By.linkText("JUnit")).click();
+	
+	    assertTrue(driver.findElement(By.xpath("//span[contains(.,\'JUnit ×\')]")).isDisplayed());
+	    //assertTrue(driver.findElement(By.xpath("//span[contains(.,\'ASP.NET �\')]")).isDisplayed());
 			 
+	}
+	
+	@Test
+	public void testFrownFeedback() throws InterruptedException {
+		String className = "fa-frown-o";
+		driver.manage().timeouts().implicitlyWait(3000, TimeUnit.MILLISECONDS);
+		Actions action = new Actions(driver);
+		WebElement target = driver.findElement(By.className("qcStatusIcon"));
+		action.moveToElement(target).perform();
+		System.out.println("Mouse Over");
+		WebDriverWait wait = new WebDriverWait(driver, 7);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.className(className)));
+		WebElement selectMenuOption = driver.findElement(By.className(className));
+
+		selectMenuOption.click();
+		System.out.println("Selected 'Frown' from Menu");
+
+		assertEquals(driver.findElement(By.className(className)).getAttribute("class").split(" ")[2], className);
+	}
+
+	@Test
+	public void testMehFeedback() throws InterruptedException {
+		String className = "fa-meh-o";
+		driver.manage().timeouts().implicitlyWait(3000, TimeUnit.MILLISECONDS);
+		Actions action = new Actions(driver);
+		WebElement target = driver.findElement(By.className("qcStatusIcon"));
+		action.moveToElement(target).perform();
+		System.out.println("Mouse Over");
+		WebDriverWait wait = new WebDriverWait(driver, 20);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.className(className)));
+		WebElement selectMenuOption = driver.findElement(By.className(className));
+
+		selectMenuOption.click();
+		System.out.println("Selected 'Meh' from Menu");
+
+		assertEquals(driver.findElement(By.className(className)).getAttribute("class").split(" ")[2], className);
+	}
+
+	@Test
+	public void testSmileFeedback() throws InterruptedException {
+		String className = "fa-smile-o";
+		driver.manage().timeouts().implicitlyWait(3000, TimeUnit.MILLISECONDS);
+		Actions action = new Actions(driver);
+		WebElement target = driver.findElement(By.className("qcStatusIcon"));
+		action.moveToElement(target).perform();
+		System.out.println("Mouse Over");
+		WebDriverWait wait = new WebDriverWait(driver, 20);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.className(className)));
+		WebElement selectMenuOption = driver.findElement(By.className(className));
+
+		selectMenuOption.click();
+		System.out.println("Selected 'Good' from Menu");
+
+		assertEquals(driver.findElement(By.className(className)).getAttribute("class").split(" ")[2], className);
+	}
+
+	@Test
+	public void testQuestionFeedback() throws InterruptedException {
+		String className = "fa-question-circle";
+		driver.manage().timeouts().implicitlyWait(3000, TimeUnit.MILLISECONDS);
+		Actions action = new Actions(driver);
+		WebElement target = driver.findElement(By.className("qcStatusIcon"));
+		action.moveToElement(target).perform();
+		System.out.println("Mouse Over");
+		WebDriverWait wait = new WebDriverWait(driver, 20);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.className(className)));
+		WebElement selectMenuOption = driver.findElement(By.className(className));
+
+		selectMenuOption.click();
+		System.out.println("Selected 'Question' from Menu");
+
+		assertEquals(driver.findElement(By.className(className)).getAttribute("class").split(" ")[2], className);
+	}
+	
+
+	@Test
+	public void testStarFeedback() throws InterruptedException {
+		String className = "fa-star";
+		driver.manage().timeouts().implicitlyWait(3000, TimeUnit.MILLISECONDS);
+		Actions action = new Actions(driver);
+		WebElement target = driver.findElement(By.className("qcStatusIcon"));
+		action.moveToElement(target).perform();
+		System.out.println("Mouse Over");
+		WebDriverWait wait = new WebDriverWait(driver, 20);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.className(className)));
+		WebElement selectMenuOption = driver.findElement(By.className(className));
+
+		selectMenuOption.click();
+		System.out.println("Selected 'Star' from Menu");
+
+		assertEquals(driver.findElement(By.className(className)).getAttribute("class").split(" ")[2], className);
+	}
+	
+	//run this test last because it takes you to a different page
+	@Test(priority = 8)
+	public void testQualityAuditNav() throws InterruptedException {
+		String url = System.getenv("CALIBER_BASE_URL") + "/caliber/vp/assess";
+		driver.findElement(By.id("assess-link")).click();
+		assertEquals(driver.getCurrentUrl(), url);
 	}
 }
