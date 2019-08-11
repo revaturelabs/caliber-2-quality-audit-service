@@ -21,16 +21,17 @@ import org.testng.annotations.Test;
 
 public class QualityAuditTest {
 	public static WebDriver driver;
-	// public final String URL = "http://localhost:4200/caliber/vp/audit";
+	 //public final String URL = "http://localhost:4200/caliber/vp/audit";
 	public final String URL = System.getenv("CALIBER_BASE_URL") + "/caliber/vp/audit";
 
 	@BeforeClass
 	public void setup() {
 		
 		System.setProperty("webdriver.chrome.driver", "src/test/drivers/chromedriver.exe");
-		
+		//System.setProperty("webdriver.chrome.driver", "D:/chromedriver.exe");
 	    ChromeOptions chromeOptions = new ChromeOptions();
-//	    chromeOptions.addArguments("--headless");
+	    chromeOptions.addArguments("--headless");
+	    chromeOptions.addArguments("--start-maximized");
 
 	    
 		driver = new ChromeDriver(chromeOptions);
@@ -257,5 +258,33 @@ public class QualityAuditTest {
 			}
 		}
 		assertEquals(true, inOrder);
+	}
+	@Test(priority=7)
+	  public void CategoryTest() throws InterruptedException {
+	
+		String baseUrl = "http://localhost:4200/caliber/";
+		
+		String actualTitle = "";
+		driver.manage().timeouts().implicitlyWait(10,TimeUnit.SECONDS);
+
+		// launch Fire fox and direct it to the Base URL
+		driver.get(baseUrl);
+		    
+		    
+		    //TimeUnit.MILLISECONDS.sleep(600);
+		    driver.findElement(By.id("quality-link")).click();
+		    //TimeUnit.SECONDS.sleep(4);
+		    driver.findElement(By.cssSelector(".fa-plus")).click();
+		    //TimeUnit.SECONDS.sleep(1);
+		    driver.findElement(By.linkText("ALM")).click();
+		    
+		    driver.findElement(By.cssSelector(".fa-plus")).click();
+		    //TimeUnit.SECONDS.sleep(1);
+		   
+		    driver.findElement(By.linkText("JUnit")).click();
+		
+		    assertTrue(driver.findElement(By.xpath("//span[contains(.,\'JUnit ×\')]")).isDisplayed());
+		    //assertTrue(driver.findElement(By.xpath("//span[contains(.,\'ASP.NET �\')]")).isDisplayed());
+			 
 	}
 }
