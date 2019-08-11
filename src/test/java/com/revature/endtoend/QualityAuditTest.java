@@ -2,6 +2,7 @@ package com.revature.endtoend;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotEquals;
+import static org.testng.Assert.assertTrue;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -11,6 +12,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterClass;
@@ -19,16 +21,16 @@ import org.testng.annotations.Test;
 
 public class QualityAuditTest {
 	public static WebDriver driver;
-	// public final String URL = "http://localhost:4200/caliber/vp/audit";
+	 //public final String URL = "http://localhost:4200/caliber/vp/audit";
 	public final String URL = System.getenv("CALIBER_BASE_URL") + "/caliber/vp/audit";
 
 	@BeforeClass
 	public void setup() {
 		
 		System.setProperty("webdriver.chrome.driver", "src/test/drivers/chromedriver.exe");
-		
 	    ChromeOptions chromeOptions = new ChromeOptions();
 	    chromeOptions.addArguments("--headless");
+	    chromeOptions.addArguments("--start-maximized");
 
 	    
 		driver = new ChromeDriver(chromeOptions);
@@ -46,8 +48,111 @@ public class QualityAuditTest {
 		QualityAuditPOM qualityAuditPOM = new QualityAuditPOM(driver);
 		assertEquals(driver.getTitle(), qualityAuditPOM.title);
 	}
+	
+	@Test(dependsOnMethods = "confirmQualityAuditPage", priority = 7)
+	public void testOverallComments(){
+		
+		WebDriverWait wait = new WebDriverWait(driver, 7);
+		List<WebElement> overallCommentList = driver.findElements(By.tagName("textarea"));
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.tagName(overallCommentList.get(overallCommentList.size()-1).getTagName())));
+		
+		String placeHolder = overallCommentList.get(overallCommentList.size()-1).getAttribute("value");
+		
+		overallCommentList.get(overallCommentList.size()-1).clear();
+		overallCommentList.get(overallCommentList.size()-1).sendKeys("Hello");
+		
+		List <WebElement> overallTitleElement = driver.findElements(By.tagName("a"));
+		overallTitleElement.get(0).click();
+		
+		driver.navigate().refresh();
+		overallCommentList = driver.findElements(By.tagName("textarea"));
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.tagName(overallCommentList.get(overallCommentList.size()-1).getTagName())));
+		
+		assertTrue("Hello".equals(overallCommentList.get(overallCommentList.size()-1).getAttribute("value")));
+		
+		overallCommentList.get(overallCommentList.size()-1).clear();
+		overallCommentList.get(overallCommentList.size()-1).sendKeys(placeHolder);
+		overallTitleElement = driver.findElements(By.tagName("a"));
+		overallTitleElement.get(0).click();
+	}
+	
+	@Test(dependsOnMethods = "confirmQualityAuditPage", priority = 2)
+	public void testFlagButton() {// this test the functionality of pressing the pencil button for a modal window to pop up
+		WebDriverWait wait = new WebDriverWait(driver, 7);
+		List<WebElement> btnPencilList = driver.findElements(By.className("fa-pen"));
+		List<WebElement> noteRoleList = driver.findElements(By.className("NoteRow"));
+		Actions action = new Actions(driver);
+		action.moveToElement(noteRoleList.get(1)).perform();
+		action.click().build().perform();
+		wait.until(ExpectedConditions.visibilityOf(btnPencilList.get(0)));
+		btnPencilList.get(0).click();
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("flagTrainee")));
+		assertTrue(driver.findElement(By.id("flagTrainee")).isDisplayed());
+	}
 
-	@Test(priority = 2)
+	@Test(dependsOnMethods = "testFlagButton", priority = 3)
+	public void testGreenBtn() { //tests to see if after click the green flag does the delete,submit,little flag appear
+		WebDriverWait wait = new WebDriverWait(driver, 7);
+		WebElement greenFlag = driver.findElement(By.xpath("//*[@id='greenFlag']"));
+		greenFlag.click();
+		WebElement littleSymbol = driver.findElement(By.xpath("//*[@id='flagTrainee']/div/div/div[1]/div[2]/div/em"));
+		WebElement btnDelete = driver.findElement(By.xpath("//*[@id='flagTrainee']/div/div/div[2]/button[1]"));
+		WebElement btnSubmit = driver.findElement(By.xpath("//*[@id='flagTrainee']/div/div/div[2]/button[2]"));
+		assertTrue(btnDelete.isDisplayed());
+		assertTrue(btnSubmit.isDisplayed());
+		assertTrue(littleSymbol.isDisplayed());
+		assertTrue(littleSymbol.getAttribute("class").equals("fas fa-flag fa-1x fa-green")); //if green flag is clicked little symbol should be green
+		WebElement comment = driver.findElement(By.xpath("//*[@id='comment']"));
+		comment.clear();
+		comment.sendKeys("Hello World");
+		greenFlag.click();
+		btnSubmit.click();
+		WebElement cornerFlag = driver.findElement(By.xpath("//*[@id=\"noTrainees\"]/app-associate/div/table/tbody/tr[2]/td[1]/div/div[1]"));
+		assertTrue(cornerFlag.getAttribute("class").equals("flag-note-area-green dropbtn"));//checks when green flag is clicked then a green corner tag appears
+		Actions action = new Actions(driver);
+		action.moveToElement(cornerFlag).perform();
+		action.build().perform();
+		WebElement flagComment = driver.findElement(By.xpath("//*[@id=\'noTrainees\']/app-associate/div/table/tbody/tr[2]/td[1]/div/div[2]/ul/li"));
+		wait.until(ExpectedConditions.visibilityOf(flagComment));
+		assertTrue(flagComment.isDisplayed());
+		assertTrue(flagComment.getText().equals("Hello World"));
+	}
+
+	@Test(priority = 3)
+	public void testRedBtn(){
+		WebDriverWait wait = new WebDriverWait(driver, 7);
+		List<WebElement> btnPencilList = driver.findElements(By.className("fa-pen"));
+		List<WebElement> noteRoleList = driver.findElements(By.className("NoteRow"));
+		Actions action = new Actions(driver);
+		action.moveToElement(noteRoleList.get(1)).perform();
+		action.click().build().perform();
+		wait.until(ExpectedConditions.visibilityOf(btnPencilList.get(0)));
+		btnPencilList.get(0).click();
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("flagTrainee")));
+		assertTrue(driver.findElement(By.id("flagTrainee")).isDisplayed());
+
+		WebElement redFlag = driver.findElement(By.xpath("//*[@id=\'redFlag\']"));
+		WebElement littleSymbol = driver.findElement(By.xpath("//*[@id='flagTrainee']/div/div/div[1]/div[2]/div/em"));
+		redFlag.click();
+		WebElement comment = driver.findElement(By.xpath("//*[@id='comment']"));
+		comment.clear();
+		comment.sendKeys("last Test");
+		redFlag.click();
+		WebElement btnSubmit = driver.findElement(By.xpath("//*[@id='flagTrainee']/div/div/div[2]/button[2]"));
+		btnSubmit.click();
+
+		WebElement cornerFlag = driver.findElement(By.xpath("//*[@id=\"noTrainees\"]/app-associate/div/table/tbody/tr[2]/td[1]/div/div[1]"));
+		assertTrue(cornerFlag.getAttribute("class").equals("flag-note-area-red dropbtn"));//checks when red flag is clicked then a red corner tag appears
+		action = new Actions(driver);
+		action.moveToElement(cornerFlag).perform();
+		action.build().perform();
+		WebElement flagComment = driver.findElement(By.xpath("//*[@id=\'noTrainees\']/app-associate/div/table/tbody/tr[2]/td[1]/div/div[2]/ul/li"));
+		wait.until(ExpectedConditions.visibilityOf(flagComment));
+		assertTrue(flagComment.isDisplayed());
+		assertTrue(flagComment.getText().equals("last Test"));
+	}
+
+	@Test(priority = 4)
 	public void testWriteIndividualComments() {
 		QualityAuditPOM qualityAuditPOM = new QualityAuditPOM(driver);
 
@@ -92,7 +197,7 @@ public class QualityAuditTest {
 		assertEquals(true, individualCommentsSaved);
 	}
 
-	@Test(priority = 3)
+	@Test(priority = 5)
 	public void testSortRandomly() {
 		QualityAuditPOM qualityAuditPOM = new QualityAuditPOM(driver);
 
@@ -127,7 +232,7 @@ public class QualityAuditTest {
 		assertEquals(true, differenceFound);
 	}
 
-	@Test(dependsOnMethods = "testSortRandomly")
+	@Test(dependsOnMethods = "testSortRandomly", priority = 6)
 	public void testSortAlphabetically() {
 		QualityAuditPOM qualityAuditPOM = new QualityAuditPOM(driver);
 
@@ -152,5 +257,128 @@ public class QualityAuditTest {
 			}
 		}
 		assertEquals(true, inOrder);
+	}
+	
+	@Test(priority=7)
+	  public void testCategory() throws InterruptedException {
+	
+		String baseUrl = "http://localhost:4200/caliber/";
+		
+		String actualTitle = "";		    
+		    
+	    //TimeUnit.MILLISECONDS.sleep(600);
+	    driver.findElement(By.id("quality-link")).click();
+	    //TimeUnit.SECONDS.sleep(4);
+	    driver.findElement(By.cssSelector(".fa-plus")).click();
+	    //TimeUnit.SECONDS.sleep(1);
+	    driver.findElement(By.linkText("ALM")).click();
+	    
+	    driver.findElement(By.cssSelector(".fa-plus")).click();
+	    //TimeUnit.SECONDS.sleep(1);
+	   
+	    driver.findElement(By.linkText("JUnit")).click();
+	
+	    assertTrue(driver.findElement(By.xpath("//span[contains(.,\'JUnit ×\')]")).isDisplayed());
+	    //assertTrue(driver.findElement(By.xpath("//span[contains(.,\'ASP.NET �\')]")).isDisplayed());
+			 
+	}
+	
+	@Test
+	public void testFrownFeedback() throws InterruptedException {
+		String className = "fa-frown-o";
+		driver.manage().timeouts().implicitlyWait(3000, TimeUnit.MILLISECONDS);
+		Actions action = new Actions(driver);
+		WebElement target = driver.findElement(By.className("qcStatusIcon"));
+		action.moveToElement(target).perform();
+		System.out.println("Mouse Over");
+		WebDriverWait wait = new WebDriverWait(driver, 7);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.className(className)));
+		WebElement selectMenuOption = driver.findElement(By.className(className));
+
+		selectMenuOption.click();
+		System.out.println("Selected 'Frown' from Menu");
+
+		assertEquals(driver.findElement(By.className(className)).getAttribute("class").split(" ")[2], className);
+	}
+
+	@Test
+	public void testMehFeedback() throws InterruptedException {
+		String className = "fa-meh-o";
+		driver.manage().timeouts().implicitlyWait(3000, TimeUnit.MILLISECONDS);
+		Actions action = new Actions(driver);
+		WebElement target = driver.findElement(By.className("qcStatusIcon"));
+		action.moveToElement(target).perform();
+		System.out.println("Mouse Over");
+		WebDriverWait wait = new WebDriverWait(driver, 20);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.className(className)));
+		WebElement selectMenuOption = driver.findElement(By.className(className));
+
+		selectMenuOption.click();
+		System.out.println("Selected 'Meh' from Menu");
+
+		assertEquals(driver.findElement(By.className(className)).getAttribute("class").split(" ")[2], className);
+	}
+
+	@Test
+	public void testSmileFeedback() throws InterruptedException {
+		String className = "fa-smile-o";
+		driver.manage().timeouts().implicitlyWait(3000, TimeUnit.MILLISECONDS);
+		Actions action = new Actions(driver);
+		WebElement target = driver.findElement(By.className("qcStatusIcon"));
+		action.moveToElement(target).perform();
+		System.out.println("Mouse Over");
+		WebDriverWait wait = new WebDriverWait(driver, 20);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.className(className)));
+		WebElement selectMenuOption = driver.findElement(By.className(className));
+
+		selectMenuOption.click();
+		System.out.println("Selected 'Good' from Menu");
+
+		assertEquals(driver.findElement(By.className(className)).getAttribute("class").split(" ")[2], className);
+	}
+
+	@Test
+	public void testQuestionFeedback() throws InterruptedException {
+		String className = "fa-question-circle";
+		driver.manage().timeouts().implicitlyWait(3000, TimeUnit.MILLISECONDS);
+		Actions action = new Actions(driver);
+		WebElement target = driver.findElement(By.className("qcStatusIcon"));
+		action.moveToElement(target).perform();
+		System.out.println("Mouse Over");
+		WebDriverWait wait = new WebDriverWait(driver, 20);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.className(className)));
+		WebElement selectMenuOption = driver.findElement(By.className(className));
+
+		selectMenuOption.click();
+		System.out.println("Selected 'Question' from Menu");
+
+		assertEquals(driver.findElement(By.className(className)).getAttribute("class").split(" ")[2], className);
+	}
+	
+
+	@Test
+	public void testStarFeedback() throws InterruptedException {
+		String className = "fa-star";
+		driver.manage().timeouts().implicitlyWait(3000, TimeUnit.MILLISECONDS);
+		Actions action = new Actions(driver);
+		WebElement target = driver.findElement(By.className("qcStatusIcon"));
+		action.moveToElement(target).perform();
+		System.out.println("Mouse Over");
+		WebDriverWait wait = new WebDriverWait(driver, 20);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.className(className)));
+		WebElement selectMenuOption = driver.findElement(By.className(className));
+
+		selectMenuOption.click();
+		System.out.println("Selected 'Star' from Menu");
+
+		assertEquals(driver.findElement(By.className(className)).getAttribute("class").split(" ")[2], className);
+	}
+	
+	//run this test last because it takes you to a different page
+	@Test(priority = 8)
+	public void testQualityAuditNav() throws InterruptedException {
+		String url = System.getenv("CALIBER_BASE_URL") + "/caliber/vp/assess";
+		driver.findElement(By.id("assess-link")).click();
+		assertEquals(driver.getCurrentUrl(), url);
 	}
 }
