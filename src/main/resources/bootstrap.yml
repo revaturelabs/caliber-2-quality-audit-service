@@ -14,8 +14,6 @@ server:
 ---
 spring:
   profiles: local
-  datasource:
-    platform: h2
 
 
 ---
