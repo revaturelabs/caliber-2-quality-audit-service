@@ -33,7 +33,8 @@ public class Note implements Serializable {
 
 	@Id
 	@Column(name = "NOTE_ID", nullable = false)
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator = "NOTE_ID_SEQUENCE")
+	@SequenceGenerator(name = "NOTE_ID_SEQUENCE", sequenceName = "NOTE_ID_SEQUENCE")
 	private int noteId;
 
 	@Length(min=0, max=4000)

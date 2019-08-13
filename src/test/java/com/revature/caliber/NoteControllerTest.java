@@ -125,24 +125,24 @@ public class NoteControllerTest {
 	public void setUp() throws Exception {
 		MockitoAnnotations.initMocks(this);
 		RestAssured.port = port;
-		when(controller.getAllNotes()).thenReturn(new ResponseEntity<List<Note>>(notes, HttpStatus.OK));
-		when(controller.getNote(note5500.getNoteId())).thenReturn(new ResponseEntity<Note>(note5500, HttpStatus.OK));
-		when(controller.getNotesByBatchAndWeek(BATCH_ID, WEEK_NUMBER)).thenReturn(new ResponseEntity<List<Note>>(notes, HttpStatus.OK));
+		when(service.getAllNotes()).thenReturn(notes);
+		when(service.findById(note5500.getNoteId())).thenReturn(note5500);
+		when(service.findQCNotesByBatchAndWeek(BATCH_ID, WEEK_NUMBER)).thenReturn(notes);
 	}
 
 	@Test
 	public void testGetAllNotes() {
-		assertEquals(notes, controller.getAllNotes());
+		assertEquals(ResponseEntity.ok(notes), controller.getAllNotes());
 	}
 
 	@Test
 	public void testGetNote() {
-		assertEquals(note5500, controller.getNote(note5500.getNoteId()));
+		assertEquals(ResponseEntity.ok(note5500), controller.getNote(note5500.getNoteId()));
 	}
 
 	@Test
 	public void testGetNotesByBatchAndWeek() {
-		assertEquals(notes, controller.getNotesByBatchAndWeek(BATCH_ID, WEEK_NUMBER));
+		assertEquals(ResponseEntity.ok(notes), controller.getNotesByBatchAndWeek(BATCH_ID, WEEK_NUMBER));
 	}
 
 	// @Test
