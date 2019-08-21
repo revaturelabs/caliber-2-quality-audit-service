@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.revature.caliber.intercomm.TrainerClient;
+import com.revature.caliber.intercomm.base.TrainerClient;
 import com.revature.caliber.beans.Trainer;
 
 /**

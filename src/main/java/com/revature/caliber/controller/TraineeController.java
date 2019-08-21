@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.caliber.beans.Trainee;
-import com.revature.caliber.intercomm.TraineeClient;
+import com.revature.caliber.intercomm.base.TraineeClient;
 
 /**
  * Controller for handling all requests having to do with trainees.

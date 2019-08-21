@@ -13,7 +13,7 @@ import com.revature.caliber.beans.QCStatus;
 import com.revature.caliber.beans.Trainee;
 import com.revature.caliber.beans.TraineeFlag;
 import com.revature.caliber.dao.NoteRepository;
-import com.revature.caliber.intercomm.TraineeClient;
+import com.revature.caliber.intercomm.base.TraineeClient;
 
 import feign.RetryableException;
 

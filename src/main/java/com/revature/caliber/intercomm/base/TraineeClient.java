@@ -1,10 +1,6 @@
-package com.revature.caliber.intercomm;
+package com.revature.caliber.intercomm.base;
 
-import java.util.List;
-
-import javax.validation.Valid;
-
-import org.springframework.cloud.netflix.feign.FeignClient;
+import com.revature.caliber.beans.Trainee;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Isolation;
@@ -15,9 +11,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.revature.caliber.beans.Trainee;
+import javax.validation.Valid;
+import java.util.List;
 
-@FeignClient(name = "user-service")
 public interface TraineeClient {
 
 	/**

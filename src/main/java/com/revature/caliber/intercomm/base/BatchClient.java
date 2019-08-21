@@ -1,16 +1,12 @@
-package com.revature.caliber.intercomm;
+package com.revature.caliber.intercomm.base;
 
-import java.util.List;
-
-import org.springframework.cloud.netflix.feign.FeignClient;
+import com.revature.caliber.beans.BatchEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.revature.caliber.beans.Batch;
-import com.revature.caliber.beans.BatchEntity;
+import java.util.List;
 
-@FeignClient("batch-service")
 public interface BatchClient {
 	
 	@GetMapping("/batch/vp/batch/all")

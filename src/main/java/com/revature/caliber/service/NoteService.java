@@ -2,7 +2,6 @@ package com.revature.caliber.service;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -12,15 +11,14 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.revature.caliber.beans.Batch;
 import com.revature.caliber.beans.BatchEntity;
 import com.revature.caliber.beans.Note;
 import com.revature.caliber.beans.NoteType;
 import com.revature.caliber.beans.Trainee;
 import com.revature.caliber.beans.TrainingStatus;
 import com.revature.caliber.dao.NoteRepository;
-import com.revature.caliber.intercomm.BatchClient;
-import com.revature.caliber.intercomm.TraineeClient;
+import com.revature.caliber.intercomm.base.BatchClient;
+import com.revature.caliber.intercomm.base.TraineeClient;
 
 import feign.RetryableException;
 

@@ -1,20 +1,16 @@
-package com.revature.caliber.intercomm;
-
-import java.util.List;
-
-import org.springframework.cloud.netflix.feign.FeignClient;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+package com.revature.caliber.intercomm.base;
 
 import com.revature.caliber.beans.Trainer;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+
+import java.util.List;
 
 /**
  * To intercomm with user-service to get trainer data.
  * @author thienle
  *
  */
-@FeignClient("user-service")
 public interface TrainerClient {
 
 	@GetMapping("/user/all/trainer/all")

@@ -18,12 +18,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.revature.caliber.beans.Batch;
 import com.revature.caliber.beans.BatchEntity;
 import com.revature.caliber.beans.Note;
-import com.revature.caliber.beans.NoteType;
 import com.revature.caliber.beans.Trainee;
-import com.revature.caliber.intercomm.BatchClient;
+import com.revature.caliber.intercomm.base.BatchClient;
 import com.revature.caliber.service.NoteService;
 
 /**

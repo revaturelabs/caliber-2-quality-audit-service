@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.caliber.beans.BatchEntity;
-import com.revature.caliber.intercomm.BatchClient;
+import com.revature.caliber.intercomm.base.BatchClient;
 
 @RestController
 
