@@ -34,9 +34,23 @@ spring:
 server:
   port: 80
 
+
 eureka:
   client:
     enabled: false
+ribbon:
+  eureka:
+    enabled: false
+
+batch-service:
+  ribbon:
+    listOfServers: http://batch.caliber-2-dev
+category-service:
+  ribbon:
+    listOfServers: http://category.caliber-2-dev
+user-service:
+  ribbon:
+    listOfServers: http://user.caliber-2-dev
 ---
 spring:
   profiles: prod
