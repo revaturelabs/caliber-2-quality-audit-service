@@ -14,7 +14,13 @@ server:
 ---
 spring:
   profiles: local
-
+  cloud:
+    config:
+      uri: http://localhost:8888/config
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
 
 ---
 spring:

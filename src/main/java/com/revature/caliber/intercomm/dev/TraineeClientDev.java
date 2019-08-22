@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Profile;
  * @author William Gentry
  * 8/21/2019
  */
-@Profile("dev && !local")
+@Profile("dev")
 @FeignClient(url = "http://user.caliber-2-dev")
 public interface TraineeClientDev extends TraineeClient {
 }
