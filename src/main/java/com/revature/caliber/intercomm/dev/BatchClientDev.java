@@ -9,6 +9,6 @@ import org.springframework.context.annotation.Profile;
  * 8/21/2019
  */
 @Profile("dev")
-@FeignClient(name = "batch-service", url = "http://batch.caliber-2-dev")
+@FeignClient(url = "http://batch.caliber-2-dev")
 public interface BatchClientDev extends BatchClient {
 }
