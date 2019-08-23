@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Profile;
  * @author William Gentry
  * 8/21/2019
  */
-@Profile("local && !dev && !prod")
+@Profile("local")
 @FeignClient(name = "user-service")
 public interface TrainerClientLocal extends TrainerClient {
 }
