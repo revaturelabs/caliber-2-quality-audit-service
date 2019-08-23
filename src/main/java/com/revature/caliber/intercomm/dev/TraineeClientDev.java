@@ -9,6 +9,6 @@ import org.springframework.context.annotation.Profile;
  * 8/21/2019
  */
 @Profile("dev")
-@FeignClient(url = "http://user.caliber-2-dev")
+@FeignClient(name="user-service", url = "http://user.caliber-2-dev")
 public interface TraineeClientDev extends TraineeClient {
 }
