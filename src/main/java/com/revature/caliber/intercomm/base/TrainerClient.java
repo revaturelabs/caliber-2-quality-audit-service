@@ -13,6 +13,6 @@ import java.util.List;
  */
 public interface TrainerClient {
 
-	@GetMapping("/user/all/trainer/all")
+	@GetMapping("/user/trainers")
 	public ResponseEntity<List<Trainer>> getAllTrainers();
 }
