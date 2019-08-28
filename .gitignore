@@ -21,9 +21,7 @@
 **/Servers
 **/.springBeans
 
-#IDEA
-**/.idea/
-**/*.iml
+#IDEA we should track to automate setup
 
 #Angular
 **/.tern-project
