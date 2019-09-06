@@ -1,12 +1,12 @@
 spring: 
   application:
     name: quality-audit-service
-  cloud:
-    config:
-      name: quality-audit-service
-      discovery:
-        service-id: config
-        enabled: true
+#  cloud:
+#    config:
+#      name: quality-audit-service
+#      discovery:
+#        service-id: config
+#        enabled: true
 
 server:
   servlet-path: /qa/*
@@ -16,12 +16,13 @@ spring:
   profiles: local
   cloud:
     config:
-      uri: http://localhost:8888/config
+      uri: http://localhost:8888
 eureka:
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka
-
+  instance:
+    prefer-ip-address: true
 ---
 spring:
   profiles: dev
