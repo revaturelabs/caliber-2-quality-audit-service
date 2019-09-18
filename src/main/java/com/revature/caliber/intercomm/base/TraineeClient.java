@@ -23,7 +23,7 @@ public interface TraineeClient {
 	 * @param batch The batch id representing the batch to get all the trainees from
 	 * @return The list of trainees with the correct batch id.
 	 */
-	@GetMapping(value = "/user/all/trainee/all", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/user/all/trainee", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Trainee>> findAllByBatch(@RequestParam("batch") Integer batch);
 
 	/**
