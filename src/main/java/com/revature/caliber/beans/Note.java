@@ -70,12 +70,12 @@ public class Note implements Serializable {
 	private NoteType type;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "TECHNICAL_STATUS", nullable = true)
-	private QCStatus technicalStatus;
+	@Column(name = "TECHNICAL_STATUS", nullable = true, columnDefinition = "varchar default 'Undefined'")
+	private QCStatus technicalStatus = QCStatus.Undefined; // This will act as the default value for the column
 	
 	@Enumerated(EnumType.STRING)
-	@Column(name = "SOFT_SKILL_STATUS", nullable = true)
-	private QCStatus softSkillStatus;
+	@Column(name = "SOFT_SKILL_STATUS", nullable = true, columnDefinition = "varchar default 'Undefined'")
+	private QCStatus softSkillStatus = QCStatus.Undefined;
 
 	@Column(name = "UPDATE_TIME")
 	private Timestamp updateTime;
