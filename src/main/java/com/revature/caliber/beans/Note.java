@@ -70,8 +70,12 @@ public class Note implements Serializable {
 	private NoteType type;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "QC_STATUS", nullable = true)
-	private QCStatus qcStatus;
+	@Column(name = "TECHNICAL_STATUS", nullable = true)
+	private QCStatus technicalStatus;
+	
+	@Enumerated(EnumType.STRING)
+	@Column(name = "SOFT_SKILL_STATUS", nullable = true)
+	private QCStatus softSkillStatus;
 
 	@Column(name = "UPDATE_TIME")
 	private Timestamp updateTime;
@@ -106,7 +110,8 @@ public class Note implements Serializable {
 		this.trainee = trainee;
 		this.traineeId = trainee.getTraineeId();
 		this.type = NoteType.QC_TRAINEE;
-		this.qcStatus = QCStatus.Undefined;
+		this.technicalStatus = QCStatus.Undefined;
+		this.softSkillStatus = QCStatus.Undefined;
 		this.updateTime = new Timestamp(System.currentTimeMillis());
 	}
 	
@@ -122,7 +127,8 @@ public class Note implements Serializable {
 		this.week = week;
 		this.batchId = batchId;
 		this.type = NoteType.QC_BATCH;
-		this.qcStatus = QCStatus.Undefined;	// "Overall Feedback"
+		this.technicalStatus = QCStatus.Undefined;	// "Overall Feedback"
+		this.softSkillStatus = QCStatus.Undefined;
 		this.updateTime = new Timestamp(System.currentTimeMillis());
 	}
 	
@@ -175,12 +181,20 @@ public class Note implements Serializable {
 		this.type = type;
 	}
 
-	public QCStatus getQcStatus() {
-		return qcStatus;
+	public QCStatus getTechnicalStatus() {
+		return technicalStatus;
 	}
 
-	public void setQcStatus(QCStatus qcStatus) {
-		this.qcStatus = qcStatus;
+	public void setTechnicalStatus(QCStatus qcStatus) {
+		this.technicalStatus = qcStatus;
+	}
+	
+	public QCStatus getSoftSkillStatus() {
+		return softSkillStatus;
+	}
+
+	public void setSoftSkillStatus(QCStatus qcStatus) {
+		this.softSkillStatus = qcStatus;
 	}
 	
 	public Trainee getTrainee() {
@@ -219,7 +233,8 @@ public class Note implements Serializable {
 
 		result = prime * result + noteId;
 		result = prime * result + ((content == null) ? 0 : content.hashCode());
-		result = prime * result + ((qcStatus == null) ? 0 : qcStatus.hashCode());
+		result = prime * result + ((technicalStatus == null) ? 0 : technicalStatus.hashCode());
+		result = prime * result + ((softSkillStatus == null) ? 0 : softSkillStatus.hashCode());
 		result = prime * result + ((type == null) ? 0 : type.hashCode());
 		result = prime * result + week;
 		result = prime * result + batchId;
@@ -233,8 +248,8 @@ public class Note implements Serializable {
 	@Override
 	public String toString() {
 		return "Note [noteId=" + noteId + ", content=" + content + ", week=" + week + ", batchId=" + batchId
-				+ ", trainee=" + trainee + ", traineeId=" + traineeId + ", type=" + type + ", qcStatus=" + qcStatus
-				+ ", updateTime=" + updateTime + ", updateTrainer=" + lastSavedBy + "]";
+				+ ", trainee=" + trainee + ", traineeId=" + traineeId + ", type=" + type + ", technicalStatus=" + technicalStatus
+				+ ", softSkillStatus=" + softSkillStatus + ", updateTime=" + updateTime + ", updateTrainer=" + lastSavedBy + "]";
 	}
 	
 	

@@ -46,8 +46,8 @@ public class EvaluationService {
 			List<Note> notes = noteRepo.findByTraineeId(note.getTraineeId(), new Sort("week"));
 			notes.add(note);	// add current note to list since it hasn't been saved yet
 			try {
-				QCStatus currentStatus = note.getQcStatus();
-				QCStatus prevStatus = notes.get(note.getWeek() - 2).getQcStatus();
+				QCStatus currentStatus = note.getTechnicalStatus();
+				QCStatus prevStatus = notes.get(note.getWeek() - 2).getTechnicalStatus();
 				// If trainee receives consecutive Poor-->Average, Average-->Poor, or Poor-->Poor
 				// 	then consecutive = true.
 				boolean consecutive = ( (prevStatus.equals(QCStatus.Poor) && currentStatus.equals(QCStatus.Average)) 
@@ -56,7 +56,7 @@ public class EvaluationService {
 						? true : false;
 				int poor = 0;
 				for (Note n : notes) {
-					if ((n.getQcStatus()).equals(QCStatus.Poor)) {
+					if ((n.getTechnicalStatus()).equals(QCStatus.Poor)) {
 						poor++;
 					}
 				}
@@ -107,7 +107,7 @@ public class EvaluationService {
 			List<Note> traineeNoteList = noteRepo.findQCNotesByBatchAndWeek(batchId, weekId, NoteType.QC_TRAINEE);
 			int denominator = traineeNoteList.size();
 			for(Note note : traineeNoteList) {
-				switch(note.getQcStatus()) {
+				switch(note.getTechnicalStatus()) {
 				case Superstar:
 					average += 4;
 					break;
@@ -130,15 +130,15 @@ public class EvaluationService {
 				average = 0.0f;
 			}
 			if(average > 2.5) {
-				overallNote.setQcStatus(QCStatus.Good);
+				overallNote.setTechnicalStatus(QCStatus.Good);
 			} else if(average >= 2 && average <= 2.5) {
-				overallNote.setQcStatus(QCStatus.Average);
+				overallNote.setTechnicalStatus(QCStatus.Average);
 			} else if (average > 0 && average < 2) {
-				overallNote.setQcStatus(QCStatus.Poor);
+				overallNote.setTechnicalStatus(QCStatus.Poor);
 			} else {
-				overallNote.setQcStatus(QCStatus.Undefined);
+				overallNote.setTechnicalStatus(QCStatus.Undefined);
 			}
-			log.trace("The calculated average is: " + overallNote.getQcStatus());
+			log.trace("The calculated average is: " + overallNote.getTechnicalStatus());
 			noteRepo.save(overallNote);
 		}
 	}
