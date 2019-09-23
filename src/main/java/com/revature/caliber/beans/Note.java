@@ -1,24 +1,13 @@
 package com.revature.caliber.beans;
 
-import java.io.Serializable;
-import java.sql.Timestamp;
+import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.validator.constraints.Length;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-
-import org.hibernate.annotations.DynamicUpdate;
-
-import org.hibernate.validator.constraints.Length;
+import java.io.Serializable;
+import java.sql.Timestamp;
 
 /**
  * 

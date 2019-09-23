@@ -179,7 +179,6 @@ public class NoteService {
 	/**
 	 * 
 	 * @param batchId
-	 * @param week
 	 * @return Randomized list of QC Trainee notes by batchId and week number.
 	 */
 	public List<Note> findQCNotesByBatch(Integer batchId) {
@@ -252,4 +251,52 @@ public class NoteService {
 		return repo.findQCBatchNotes(batchId, week, NoteType.QC_BATCH);
 	}
 
+	public Note createQcTraineeNote(Note note) {
+		if (note.getType().equals(NoteType.QC_TRAINEE)) {
+			note.setUpdateTime(new Timestamp(System.currentTimeMillis()));
+			return repo.save(note);
+		} else {
+			return null;
+		}
+	}
+
+	public Note updateQcTraineeNote(Note note) {
+		if (note.getNoteId() > 0 && note.getType().equals(NoteType.QC_TRAINEE)) {
+			Note toBeUpdated = repo.findOne(note.getNoteId());
+			toBeUpdated.setContent(note.getContent());
+			toBeUpdated.setQcStatus(note.getQcStatus());
+			toBeUpdated.setUpdateTime(new Timestamp(System.currentTimeMillis()));
+			return repo.save(note);
+		} else {
+			return null;
+		}
+	}
+
+	public Note upsertQcTraineeNote(Note note) {
+		Note entity = repo.findOne(note.getNoteId());
+		if (entity != null) {
+			entity.setContent(note.getContent());
+			entity.setQcStatus(note.getQcStatus());
+			entity = repo.save(entity);
+		} else {
+			entity = repo.save(note);
+		}
+		return entity;
+	}
+
+	public Note upsertQcBatchNote(Note note) {
+		Note entity = repo.findOne(note.getNoteId());
+		if (entity != null) {
+			entity.setContent(note.getContent());
+			entity.setQcStatus(note.getQcStatus());
+			entity = repo.save(entity);
+		} else {
+			entity = repo.save(note);
+		}
+		return entity;
+	}
+
+	public List<Note> findQcTraineeNotesByBatchAndWeek(int batchId, short week) {
+		return repo.findQCNotesByBatchAndWeek(batchId, week, NoteType.QC_TRAINEE);
+	}
 }
