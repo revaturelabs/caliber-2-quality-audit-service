@@ -264,7 +264,8 @@ public class NoteService {
 		if (note.getNoteId() > 0 && note.getType().equals(NoteType.QC_TRAINEE)) {
 			Note toBeUpdated = repo.findOne(note.getNoteId());
 			toBeUpdated.setContent(note.getContent());
-			toBeUpdated.setQcStatus(note.getQcStatus());
+			toBeUpdated.setTechnicalStatus(note.getTechnicalStatus());
+			toBeUpdated.setSoftSkillStatus(note.getSoftSkillStatus());
 			toBeUpdated.setUpdateTime(new Timestamp(System.currentTimeMillis()));
 			return repo.save(note);
 		} else {
@@ -276,7 +277,8 @@ public class NoteService {
 		Note entity = repo.findOne(note.getNoteId());
 		if (entity != null) {
 			entity.setContent(note.getContent());
-			entity.setQcStatus(note.getQcStatus());
+			entity.setTechnicalStatus(note.getTechnicalStatus());
+			entity.setSoftSkillStatus(note.getSoftSkillStatus());
 			entity = repo.save(entity);
 		} else {
 			entity = repo.save(note);
@@ -288,7 +290,8 @@ public class NoteService {
 		Note entity = repo.findOne(note.getNoteId());
 		if (entity != null) {
 			entity.setContent(note.getContent());
-			entity.setQcStatus(note.getQcStatus());
+			entity.setTechnicalStatus(note.getTechnicalStatus());
+			entity.setSoftSkillStatus(note.getSoftSkillStatus());
 			entity = repo.save(entity);
 		} else {
 			entity = repo.save(note);

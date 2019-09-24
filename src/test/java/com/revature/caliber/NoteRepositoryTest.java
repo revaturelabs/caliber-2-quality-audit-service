@@ -54,7 +54,7 @@ public class NoteRepositoryTest {
 		note5500.setBatchId(BATCH_ID);
 		note5500.setTraineeId(5500);
 		note5500.setType(NoteType.QC_TRAINEE);
-		note5500.setQcStatus(QCStatus.Good);
+		note5500.setTechnicalStatus(QCStatus.Good);
 		notes.add(note5500);
 		
 		// note5501 used for delete
@@ -65,7 +65,7 @@ public class NoteRepositoryTest {
 		note5501.setBatchId(BATCH_ID);
 		note5501.setTraineeId(5501);
 		note5501.setType(NoteType.QC_TRAINEE);
-		note5501.setQcStatus(QCStatus.Poor);
+		note5501.setTechnicalStatus(QCStatus.Poor);
 		notes.add(note5501);
 		
 		// note5503 used for create
@@ -76,7 +76,7 @@ public class NoteRepositoryTest {
 		note5503.setBatchId(BATCH_ID);
 		note5503.setTraineeId(5503);
 		note5503.setType(NoteType.QC_TRAINEE);
-		note5503.setQcStatus(QCStatus.Good);
+		note5503.setTechnicalStatus(QCStatus.Good);
 		notes.add(note5503);
 		
 		// note5502 used for update
@@ -87,7 +87,7 @@ public class NoteRepositoryTest {
 		note5502.setBatchId(BATCH_ID);
 		note5502.setTraineeId(5502);
 		note5502.setType(NoteType.QC_TRAINEE);
-		note5502.setQcStatus(QCStatus.Average);
+		note5502.setTechnicalStatus(QCStatus.Average);
 		notes.add(note5502);
 		
 		note5540 = new Note();		
@@ -97,7 +97,7 @@ public class NoteRepositoryTest {
 		note5540.setBatchId(BATCH_ID);
 		note5540.setTraineeId(5540);
 		note5540.setType(NoteType.QC_TRAINEE);
-		note5540.setQcStatus(QCStatus.Good);
+		note5540.setTechnicalStatus(QCStatus.Good);
 		notes.add(note5540);
 		
 		note5457 = new Note();		
@@ -107,7 +107,7 @@ public class NoteRepositoryTest {
 		note5457.setBatchId(BATCH_ID);
 		note5457.setTraineeId(5457);
 		note5457.setType(NoteType.QC_TRAINEE);
-		note5457.setQcStatus(QCStatus.Good);
+		note5457.setTechnicalStatus(QCStatus.Good);
 		notes.add(note5457);
 	}
 	
