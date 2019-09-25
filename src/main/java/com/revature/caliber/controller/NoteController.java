@@ -188,15 +188,6 @@ public class NoteController {
 		}
 	}
 
-	@PostMapping("/batch/notes")
-	public ResponseEntity<Note> createQcBatchNote(@RequestBody Note note) {
-		Note created = noteService.upsertQcBatchNote(note);
-		if (created == null) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-		}
-		return ResponseEntity.status(HttpStatus.CREATED).body(created);
-	}
-
 	@PutMapping("/batch/notes")
 	public ResponseEntity<Note> updateQcBatchNote(@RequestBody Note note) {
 		Note updated = noteService.upsertQcBatchNote(note);
@@ -212,15 +203,6 @@ public class NoteController {
 		if (notes.isEmpty())
 			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 		return ResponseEntity.ok(notes);
-	}
-
-	@PostMapping("/trainee/notes")
-	public ResponseEntity<Note> createQcTraineeNote(@RequestBody Note note) {
-		Note created = noteService.upsertQcTraineeNote(note);
-		if (created == null) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-		}
-		return ResponseEntity.status(HttpStatus.CREATED).body(created);
 	}
 
 	@PutMapping("/trainee/notes")
