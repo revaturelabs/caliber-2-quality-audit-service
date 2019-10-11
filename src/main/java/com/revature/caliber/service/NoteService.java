@@ -251,6 +251,10 @@ public class NoteService {
 		return repo.findQCBatchNotes(batchId, week, NoteType.QC_BATCH);
 	}
 
+	public List<Note> findAllQcBatchNotesByBatchId(int batchId) {
+		return repo.findNoteByBatchIdAndType(batchId, NoteType.QC_BATCH);
+	}
+
 	public Note createQcTraineeNote(Note note) {
 		if (note.getType().equals(NoteType.QC_TRAINEE)) {
 			note.setUpdateTime(new Timestamp(System.currentTimeMillis()));

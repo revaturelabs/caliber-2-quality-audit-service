@@ -61,4 +61,5 @@ public interface NoteRepository extends JpaRepository<Note, Integer> {
 	@Query("SELECT n FROM Note n WHERE n.traineeId = :traineeId")
 	public List<Note> findByTraineeId(@Param("traineeId") int traineeId, Sort sort);
 
+	public List<Note> findNoteByBatchIdAndType(int batchId, NoteType type);
 }
