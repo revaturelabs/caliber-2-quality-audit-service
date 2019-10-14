@@ -212,4 +212,13 @@ public class NoteController {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(updated);
 	}
+
+	@GetMapping("/batch/{batchId}")
+	public ResponseEntity<List<Note>> getAllQcBatchNotes(@PathVariable("batchId") int batchId) {
+		List<Note> notes = noteService.findAllQcBatchNotesByBatchId(batchId);
+		if (notes != null && !notes.isEmpty()) {
+			return ResponseEntity.ok(notes);
+		}
+		return ResponseEntity.noContent().build();
+	}
 }
