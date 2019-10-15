@@ -2,6 +2,7 @@ package com.revature.caliber.controller;
 
 import com.revature.caliber.beans.BatchEntity;
 import com.revature.caliber.beans.Note;
+import com.revature.caliber.beans.QCStatus;
 import com.revature.caliber.beans.Trainee;
 import com.revature.caliber.intercomm.base.BatchClient;
 import com.revature.caliber.service.NoteService;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Controllers for handling all requests having to do with notes.
@@ -218,6 +220,15 @@ public class NoteController {
 		List<Note> notes = noteService.findAllQcBatchNotesByBatchId(batchId);
 		if (notes != null && !notes.isEmpty()) {
 			return ResponseEntity.ok(notes);
+		}
+		return ResponseEntity.noContent().build();
+	}
+
+	@GetMapping("/current")
+	public ResponseEntity<Map<Integer, Map<QCStatus, Integer>>> getQcNotesForCurrentBatch() {
+		Map<Integer, Map<QCStatus, Integer>> notesByBatchId = this.noteService.getQcNotesForCurrentBatch();
+		if (notesByBatchId != null) {
+			return ResponseEntity.ok(notesByBatchId);
 		}
 		return ResponseEntity.noContent().build();
 	}

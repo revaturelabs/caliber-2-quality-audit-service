@@ -24,4 +24,7 @@ public interface BatchClient {
 	
 	@GetMapping("/batch/all/batch/valid_years")
 	public List<Integer> batchYears();
+
+	@GetMapping("/batch//vp/batch/all/current")
+	public List<BatchEntity> getCurrentBatches();
 }
