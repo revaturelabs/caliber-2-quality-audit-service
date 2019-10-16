@@ -1,21 +1,16 @@
 package com.revature.caliber.service;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Stream;
 
+import com.revature.caliber.beans.*;
 import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.revature.caliber.beans.BatchEntity;
-import com.revature.caliber.beans.Note;
-import com.revature.caliber.beans.NoteType;
-import com.revature.caliber.beans.Trainee;
-import com.revature.caliber.beans.TrainingStatus;
 import com.revature.caliber.dao.NoteRepository;
 import com.revature.caliber.intercomm.base.BatchClient;
 import com.revature.caliber.intercomm.base.TraineeClient;
@@ -184,7 +179,7 @@ public class NoteService {
 	public List<Note> findQCNotesByBatch(Integer batchId) {
 		System.out.println("/n/n/n/nHERE/n");
 
-		List<Note> notes = repo.findQCNotesByBatch(batchId);
+		List<Note> notes = repo.findNotesByBatchIdAndType(batchId, NoteType.QC_TRAINEE);
 
 		System.out.println("/n/n/n/nHERE/n");
 		System.out.println(notes);
@@ -252,7 +247,7 @@ public class NoteService {
 	}
 
 	public List<Note> findAllQcBatchNotesByBatchId(int batchId) {
-		return repo.findNoteByBatchIdAndType(batchId, NoteType.QC_BATCH);
+		return repo.findNotesByBatchIdAndType(batchId, NoteType.QC_BATCH);
 	}
 
 	public Note createQcTraineeNote(Note note) {
@@ -305,5 +300,21 @@ public class NoteService {
 
 	public List<Note> findQcTraineeNotesByBatchAndWeek(int batchId, short week) {
 		return repo.findQCNotesByBatchAndWeek(batchId, week, NoteType.QC_TRAINEE);
+	}
+
+	public Map<Integer, Map<QCStatus, Integer>> getQcNotesForCurrentBatch() {
+		Map<Integer, Map<QCStatus, Integer>> result = new HashMap<>();
+		Stream<BatchEntity> batches = this.batchClient.getCurrentBatches().stream();
+		batches.forEach(batch -> {
+			Map<QCStatus, Integer> results = new HashMap<>();
+			for (QCStatus status : QCStatus.values())
+				results.put(status, 0);
+			Stream<Note> notes = this.repo.findQCNotesByBatchAndWeek(batch.getBatchId(), (short)(batch.getWeeks() - 1), NoteType.QC_TRAINEE).stream();
+			notes.forEach(note -> {
+				results.put(note.getTechnicalStatus(), results.get(note.getTechnicalStatus()) + 1);
+			});
+			result.put(batch.getBatchId(), results);
+		});
+		return result;
 	}
 }
