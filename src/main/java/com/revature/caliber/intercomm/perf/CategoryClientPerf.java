@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Profile;
 /**
  * @author William Gentry
  */
-@Profile("local")
+@Profile("perf")
 @FeignClient(name = "category-service", url = "http://category.caliber-2-perf")
 public interface CategoryClientPerf extends CategoryClient {
 }

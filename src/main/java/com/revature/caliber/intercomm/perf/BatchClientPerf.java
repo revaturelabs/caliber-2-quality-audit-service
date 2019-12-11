@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Profile;
 /**
  * @author William Gentry
  */
-@Profile("local")
+@Profile("perf")
 @FeignClient(name = "batch-service", url = "http://batch.caliber-2-perf")
 public interface BatchClientPerf extends BatchClient {
 }
