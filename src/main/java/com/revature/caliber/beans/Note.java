@@ -37,7 +37,7 @@ public class Note implements Serializable {
 	/**
 	 * Will be null if the note is individual traineeId feedback
 	 */
-	@Column(name = "BATCH_ID", nullable = true)
+	@Column(name = "BATCH_ID")
 	private int batchId;
 
 	/**
@@ -59,11 +59,11 @@ public class Note implements Serializable {
 	private NoteType type;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "TECHNICAL_STATUS", nullable = true, columnDefinition = "varchar default 'Undefined'")
+	@Column(name = "TECHNICAL_STATUS", nullable = true)
 	private QCStatus technicalStatus = QCStatus.Undefined; // This will act as the default value for the column
 	
 	@Enumerated(EnumType.STRING)
-	@Column(name = "SOFT_SKILL_STATUS", nullable = true, columnDefinition = "varchar default 'Undefined'")
+	@Column(name = "SOFT_SKILL_STATUS", nullable = true)
 	private QCStatus softSkillStatus = QCStatus.Undefined;
 
 	@Column(name = "UPDATE_TIME")
