@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface CategoryClient {
 	
-	@GetMapping(value = "/category/all", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/category/", produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<Category> getAllActiveCategories(@RequestParam(required = false) boolean active);
 	
 	@GetMapping(value = "/category/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
