@@ -15,20 +15,22 @@ public class CategoryService {
 	CategoryRepository categoryRepo;
 	
 	public Category insertCategory(Category category) {
-		List<Category> categories = categoryRepo.findCategoryByBatchAndWeek(category.getBatchId(), category.getWeek());
-		for(Category c : categories) {
-			if(category.getSkillCategory().equals(c.getSkillCategory())) {
-				return null;
-			}
-		}
-		
-		if(category.getBatchId() >= 0 ||
-				category.getCategoryId() >= 0 ||
-				category.getWeek() >= 0 ||
-				category.getSkillCategory() == null || category.getSkillCategory() == "") {
-			return null;
-		}
-		return category = categoryRepo.save(category);
+		return categoryRepo.findOne(category.getId());
+
+		//		List<Category> categories = categoryRepo.findCategoryByBatchAndWeek(category.getBatchId(), category.getWeek());
+//		for(Category c : categories) {
+//			if(category.getSkillCategory().equals(c.getSkillCategory())) {
+//				return null;
+//			}
+//		}
+
+//		if(category.getBatchId() >= 0 ||
+//				category.getCategoryId() >= 0 ||
+//				category.getWeek() >= 0 ||
+//				category.getSkillCategory() == null || category.getSkillCategory() == "") {
+//			return null;
+//		}
+//		return category = categoryRepo.save(category);
 	}
 	
 	public List<Category> findAllCategories() {
