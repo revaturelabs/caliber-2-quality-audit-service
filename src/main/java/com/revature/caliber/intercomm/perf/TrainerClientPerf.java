@@ -8,6 +8,6 @@ import org.springframework.context.annotation.Profile;
  * @author William Gentry
  */
 @Profile("perf")
-@FeignClient(name = "trainer-service", url = "http://user.caliber-2-perf")
+@FeignClient(name = "trainer-service", url = "${client.user}")
 public interface TrainerClientPerf extends TrainerClient {
 }

@@ -63,3 +63,7 @@ eureka:
 ribbon:
   eureka:
     enabled: false
+client:
+  batch: ${BATCH_CLIENT}
+  category: ${CATEGORY_CLIENT}
+  user: ${USER_CLIENT}
