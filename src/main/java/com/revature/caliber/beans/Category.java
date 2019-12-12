@@ -3,7 +3,7 @@ package com.revature.caliber.beans;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "CATEGORY")
+@Table(name = "QC_CATEGORY")
 public class Category {
 	
 	@Id
