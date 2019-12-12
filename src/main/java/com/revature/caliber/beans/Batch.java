@@ -23,7 +23,7 @@ public class Batch implements Serializable {
 	@Column(name="BATCH_ID")
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator = "BATCH_ID_SEQUENCE")
 	@SequenceGenerator(name = "BATCH_ID_SEQUENCE", sequenceName = "BATCH_ID_SEQUENCE")
-	private Integer batchId;
+	private int batchId;
 	
 	@NotNull
 	@Column(name="TRAINER")
@@ -35,11 +35,11 @@ public class Batch implements Serializable {
 	private Date startDate;
 	
 	@Column(name="WEEKS")
-	private Integer weeks;
+	private int weeks;
 	
 	
 
-	public Batch(Integer batchId, String trainer, Date startDate, Integer weeks) {
+	public Batch(int batchId, String trainer, Date startDate, int weeks) {
 		super();
 		this.batchId = batchId;
 		this.trainer = trainer;
@@ -47,7 +47,7 @@ public class Batch implements Serializable {
 		this.weeks = weeks;
 	}
 
-	public Batch(Integer batchId, String trainer, Date startDate) {
+	public Batch(int batchId, String trainer, Date startDate) {
 		super();
 		this.batchId = batchId;
 		this.trainer = trainer;
@@ -59,11 +59,11 @@ public class Batch implements Serializable {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Integer getBatchId() {
+	public int getBatchId() {
 		return batchId;
 	}
 
-	public void setBatchId(Integer batchId) {
+	public void setBatchId(int batchId) {
 		this.batchId = batchId;
 	}
 
@@ -83,11 +83,11 @@ public class Batch implements Serializable {
 		this.startDate = startDate;
 	}
 
-	public Integer getWeeks() {
+	public int getWeeks() {
 		return weeks;
 	}
 
-	public void setWeeks(Integer weeks) {
+	public void setWeeks(int weeks) {
 		this.weeks = weeks;
 	}
 	

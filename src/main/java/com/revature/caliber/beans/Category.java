@@ -10,16 +10,16 @@ public class Category {
 	@Column(name="ID")
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator = "CATEGORY_ID_SEQUENCE")
 	@SequenceGenerator(name = "CATEGORY_ID_SEQUENCE", sequenceName = "CATEGORY_ID_SEQUENCE")
-	private Integer id;
+	private int id;
 	
 	@Column(name = "BATCH_ID")
-	private Integer batchId;
+	private int batchId;
 	
 	@Column(name="WEEK_NUMBER")
-	private Integer week;
+	private int week;
 	
 	@Column(name="CATEGORY_ID")
-	private Integer categoryId;
+	private int categoryId;
 	
 	@Column(name="SKILL_CATEGORY")
 	private String skillCategory;
@@ -29,7 +29,7 @@ public class Category {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Category(Integer id, Integer batchId, Integer week, Integer categoryId, String skillCategory) {
+	public Category(int id, int batchId, int week, int categoryId, String skillCategory) {
 		super();
 		this.id = id;
 		this.batchId = batchId;
@@ -38,7 +38,7 @@ public class Category {
 		this.skillCategory = skillCategory;
 	}
 
-	public Category(Integer batchId, Integer week, Integer categoryId, String skillCategory) {
+	public Category(int batchId, int week, int categoryId, String skillCategory) {
 		super();
 		this.batchId = batchId;
 		this.week = week;
@@ -46,35 +46,35 @@ public class Category {
 		this.skillCategory = skillCategory;
 	}
 
-	public Integer getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
-	public Integer getBatchId() {
+	public int getBatchId() {
 		return batchId;
 	}
 
-	public void setBatchId(Integer batchId) {
+	public void setBatchId(int batchId) {
 		this.batchId = batchId;
 	}
 
-	public Integer getWeek() {
+	public int getWeek() {
 		return week;
 	}
 
-	public void setWeek(Integer week) {
+	public void setWeek(int week) {
 		this.week = week;
 	}
 
-	public Integer getCategoryId() {
+	public int getCategoryId() {
 		return categoryId;
 	}
 
-	public void setCategoryId(Integer categoryId) {
+	public void setCategoryId(int categoryId) {
 		this.categoryId = categoryId;
 	}
 

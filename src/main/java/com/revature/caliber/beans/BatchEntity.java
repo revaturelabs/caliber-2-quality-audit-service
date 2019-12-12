@@ -7,25 +7,25 @@ public class BatchEntity implements Serializable{
 
 	private static final long serialVersionUID = 2916173221333913998L;
 
-	private Integer batchId;
+	private int batchId;
 	private String trainingName;
 	private String trainingType;
 	private String skillType;
 	private String trainer;
 	private String coTrainer;
-	private Integer locationId;
+	private int locationId;
 	private String location;
 	private Date startDate;
 	private Date endDate;
-	private Integer goodGrade;
-	private Integer passingGrade;
-	private Integer weeks;
+	private int goodGrade;
+	private int passingGrade;
+	private int weeks;
 	
 	public BatchEntity() {}
 
-	public BatchEntity(Integer batchId, String trainingName, String trainingType, String skillType, String trainer,
-			String coTrainer, Integer locationId, String location, Date startDate, Date endDate, Integer goodGrade,
-			Integer passingGrade, Integer weeks) {
+	public BatchEntity(int batchId, String trainingName, String trainingType, String skillType, String trainer,
+			String coTrainer, int locationId, String location, Date startDate, Date endDate, int goodGrade,
+			int passingGrade, int weeks) {
 		super();
 		this.batchId = batchId;
 		this.trainingName = trainingName;
@@ -43,8 +43,8 @@ public class BatchEntity implements Serializable{
 	}
 
 	public BatchEntity(String trainingName, String trainingType, String skillType, String trainer, String coTrainer,
-			Integer locationId, String location, Date startDate, Date endDate, Integer goodGrade, Integer passingGrade,
-			Integer weeks) {
+			int locationId, String location, Date startDate, Date endDate, int goodGrade, int passingGrade,
+			int weeks) {
 		super();
 		this.trainingName = trainingName;
 		this.trainingType = trainingType;
@@ -60,11 +60,11 @@ public class BatchEntity implements Serializable{
 		this.weeks = weeks;
 	}
 
-	public Integer getBatchId() {
+	public int getBatchId() {
 		return batchId;
 	}
 
-	public void setBatchId(Integer batchId) {
+	public void setBatchId(int batchId) {
 		this.batchId = batchId;
 	}
 
@@ -108,11 +108,11 @@ public class BatchEntity implements Serializable{
 		this.coTrainer = coTrainer;
 	}
 
-	public Integer getLocationId() {
+	public int getLocationId() {
 		return locationId;
 	}
 
-	public void setLocationId(Integer locationId) {
+	public void setLocationId(int locationId) {
 		this.locationId = locationId;
 	}
 
@@ -140,27 +140,27 @@ public class BatchEntity implements Serializable{
 		this.endDate = endDate;
 	}
 
-	public Integer getGoodGrade() {
+	public int getGoodGrade() {
 		return goodGrade;
 	}
 
-	public void setGoodGrade(Integer goodGrade) {
+	public void setGoodGrade(int goodGrade) {
 		this.goodGrade = goodGrade;
 	}
 
-	public Integer getPassingGrade() {
+	public int getPassingGrade() {
 		return passingGrade;
 	}
 
-	public void setPassingGrade(Integer passingGrade) {
+	public void setPassingGrade(int passingGrade) {
 		this.passingGrade = passingGrade;
 	}
 
-	public Integer getWeeks() {
+	public int getWeeks() {
 		return weeks;
 	}
 
-	public void setWeeks(Integer weeks) {
+	public void setWeeks(int weeks) {
 		this.weeks = weeks;
 	}
 

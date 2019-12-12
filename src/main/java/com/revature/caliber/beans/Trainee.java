@@ -7,7 +7,7 @@ public class Trainee {
 	private int traineeId;
 	private String name;
 	private TrainingStatus trainingStatus;
-	private Integer batchId;
+	private int batchId;
 	private String email;		// Need in order to update trainee in User Service
 	private TraineeFlag flagStatus;
 	private String flagNotes;
@@ -19,7 +19,7 @@ public class Trainee {
 		this.flagStatus = TraineeFlag.NONE;
 	}
 
-	public Trainee(int traineeId, String name, TrainingStatus trainingStatus, Integer batchId,
+	public Trainee(int traineeId, String name, TrainingStatus trainingStatus, int batchId,
 			TraineeFlag flagStatus, String flagNotes, Trainer flagAuthor, Timestamp flagNoteTimeStamp) {
 		super();
 		this.traineeId = traineeId;
@@ -73,11 +73,11 @@ public class Trainee {
 		this.flagNotes = flagNotes;
 	}
 
-	public Integer getBatchId() {
+	public int getBatchId() {
 		return batchId;
 	}
 
-	public void setBatchId(Integer batchId) {
+	public void setBatchId(int batchId) {
 		this.batchId = batchId;
 	}
 
