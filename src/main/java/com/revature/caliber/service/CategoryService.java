@@ -15,7 +15,7 @@ public class CategoryService {
 	CategoryRepository categoryRepo;
 	
 	public Category insertCategory(Category category) {
-		return categoryRepo.findOne(category.getId());
+		return categoryRepo.save(category);
 
 		//		List<Category> categories = categoryRepo.findCategoryByBatchAndWeek(category.getBatchId(), category.getWeek());
 //		for(Category c : categories) {
