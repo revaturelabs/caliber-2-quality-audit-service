@@ -22,9 +22,9 @@ public class CategoryService {
 			}
 		}
 		
-		if(category.getBatchId() == null || 
-				category.getCategoryId() == null || 
-				category.getWeek() == null ||
+		if(category.getBatchId() >= 0 ||
+				category.getCategoryId() >= 0 ||
+				category.getWeek() >= 0 ||
 				category.getSkillCategory() == null || category.getSkillCategory() == "") {
 			return null;
 		}
