@@ -25,8 +25,9 @@ public class Note implements Serializable {
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator = "NOTE_ID_SEQUENCE")
 	@SequenceGenerator(name = "NOTE_ID_SEQUENCE", sequenceName = "NOTE_ID_SEQUENCE")
 	private int noteId;
-
-	@Length(min=0, max=4000)
+	
+	//@Length(min=0, max=4000)
+	@Length(min=0, max=2000)
 	@Column(name = "NOTE_CONTENT", nullable = true)
 	private String content;
 
@@ -231,7 +232,9 @@ public class Note implements Serializable {
 		result = prime * result + ((updateTime == null) ? 0 : updateTime.hashCode());
 		result = prime * result + ((lastSavedBy == null) ? 0 : lastSavedBy.hashCode());
 		result = prime * result + lastSavedById;
-		return super.hashCode();
+		//Original return value
+		//return super.hashCode();
+		return result;
 	}
 
 	@Override
