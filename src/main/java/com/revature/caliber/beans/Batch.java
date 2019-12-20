@@ -6,6 +6,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * The type Batch.
@@ -90,5 +91,21 @@ public class Batch implements Serializable {
 	public void setWeeks(int weeks) {
 		this.weeks = weeks;
 	}
-	
+
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Batch batch = (Batch) o;
+		return batchId == batch.batchId &&
+						weeks == batch.weeks &&
+						Objects.equals(trainer, batch.trainer) &&
+						Objects.equals(startDate, batch.startDate);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(batchId, trainer, startDate, weeks);
+	}
 }

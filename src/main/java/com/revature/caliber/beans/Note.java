@@ -8,6 +8,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Objects;
 
 /**
  * 
@@ -211,27 +212,27 @@ public class Note implements Serializable {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-
-		return super.equals(obj);
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Note note = (Note) o;
+		return noteId == note.noteId &&
+						week == note.week &&
+						batchId == note.batchId &&
+						traineeId == note.traineeId &&
+						lastSavedById == note.lastSavedById &&
+						Objects.equals(content, note.content) &&
+						Objects.equals(trainee, note.trainee) &&
+						type == note.type &&
+						technicalStatus == note.technicalStatus &&
+						softSkillStatus == note.softSkillStatus &&
+						Objects.equals(updateTime, note.updateTime) &&
+						Objects.equals(lastSavedBy, note.lastSavedBy);
 	}
+
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-
-		result = prime * result + noteId;
-		result = prime * result + ((content == null) ? 0 : content.hashCode());
-		result = prime * result + ((technicalStatus == null) ? 0 : technicalStatus.hashCode());
-		result = prime * result + ((softSkillStatus == null) ? 0 : softSkillStatus.hashCode());
-		result = prime * result + ((type == null) ? 0 : type.hashCode());
-		result = prime * result + week;
-		result = prime * result + batchId;
-		result = prime * result + traineeId;
-		result = prime * result + ((updateTime == null) ? 0 : updateTime.hashCode());
-		result = prime * result + ((lastSavedBy == null) ? 0 : lastSavedBy.hashCode());
-		result = prime * result + lastSavedById;
-		return super.hashCode();
+		return Objects.hash(noteId, content, week, batchId, trainee, traineeId, type, technicalStatus, softSkillStatus, updateTime, lastSavedBy, lastSavedById);
 	}
 
 	@Override

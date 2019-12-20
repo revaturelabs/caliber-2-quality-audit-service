@@ -1,6 +1,7 @@
 package com.revature.caliber.beans;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -77,23 +78,23 @@ public class WeekName implements Serializable {
 	}
 
 	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + batchId;
-		result = prime * result + id;
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + weekNumber;
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		return super.equals(obj);
-	}
-
-	@Override
 	public String toString() {
 		return "WeekName [id=" + id + ", batchId=" + batchId + ", weekNumber=" + weekNumber + ", name=" + name + "]";
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		WeekName weekName = (WeekName) o;
+		return id == weekName.id &&
+						batchId == weekName.batchId &&
+						weekNumber == weekName.weekNumber &&
+						Objects.equals(name, weekName.name);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, batchId, weekNumber, name);
 	}
 }
