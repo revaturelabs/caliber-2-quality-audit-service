@@ -92,6 +92,43 @@ public class Category {
 				+ ", skillCategory=" + skillCategory + "]";
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + batchId;
+		result = prime * result + categoryId;
+		result = prime * result + id;
+		result = prime * result + ((skillCategory == null) ? 0 : skillCategory.hashCode());
+		result = prime * result + week;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Category other = (Category) obj;
+		if (batchId != other.batchId)
+			return false;
+		if (categoryId != other.categoryId)
+			return false;
+		if (id != other.id)
+			return false;
+		if (skillCategory == null) {
+			if (other.skillCategory != null)
+				return false;
+		} else if (!skillCategory.equals(other.skillCategory))
+			return false;
+		if (week != other.week)
+			return false;
+		return true;
+	}
+
 
 
 

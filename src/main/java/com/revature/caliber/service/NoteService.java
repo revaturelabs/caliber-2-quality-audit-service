@@ -165,9 +165,10 @@ public class NoteService {
 		// re-add trainee object to note to send back to client
 		note.setTrainee(trainee);
 		//If note is a trainee note, update overall note
+		//Changing types to primitives instead of wrapper classes
 		if (noteIsTraineeNote) {
 			log.trace("Updating note average.");
-			evaluationService.calculateAverage(note.getWeek(), new Integer(note.getBatchId()));
+			evaluationService.calculateAverage(note.getWeek(), note.getBatchId());
 		}
 		log.trace("Updated note: " + note);
 		return note;
@@ -178,13 +179,14 @@ public class NoteService {
 	 * @param batchId
 	 * @return Randomized list of QC Trainee notes by batchId and week number.
 	 */
-	public List<Note> findQCNotesByBatch(Integer batchId) {
-		System.out.println("/n/n/n/nHERE/n");
+	//Kamilah changed Integer batchId to int batchId
+	public List<Note> findQCNotesByBatch(int batchId) {
+		//System.out.println("/n/n/n/nHERE/n");
 
 		List<Note> notes = repo.findNotesByBatchIdAndType(batchId, NoteType.QC_TRAINEE);
 
-		System.out.println("/n/n/n/nHERE/n");
-		System.out.println(notes);
+		//System.out.println("/n/n/n/nHERE/n");
+		//System.out.println(notes);
 //		List<Trainee> trainees = traineeClient.findAllByBatch(batchId).getBody();
 //
 //		// If we don't have notes for each trainee, create blank notes
@@ -209,7 +211,8 @@ public class NoteService {
 	 * @param week
 	 * @return Randomized list of QC Trainee notes by batchId and week number.
 	 */
-	public List<Note> findQCNotesByBatchAndWeek(Integer batchId, Short week) {
+	//Changing Wrapper classes to primitive types
+	public List<Note> findQCNotesByBatchAndWeek(int batchId, short week) {
 		List<Note> notes = repo.findQCNotesByBatchAndWeek(batchId, week, NoteType.QC_TRAINEE);
 		List<Trainee> trainees = traineeClient.findAllByBatch(batchId).getBody();
 
@@ -244,7 +247,9 @@ public class NoteService {
 	 * @param week
 	 * @return the overall QC batch note for the give week.
 	 */
-	public Note findOverallNoteByBatchAndWeek(Integer batchId, Short week) {
+	
+	//Changing Wrapper classes to primitive
+	public Note findOverallNoteByBatchAndWeek(int batchId, short week) {
 		return repo.findQCBatchNotes(batchId, week, NoteType.QC_BATCH);
 	}
 
