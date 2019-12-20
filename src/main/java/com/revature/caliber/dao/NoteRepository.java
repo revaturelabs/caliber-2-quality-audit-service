@@ -43,6 +43,10 @@ public interface NoteRepository extends JpaRepository<Note, Integer> {
 	 * @return
 	 */
 	@Query("SELECT n FROM Note n WHERE n.batchId = :batchId")//AND n.type = :type")
+	//What do we need displayed? The actual notes, year, quarter, batch
+	//trainee, technical skills, soft skills
+	//Overall qc status
+	//overall qc notes
     public List<Note> findQCNotesByBatch(
             @Param("batchId") Integer batchId);
             //@Param("type") NoteType type);
@@ -61,5 +65,6 @@ public interface NoteRepository extends JpaRepository<Note, Integer> {
 	@Query("SELECT n FROM Note n WHERE n.traineeId = :traineeId")
 	public List<Note> findByTraineeId(@Param("traineeId") int traineeId, Sort sort);
 
+	
 	public List<Note> findNotesByBatchIdAndType(int batchId, NoteType type);
 }

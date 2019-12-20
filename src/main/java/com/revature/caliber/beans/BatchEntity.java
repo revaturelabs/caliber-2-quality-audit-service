@@ -167,6 +167,31 @@ public class BatchEntity implements Serializable{
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
+	@Override
+	public boolean equals(Object obj) {
+
+		return super.equals(obj);
+	}
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+
+		result = prime * result + batchId;
+		/*result = prime * result + ((content == null) ? 0 : content.hashCode());
+		result = prime * result + ((technicalStatus == null) ? 0 : technicalStatus.hashCode());
+		result = prime * result + ((softSkillStatus == null) ? 0 : softSkillStatus.hashCode());
+		result = prime * result + ((type == null) ? 0 : type.hashCode());
+		result = prime * result + week;
+		result = prime * result + batchId;
+		result = prime * result + traineeId;
+		result = prime * result + ((updateTime == null) ? 0 : updateTime.hashCode());
+		result = prime * result + ((lastSavedBy == null) ? 0 : lastSavedBy.hashCode());
+		result = prime * result + lastSavedById;*/
+		//Original return value
+		//return super.hashCode();
+		return result;
+	}
 
 	@Override
 	public String toString() {

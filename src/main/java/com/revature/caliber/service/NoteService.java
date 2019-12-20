@@ -41,7 +41,9 @@ public class NoteService {
 	 * 
 	 * @return notes
 	 */
-	public List<Note> getAllNotes() {
+	//This is broken?
+	//Kamilah commented this out
+	/*public List<Note> getAllNotes() {
 		List<Note> temp = repo.findAll();
 		System.out.println("It is broken");
 		System.out.println("It is broken");	
@@ -52,7 +54,7 @@ public class NoteService {
 
 		}
 		return temp;
-	}
+	}*/
 
 	/**
 	 * Creates empty QC notes for the entire batch, including an overall batch note.
