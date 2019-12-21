@@ -8,6 +8,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Objects;
 
 /**
  * 
@@ -276,7 +277,7 @@ public class Note implements Serializable {
 		result = prime * result + ((updateTime == null) ? 0 : updateTime.hashCode());
 		result = prime * result + week;
 		return result;
-	}
+  }
 
 	@Override
 	public String toString() {

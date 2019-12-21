@@ -1,6 +1,7 @@
 package com.revature.caliber.beans;
 
 import java.sql.Timestamp;
+import java.util.Objects;
 
 public class Trainee {
 	
@@ -175,4 +176,25 @@ public class Trainee {
 				+ ", flagAuthor=" + flagAuthor + ", flagNoteTimeStamp=" + flagNoteTimeStamp + "]";
 	}
 
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Trainee trainee = (Trainee) o;
+		return traineeId == trainee.traineeId &&
+						batchId == trainee.batchId &&
+						Objects.equals(name, trainee.name) &&
+						trainingStatus == trainee.trainingStatus &&
+						Objects.equals(email, trainee.email) &&
+						flagStatus == trainee.flagStatus &&
+						Objects.equals(flagNotes, trainee.flagNotes) &&
+						Objects.equals(flagAuthor, trainee.flagAuthor) &&
+						Objects.equals(flagNoteTimeStamp, trainee.flagNoteTimeStamp);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(traineeId, name, trainingStatus, batchId, email, flagStatus, flagNotes, flagAuthor, flagNoteTimeStamp);
+	}
 }

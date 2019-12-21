@@ -6,6 +6,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * The type Batch.
@@ -90,7 +91,6 @@ public class Batch implements Serializable {
 	public void setWeeks(int weeks) {
 		this.weeks = weeks;
 	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -127,5 +127,4 @@ public class Batch implements Serializable {
 			return false;
 		return true;
 	}
-	
 }

@@ -2,6 +2,7 @@ package com.revature.caliber.beans;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
 public class BatchEntity implements Serializable{
 
@@ -256,8 +257,29 @@ public class BatchEntity implements Serializable{
 				+ ", goodGrade=" + goodGrade + ", passingGrade=" + passingGrade + ", weeks=" + weeks + "]";
 	}
 
-	
 
-	
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		BatchEntity that = (BatchEntity) o;
+		return batchId == that.batchId &&
+						locationId == that.locationId &&
+						goodGrade == that.goodGrade &&
+						passingGrade == that.passingGrade &&
+						weeks == that.weeks &&
+						Objects.equals(trainingName, that.trainingName) &&
+						Objects.equals(trainingType, that.trainingType) &&
+						Objects.equals(skillType, that.skillType) &&
+						Objects.equals(trainer, that.trainer) &&
+						Objects.equals(coTrainer, that.coTrainer) &&
+						Objects.equals(location, that.location) &&
+						Objects.equals(startDate, that.startDate) &&
+						Objects.equals(endDate, that.endDate);
+	}
 
+	@Override
+	public int hashCode() {
+		return Objects.hash(batchId, trainingName, trainingType, skillType, trainer, coTrainer, locationId, location, startDate, endDate, goodGrade, passingGrade, weeks);
+	}
 }

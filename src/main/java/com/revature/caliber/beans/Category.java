@@ -1,6 +1,7 @@
 package com.revature.caliber.beans;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "QC_CATEGORY")
@@ -130,8 +131,20 @@ public class Category {
 	}
 
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Category category = (Category) o;
+		return id == category.id &&
+						batchId == category.batchId &&
+						week == category.week &&
+						categoryId == category.categoryId &&
+						Objects.equals(skillCategory, category.skillCategory);
+	}
 
-
-	
-
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, batchId, week, categoryId, skillCategory);
+	}
 }
