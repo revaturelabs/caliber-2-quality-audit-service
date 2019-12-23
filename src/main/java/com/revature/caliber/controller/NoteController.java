@@ -4,7 +4,7 @@ import com.revature.caliber.beans.BatchEntity;
 import com.revature.caliber.beans.Note;
 import com.revature.caliber.beans.QCStatus;
 import com.revature.caliber.beans.Trainee;
-import com.revature.caliber.intercomm.base.BatchClient;
+//import com.revature.caliber.intercomm.base.BatchClient;
 import com.revature.caliber.service.NoteService;
 import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,13 +34,16 @@ public class NoteController {
 	private NoteService noteService;
 
 	@Autowired
-	private BatchClient batchClient;
+	//private BatchClient batchClient;
 
 	/**
 	 * 
 	 * @return all Notes in the database.
 	 */
-	@GetMapping("/notes")
+	
+	//This is possibly needed for the reports tab on website
+	//Update: it is not: Kamilah commented this out
+	/*@GetMapping("/notes")
 	public ResponseEntity<List<Note>> getAllNotes() {
 		log.trace("IN AUDIT: RETURNING ALL NOTES");
 		List<Note> notes = noteService.getAllNotes();

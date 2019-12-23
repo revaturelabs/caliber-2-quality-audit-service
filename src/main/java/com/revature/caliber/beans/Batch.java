@@ -91,21 +91,40 @@ public class Batch implements Serializable {
 	public void setWeeks(int weeks) {
 		this.weeks = weeks;
 	}
-
-
 	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
-		Batch batch = (Batch) o;
-		return batchId == batch.batchId &&
-						weeks == batch.weeks &&
-						Objects.equals(trainer, batch.trainer) &&
-						Objects.equals(startDate, batch.startDate);
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + batchId;
+		result = prime * result + ((startDate == null) ? 0 : startDate.hashCode());
+		result = prime * result + ((trainer == null) ? 0 : trainer.hashCode());
+		result = prime * result + weeks;
+		return result;
 	}
 
 	@Override
-	public int hashCode() {
-		return Objects.hash(batchId, trainer, startDate, weeks);
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Batch other = (Batch) obj;
+		if (batchId != other.batchId)
+			return false;
+		if (startDate == null) {
+			if (other.startDate != null)
+				return false;
+		} else if (!startDate.equals(other.startDate))
+			return false;
+		if (trainer == null) {
+			if (other.trainer != null)
+				return false;
+		} else if (!trainer.equals(other.trainer))
+			return false;
+		if (weeks != other.weeks)
+			return false;
+		return true;
 	}
 }

@@ -26,8 +26,9 @@ public class Note implements Serializable {
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator = "NOTE_ID_SEQUENCE")
 	@SequenceGenerator(name = "NOTE_ID_SEQUENCE", sequenceName = "NOTE_ID_SEQUENCE")
 	private int noteId;
-
-	@Length(min=0, max=4000)
+	
+	//@Length(min=0, max=4000)
+	@Length(min=0, max=2000)
 	@Column(name = "NOTE_CONTENT", nullable = true)
 	private String content;
 
@@ -212,28 +213,71 @@ public class Note implements Serializable {
 	}
 
 	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
-		Note note = (Note) o;
-		return noteId == note.noteId &&
-						week == note.week &&
-						batchId == note.batchId &&
-						traineeId == note.traineeId &&
-						lastSavedById == note.lastSavedById &&
-						Objects.equals(content, note.content) &&
-						Objects.equals(trainee, note.trainee) &&
-						type == note.type &&
-						technicalStatus == note.technicalStatus &&
-						softSkillStatus == note.softSkillStatus &&
-						Objects.equals(updateTime, note.updateTime) &&
-						Objects.equals(lastSavedBy, note.lastSavedBy);
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Note other = (Note) obj;
+		if (batchId != other.batchId)
+			return false;
+		if (content == null) {
+			if (other.content != null)
+				return false;
+		} else if (!content.equals(other.content))
+			return false;
+		if (lastSavedBy == null) {
+			if (other.lastSavedBy != null)
+				return false;
+		} else if (!lastSavedBy.equals(other.lastSavedBy))
+			return false;
+		if (lastSavedById != other.lastSavedById)
+			return false;
+		if (noteId != other.noteId)
+			return false;
+		if (softSkillStatus != other.softSkillStatus)
+			return false;
+		if (technicalStatus != other.technicalStatus)
+			return false;
+		if (trainee == null) {
+			if (other.trainee != null)
+				return false;
+		} else if (!trainee.equals(other.trainee))
+			return false;
+		if (traineeId != other.traineeId)
+			return false;
+		if (type != other.type)
+			return false;
+		if (updateTime == null) {
+			if (other.updateTime != null)
+				return false;
+		} else if (!updateTime.equals(other.updateTime))
+			return false;
+		if (week != other.week)
+			return false;
+		return true;
 	}
-
+	
 	@Override
 	public int hashCode() {
-		return Objects.hash(noteId, content, week, batchId, trainee, traineeId, type, technicalStatus, softSkillStatus, updateTime, lastSavedBy, lastSavedById);
-	}
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + batchId;
+		result = prime * result + ((content == null) ? 0 : content.hashCode());
+		result = prime * result + ((lastSavedBy == null) ? 0 : lastSavedBy.hashCode());
+		result = prime * result + lastSavedById;
+		result = prime * result + noteId;
+		result = prime * result + ((softSkillStatus == null) ? 0 : softSkillStatus.hashCode());
+		result = prime * result + ((technicalStatus == null) ? 0 : technicalStatus.hashCode());
+		result = prime * result + ((trainee == null) ? 0 : trainee.hashCode());
+		result = prime * result + traineeId;
+		result = prime * result + ((type == null) ? 0 : type.hashCode());
+		result = prime * result + ((updateTime == null) ? 0 : updateTime.hashCode());
+		result = prime * result + week;
+		return result;
+  }
 
 	@Override
 	public String toString() {

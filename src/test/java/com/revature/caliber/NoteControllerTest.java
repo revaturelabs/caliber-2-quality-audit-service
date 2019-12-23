@@ -19,7 +19,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.context.embedded.LocalServerPort;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpStatus;
+//import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -125,15 +125,15 @@ public class NoteControllerTest {
 	public void setUp() throws Exception {
 		MockitoAnnotations.initMocks(this);
 		RestAssured.port = port;
-		when(service.getAllNotes()).thenReturn(notes);
+		//when(service.getAllNotes()).thenReturn(notes);
 		when(service.findById(note5500.getNoteId())).thenReturn(note5500);
 		when(service.findQCNotesByBatchAndWeek(BATCH_ID, WEEK_NUMBER)).thenReturn(notes);
 	}
 
-	@Test
+	/*@Test
 	public void testGetAllNotes() {
 		assertEquals(ResponseEntity.ok(notes), controller.getAllNotes());
-	}
+	}*/
 
 	@Test
 	public void testGetNote() {

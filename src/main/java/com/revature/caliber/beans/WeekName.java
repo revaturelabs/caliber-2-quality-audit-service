@@ -83,14 +83,26 @@ public class WeekName implements Serializable {
 	}
 
 	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
-		WeekName weekName = (WeekName) o;
-		return id == weekName.id &&
-						batchId == weekName.batchId &&
-						weekNumber == weekName.weekNumber &&
-						Objects.equals(name, weekName.name);
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		WeekName other = (WeekName) obj;
+		if (batchId != other.batchId)
+			return false;
+		if (id != other.id)
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (weekNumber != other.weekNumber)
+			return false;
+		return true;
 	}
 
 	@Override
